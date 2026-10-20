@@ -54,5 +54,18 @@ if ! scp "${OPTS[@]}" -P "$PORT" -p "${FILES[@]}" "$SG_USER@$SG_HOST:$DEST/" 2>/
   scp -O "${OPTS[@]}" -P "$PORT" -p "${FILES[@]}" "$SG_USER@$SG_HOST:$DEST/"
 fi
 log "Caricati index.html e og-image.png in $DEST"
+
+# 3. verifica: i file sul server devono essere identici a quelli del repository
+ATTESI=$(cd public && sha256sum index.html og-image.png)
+SUL_SERVER=$(ssh_sg "cd '$DEST' && sha256sum index.html og-image.png" 2>/dev/null || true)
+if [ -z "$SUL_SERVER" ]; then
+  log "Verifica dei file non disponibile sul server"
+elif [ "$SUL_SERVER" = "$ATTESI" ]; then
+  log "Verifica: i file sul server sono identici a quelli del repository"
+else
+  log "ERRORE: i file sul server sono diversi da quelli caricati"
+  log "$SUL_SERVER"
+  exit 1
+fi
 log "Contenuto della cartella:"
 ssh_sg "cd '$DEST' && ls -lAgo" | tee -a "$REPORT"
