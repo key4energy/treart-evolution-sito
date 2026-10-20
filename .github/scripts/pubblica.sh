@@ -57,6 +57,7 @@ if [ -d public/img ]; then
   up "${OPTS[@]}" -P "$PORT" -p public/img/* "$SG_USER@$SG_HOST:$DEST/img/"
 fi
 log "Caricati ${#FILES[@]} file in $DEST (pagina, immagine di anteprima e foto)"
+log "$(ssh_sg "bash -s -- '$DEST'" < .github/scripts/htaccess.sh 2>&1)"
 
 # 3. verifica: i file sul server devono essere identici a quelli del repository
 ATTESI=$(cd public && sha256sum "${FILES[@]}")

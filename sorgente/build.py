@@ -3,6 +3,7 @@
 Genera gli asset vettoriali (logo, simbolo, grande «e», arco, tratto, QR code)
 e li unisce a stili, contenuti e script.
 """
+import hashlib
 import io
 import json
 import math
@@ -150,8 +151,23 @@ shell = read('shell.html')
 asset_js = 'const ASSET = {logoVB: "%s", eVB: "0 0 %s %s"};\n' % (vb, x1 - x0, y1 - y0)
 # fotografie (preparate con prepara_foto.py nella cartella img/ accanto alla pagina)
 foto = json.load(open(os.path.join(HERE, 'foto.json'), encoding='utf-8'))
+IMG_DIR = os.path.join(HERE, '..', 'public', 'img')
+
+
+def foto_ver(slug):
+    """Impronta dei file della foto: cambia l'indirizzo quando cambia la foto (niente copie vecchie in cache)."""
+    h = hashlib.sha1()
+    for w in (800, 1600):
+        p = os.path.join(IMG_DIR, f'{slug}-{w}.webp')
+        if os.path.exists(p):
+            with open(p, 'rb') as fh:
+                h.update(fh.read())
+    return h.hexdigest()[:8]
+
+
 foto_js = 'const FOTO = %s;\n' % json.dumps(
-    {k: {'alt': v['alt'], 'by': v['fotografo'], 'url': 'https://unsplash.com/photos/' + v['pagina']} for k, v in foto.items()},
+    {k: {'alt': v['alt'], 'by': v['fotografo'], 'url': 'https://unsplash.com/photos/' + v['pagina'], 'v': foto_ver(k)}
+     for k, v in foto.items()},
     ensure_ascii=False)
 js = asset_js + foto_js + qr_js + read('content.js') + '\n' + read('app.js') + '\n' + read('tools.js') + '\n' + read('pages.js') + '\n' + read('boot.js')
 
