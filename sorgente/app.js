@@ -284,7 +284,7 @@ function renderFooter() {
     </div>
     <div class="ftr__bottom">
       <span>© ${y} Treart Evolution Srl · P.IVA ${C.piva} · REA ${C.rea} · Cap. soc. ${C.cap}</span>
-      <nav aria-label="Note legali"><a href="#privacy">Privacy</a><a href="#cookie">Cookie</a>
+      <nav aria-label="Note legali"><a href="#privacy">Privacy</a><a href="#cookie">Cookie</a><a href="#crediti">Crediti foto</a>
         <button class="tbc-toggle" type="button" aria-pressed="false" data-tbc-toggle>${ic("eye")}Anteprima: evidenzia i dati da confermare</button></nav>
     </div>
   </div>`;

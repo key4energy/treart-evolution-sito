@@ -4,6 +4,7 @@ Genera gli asset vettoriali (logo, simbolo, grande «e», arco, tratto, QR code)
 e li unisce a stili, contenuti e script.
 """
 import io
+import json
 import math
 import os
 import re
@@ -147,7 +148,12 @@ head = read('head.html')
 css = read('styles.css')
 shell = read('shell.html')
 asset_js = 'const ASSET = {logoVB: "%s", eVB: "0 0 %s %s"};\n' % (vb, x1 - x0, y1 - y0)
-js = asset_js + qr_js + read('content.js') + '\n' + read('app.js') + '\n' + read('tools.js') + '\n' + read('pages.js') + '\n' + read('boot.js')
+# fotografie (preparate con prepara_foto.py nella cartella img/ accanto alla pagina)
+foto = json.load(open(os.path.join(HERE, 'foto.json'), encoding='utf-8'))
+foto_js = 'const FOTO = %s;\n' % json.dumps(
+    {k: {'alt': v['alt'], 'by': v['fotografo'], 'url': 'https://unsplash.com/photos/' + v['pagina']} for k, v in foto.items()},
+    ensure_ascii=False)
+js = asset_js + foto_js + qr_js + read('content.js') + '\n' + read('app.js') + '\n' + read('tools.js') + '\n' + read('pages.js') + '\n' + read('boot.js')
 
 out = (head + '<style>\n' + css + '\n</style>\n' + sprite + '\n' + shell
        + '\n<script>\n"use strict";\n' + js + '\n</script>\n')

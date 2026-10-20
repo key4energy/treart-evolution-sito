@@ -394,7 +394,7 @@ main > *{animation:enter .35s ease-out both}
 .case dt{font-weight:700}
 .case dd{margin:0; color:var(--grey)}
 .trust-grid{display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr); gap:clamp(24px, 4vw, 56px); align-items:center}
-.review{background:var(--paper); border-radius:var(--r-l); padding:clamp(24px, 3vw, 36px); display:grid; gap:14px}
+.review{margin:0; background:var(--paper); border-radius:var(--r-l); padding:clamp(24px, 3vw, 36px); display:grid; gap:14px}
 .review blockquote{margin:0; font-size:clamp(18px, 1.6vw, 21px); font-weight:600; line-height:1.45}
 .stars{display:flex; gap:3px; color:var(--green-ink)}
 .stars .ic{width:20px; height:20px}
@@ -756,6 +756,40 @@ dialog.search{margin-top:8vh; margin-bottom:auto}
 .ph .meta{color:var(--grey-2)}
 .ch .qr{border:1px solid var(--line); border-radius:8px}
 
+/* ---------- fotografie ---------- */
+.photo{position:relative; margin:0; border-radius:var(--r-l); overflow:hidden; background:var(--green-tint)}
+.photo img{display:block; width:100%; height:auto; object-fit:cover}
+.photo--layer{overflow:visible; background:none; padding:0 14px 14px 0}
+.photo--layer::before{content:""; position:absolute; inset:14px 0 0 14px; border-radius:var(--r-l); background:var(--green-tint-2)}
+.photo--layer img{position:relative; aspect-ratio:4/3; border-radius:var(--r-l)}
+.photo--does{margin-bottom:28px}
+.photo--does img{aspect-ratio:16/9}
+@media (max-width:860px){.photo--does img{aspect-ratio:4/3}}
+.sector-row .photo{margin-top:28px}
+.photo--wide img{aspect-ratio:16/10}
+.photo--article img{aspect-ratio:16/9}
+.photo--banner img{aspect-ratio:21/9}
+.photo--banner figcaption{position:absolute; inset:auto 0 0 0; padding:72px clamp(18px, 3vw, 36px) clamp(18px, 3vw, 32px); color:var(--white); font-weight:700; font-size:clamp(17px, 1.9vw, 25px); line-height:1.35; text-wrap:balance; background:linear-gradient(180deg, rgba(35,35,37,0), rgba(35,35,37,.74))}
+@media (max-width:700px){.photo--banner img{aspect-ratio:4/3}}
+.sector__art--photo{background:var(--paper)}
+.sector__art--photo::before, .sector__art--photo::after{display:none}
+.sector__art--photo img{position:absolute; inset:0; width:100%; height:100%; object-fit:cover; transition:transform .5s ease}
+.sector:hover .sector__art--photo img{transform:scale(1.04)}
+.sector__art .sector__ic{position:absolute; left:12px; bottom:12px; z-index:1; width:42px; height:42px; border-radius:50%; background:var(--white); display:grid; place-items:center; box-shadow:var(--shadow)}
+.sector__art .sector__ic .ic{width:22px; height:22px; color:var(--green-ink)}
+.sector__art .sector__ic .ic path{stroke-width:1.8}
+.gcard--img{overflow:hidden}
+.gcard__img{display:block; margin:-24px -24px 4px; aspect-ratio:16/9; overflow:hidden; background:var(--green-tint)}
+.gcard__img img{display:block; width:100%; height:100%; object-fit:cover; transition:transform .5s ease}
+.gcard:hover .gcard__img img{transform:scale(1.04)}
+.review-photo{display:grid}
+.review-photo .review{position:relative; z-index:1; margin:0 20px; background:var(--white); box-shadow:var(--shadow)}
+.review-photo .photo{margin-top:-56px}
+.credits{display:grid; grid-template-columns:repeat(auto-fill, minmax(260px, 1fr)); gap:12px}
+.credits li{display:grid; gap:4px; padding:16px 18px; border:1px solid var(--line); border-radius:var(--r-m); background:var(--white); font-size:15px; line-height:1.45}
+.credits span{color:var(--grey)}
+.credits a{font-weight:600}
+
 /* ---------- movimento ridotto ---------- */
 @media (prefers-reduced-motion: reduce){
   html{scroll-behavior:auto}
@@ -781,6 +815,7 @@ dialog.search{margin-top:8vh; margin-bottom:auto}
 <script>
 "use strict";
 const ASSET = {logoVB: "12.94 4.13 341.43 103.11", eVB: "0 0 1034 1043"};
+const FOTO = {"assistenza-informatica": {"alt": "Due persone al lavoro davanti a un portatile, vicino a una finestra luminosa", "by": "KOBU Agency", "url": "https://unsplash.com/photos/two-women-talking-while-looking-at-laptop-computer-7okkFhxrxNw"}, "installazioni": {"alt": "Tecnico che collega i cavi di rete in un armadio rack", "by": "ThisisEngineering", "url": "https://unsplash.com/photos/man-in-black-and-white-plaid-dress-shirt-zBLtU0zbJcU"}, "cybersecurity": {"alt": "Lucchetto con le chiavi appoggiato sulla tastiera di un computer", "by": "Sasun Bughdaryan", "url": "https://unsplash.com/photos/padlock-and-keys-resting-on-a-computer-keyboard-cX8kNl8X0Ys"}, "backup": {"alt": "Dischi di un server con le spie verdi accese", "by": "Domaintechnik", "url": "https://unsplash.com/photos/server-rack-with-blinking-green-lights-VHmBX7FnXw0"}, "vpn": {"alt": "Portatile su una scrivania davanti a una finestra soleggiata", "by": "Mikey Harris", "url": "https://unsplash.com/photos/macbook-pro-on-brown-wooden-table-kw0z6RyvC0s"}, "videosorveglianza": {"alt": "Tecnico che installa una telecamera di sorveglianza", "by": "Bermix Studio", "url": "https://unsplash.com/photos/a-man-working-on-a-wall-with-a-screwdriver-bAGo7O4prtY"}, "rete-wifi": {"alt": "Router Wi-Fi su un tavolo di legno", "by": "User_Pascal", "url": "https://unsplash.com/photos/a-wireless-router-sits-on-a-wooden-table-mTm0YLorp1Y"}, "connettivita": {"alt": "Antenne e parabole sui tetti sotto il cielo azzurro", "by": "Gio L", "url": "https://unsplash.com/photos/multiple-tv-antennas-and-satellite-dishes-on-a-weathered-rooftop-H9RkvByHP8U"}, "centralini-voip": {"alt": "Persona al telefono alla scrivania di un ufficio", "by": "Berkeley Communications", "url": "https://unsplash.com/photos/man-using-ip-phone-inside-room-WEDDt-u3q3o"}, "siti-web": {"alt": "Persone che disegnano le pagine di un sito su fogli e post-it", "by": "UX Indonesia", "url": "https://unsplash.com/photos/qC2n6RQU4Vw"}, "email-domini": {"alt": "Mani che scrivono al portatile", "by": "Glenn Carstens-Peters", "url": "https://unsplash.com/photos/npxXWgQ33ZQ"}, "hosting": {"alt": "Armadio rack con server e cavi di rete", "by": "Kevin Ache", "url": "https://unsplash.com/photos/2JJ3wBHu4_0"}, "settore-hotel": {"alt": "Agriturismo in mattoni con giardino e cipressi", "by": "Mattia Bericchia", "url": "https://unsplash.com/photos/fSfgZCofQz0"}, "settore-studi": {"alt": "Mani con matita, calcolatrice e quaderno su una scrivania", "by": "Jakub Żerdzicki", "url": "https://unsplash.com/photos/LNnmSumlwO4"}, "settore-negozi": {"alt": "Cliente che paga alla cassa di un bar", "by": "SpotOn", "url": "https://unsplash.com/photos/2cGIkBSspFM"}, "settore-agri": {"alt": "Vigneti sulle colline nella luce del tramonto", "by": "Johny Goerend", "url": "https://unsplash.com/photos/pnigODapPek"}, "settore-industria": {"alt": "Saldatore al lavoro tra le scintille in officina", "by": "Christopher Burns", "url": "https://unsplash.com/photos/Wiu3w-99tNg"}, "guida-nis2": {"alt": "Lucchetto a combinazione appoggiato sulla tastiera", "by": "Sasun Bughdaryan", "url": "https://unsplash.com/photos/a-padlock-rests-on-a-computer-keyboard-QP7RBa5r8HM"}, "guida-ransomware": {"alt": "Portatile chiuso da catene e da un lucchetto", "by": "FlyD", "url": "https://unsplash.com/photos/brown-padlock-on-black-computer-keyboard-FGH69mi53Mw"}, "guida-email-truffa": {"alt": "Mani sulla tastiera di un portatile in penombra", "by": "Kaitlyn Baker", "url": "https://unsplash.com/photos/vZJdYl5JVXY"}, "guida-telecamere-regole": {"alt": "Telecamera di sorveglianza fissata a un muro", "by": "Alan J. Hendry", "url": "https://unsplash.com/photos/white-surveillance-camera-hanging-on-wall-KNt4zd8HPb0"}, "guida-incentivi": {"alt": "Mani che firmano dei documenti su un tavolo", "by": "Romain Dancre", "url": "https://unsplash.com/photos/doplSDELX7E"}, "guida-spegnimento-rame": {"alt": "Cavi in fibra ottica collegati a un apparato di rete", "by": "Kirill Sh", "url": "https://unsplash.com/photos/fiber-optic-cables-in-network-switch-eVWWr6nmDf8"}, "guida-wifi-hotel": {"alt": "Reception di un hotel con arredi in legno", "by": "Neon Wang", "url": "https://unsplash.com/photos/kfnWOD1Tbp8"}, "guida-accessibilita": {"alt": "Bozzetti ad acquerello delle pagine di un sito", "by": "Hal Gatewood", "url": "https://unsplash.com/photos/watercolor-wireframe-sketches-tZc3vjPCk-Q"}, "maremma-pascolo": {"alt": "Bovino bianco al pascolo in un prato ai piedi delle colline", "by": "carlo marzetti", "url": "https://unsplash.com/photos/kCLypfAjAig"}, "maremma-costa": {"alt": "Costa con una baia, barche all'ancora e colline verdi", "by": "carlo marzetti", "url": "https://unsplash.com/photos/PUi8Tv4msOM"}};
 const QR = {wa: `<svg viewBox="0 0 33 33" role="img" aria-label="QR code per scriverci su WhatsApp" class="qr" xmlns="http://www.w3.org/2000/svg"><path fill="#fff" d="M0 0h33v33h-33z"/><path class="qrline" stroke="#2b2b2d" d="M2 2.5h7m1 0h2m1 0h1m1 0h1m1 0h4m3 0h7m-29 1h1m5 0h1m8 0h1m1 0h1m2 0h1m1 0h1m5 0h1m-29 1h1m1 0h3m1 0h1m2 0h1m1 0h1m1 0h3m2 0h1m3 0h1m1 0h3m1 0h1m-29 1h1m1 0h3m1 0h1m5 0h1m2 0h3m1 0h1m2 0h1m1 0h3m1 0h1m-29 1h1m1 0h3m1 0h1m1 0h3m4 0h1m2 0h2m2 0h1m1 0h3m1 0h1m-29 1h1m5 0h1m1 0h1m2 0h3m2 0h1m1 0h1m1 0h1m1 0h1m5 0h1m-29 1h7m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h7m-20 1h5m2 0h1m1 0h1m-18 1h7m2 0h4m2 0h1m1 0h1m1 0h1m2 0h2m3 0h1m-27 1h4m5 0h1m1 0h2m1 0h4m2 0h1m1 0h2m2 0h1m-29 1h2m2 0h5m2 0h2m1 0h2m5 0h3m1 0h1m-23 1h2m3 0h1m1 0h2m1 0h2m1 0h1m3 0h5m2 0h1m-28 1h4m1 0h2m1 0h1m1 0h1m1 0h2m1 0h1m1 0h1m3 0h1m1 0h1m1 0h4m-25 1h1m2 0h1m2 0h1m1 0h4m1 0h6m1 0h2m2 0h1m-28 1h3m1 0h2m1 0h1m1 0h4m2 0h2m2 0h1m2 0h1m3 0h1m-26 1h1m1 0h2m1 0h1m3 0h2m1 0h1m1 0h7m1 0h2m1 0h1m-25 1h4m1 0h9m3 0h2m1 0h1m1 0h3m-28 1h2m5 0h1m1 0h1m5 0h1m2 0h2m2 0h1m1 0h2m1 0h2m-29 1h1m1 0h2m2 0h1m1 0h1m1 0h1m4 0h2m5 0h3m1 0h1m-27 1h1m1 0h1m2 0h1m2 0h1m1 0h3m2 0h1m3 0h1m2 0h1m1 0h1m3 0h1m-29 1h1m5 0h1m2 0h1m2 0h1m1 0h5m1 0h9m-21 1h3m1 0h1m5 0h3m3 0h2m2 0h1m-29 1h7m1 0h1m2 0h1m3 0h2m1 0h3m1 0h1m1 0h1m2 0h1m-28 1h1m5 0h1m1 0h1m2 0h3m5 0h2m3 0h2m-26 1h1m1 0h3m1 0h1m1 0h2m1 0h1m1 0h1m1 0h1m2 0h1m1 0h9m-29 1h1m1 0h3m1 0h1m1 0h1m1 0h1m1 0h1m2 0h3m1 0h3m1 0h1m1 0h1m-26 1h1m1 0h3m1 0h1m1 0h4m5 0h1m1 0h6m2 0h1m-28 1h1m5 0h1m1 0h4m4 0h1m2 0h4m1 0h1m2 0h1m-28 1h7m2 0h1m2 0h1m1 0h1m1 0h3m2 0h1m2 0h3"/></svg>`, vcard: `<svg viewBox="0 0 69 69" role="img" aria-label="QR code per salvare il contatto di Treart Evolution" class="qr" xmlns="http://www.w3.org/2000/svg"><path fill="#fff" d="M0 0h69v69h-69z"/><path class="qrline" stroke="#2b2b2d" d="M2 2.5h7m1 0h1m1 0h2m1 0h2m1 0h1m1 0h5m1 0h1m5 0h3m1 0h1m2 0h5m2 0h1m1 0h1m2 0h1m3 0h1m1 0h1m2 0h7m-65 1h1m5 0h1m1 0h2m2 0h3m1 0h1m1 0h3m5 0h3m1 0h1m5 0h1m1 0h4m1 0h1m4 0h3m2 0h1m2 0h1m1 0h1m5 0h1m-65 1h1m1 0h3m1 0h1m3 0h2m2 0h1m1 0h3m1 0h3m1 0h1m4 0h1m5 0h2m1 0h1m2 0h2m1 0h6m1 0h1m2 0h1m1 0h1m1 0h1m1 0h3m1 0h1m-65 1h1m1 0h3m1 0h1m1 0h4m2 0h3m1 0h1m1 0h2m1 0h1m3 0h1m2 0h1m2 0h2m1 0h1m1 0h1m2 0h1m1 0h1m4 0h1m1 0h2m1 0h3m2 0h1m1 0h3m1 0h1m-65 1h1m1 0h3m1 0h1m3 0h3m1 0h1m3 0h1m1 0h1m2 0h5m1 0h8m1 0h1m4 0h1m1 0h1m3 0h2m2 0h1m2 0h1m1 0h1m1 0h3m1 0h1m-65 1h1m5 0h1m2 0h2m1 0h2m1 0h2m1 0h1m2 0h2m3 0h1m1 0h1m1 0h1m3 0h1m3 0h3m3 0h3m2 0h1m2 0h3m3 0h1m5 0h1m-65 1h7m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h7m-57 1h4m2 0h3m1 0h3m1 0h1m1 0h1m5 0h1m3 0h1m1 0h4m2 0h6m1 0h2m1 0h1m-53 1h1m1 0h2m1 0h3m1 0h2m2 0h1m1 0h1m2 0h1m1 0h1m4 0h1m1 0h1m2 0h5m3 0h3m6 0h1m3 0h3m2 0h1m1 0h1m2 0h1m1 0h2m-65 1h1m1 0h1m1 0h1m3 0h1m1 0h2m5 0h2m1 0h2m3 0h2m4 0h1m1 0h1m1 0h1m6 0h1m2 0h1m1 0h3m2 0h3m9 0h1m-60 1h2m2 0h2m2 0h3m1 0h1m2 0h1m2 0h1m1 0h1m2 0h1m1 0h1m1 0h6m1 0h3m1 0h2m1 0h2m1 0h1m4 0h1m1 0h1m2 0h2m2 0h1m-64 1h1m2 0h1m1 0h1m1 0h2m2 0h5m4 0h2m1 0h1m2 0h1m1 0h1m3 0h3m1 0h1m1 0h2m1 0h1m1 0h1m4 0h1m8 0h2m1 0h1m2 0h2m-65 1h1m1 0h1m2 0h2m2 0h1m1 0h1m3 0h1m2 0h2m2 0h1m1 0h2m1 0h3m6 0h1m4 0h1m1 0h1m3 0h3m6 0h1m1 0h3m1 0h1m-60 1h1m1 0h1m2 0h1m1 0h1m1 0h1m3 0h2m3 0h2m1 0h1m2 0h1m2 0h1m1 0h2m1 0h4m6 0h1m2 0h5m2 0h3m3 0h1m1 0h2m-60 1h2m1 0h1m3 0h2m2 0h1m2 0h3m1 0h1m1 0h1m3 0h4m3 0h1m2 0h2m2 0h1m1 0h5m1 0h1m2 0h3m1 0h1m1 0h2m1 0h2m-63 1h1m4 0h1m2 0h1m1 0h1m1 0h1m4 0h2m2 0h2m2 0h1m1 0h3m1 0h1m3 0h3m2 0h2m2 0h1m1 0h2m1 0h1m2 0h4m1 0h1m1 0h1m1 0h2m-64 1h1m1 0h1m2 0h6m3 0h1m4 0h2m1 0h2m1 0h4m1 0h4m2 0h1m1 0h1m1 0h1m1 0h2m4 0h3m1 0h2m3 0h1m-58 1h1m1 0h1m1 0h1m1 0h1m1 0h5m5 0h4m3 0h1m1 0h1m3 0h3m1 0h1m2 0h1m1 0h1m4 0h2m9 0h2m2 0h3m-63 1h6m3 0h2m1 0h2m1 0h5m2 0h3m1 0h1m4 0h2m3 0h1m4 0h1m1 0h1m1 0h1m4 0h3m1 0h1m2 0h2m3 0h1m-64 1h2m3 0h1m1 0h2m3 0h3m1 0h2m4 0h5m4 0h1m2 0h2m1 0h2m1 0h1m1 0h5m2 0h1m7 0h2m1 0h3m1 0h1m-65 1h1m2 0h2m1 0h4m1 0h3m4 0h1m1 0h2m8 0h1m2 0h3m1 0h1m2 0h1m4 0h3m1 0h5m2 0h1m2 0h1m1 0h1m1 0h2m-64 1h1m3 0h1m3 0h4m1 0h1m1 0h2m2 0h1m1 0h1m3 0h1m2 0h2m4 0h3m2 0h1m1 0h2m1 0h1m2 0h1m2 0h1m1 0h3m1 0h1m1 0h2m3 0h1m-65 1h3m1 0h1m1 0h1m2 0h2m1 0h1m2 0h2m2 0h2m1 0h5m1 0h5m1 0h4m2 0h1m1 0h2m7 0h1m2 0h1m1 0h1m1 0h1m4 0h1m-61 1h1m4 0h2m1 0h1m1 0h1m2 0h2m3 0h2m2 0h1m1 0h3m1 0h3m2 0h1m3 0h1m1 0h5m1 0h1m1 0h2m1 0h2m1 0h5m2 0h2m-65 1h1m1 0h1m1 0h1m1 0h9m1 0h1m2 0h1m1 0h1m1 0h2m2 0h1m3 0h1m2 0h5m2 0h3m1 0h1m1 0h4m2 0h1m1 0h2m1 0h1m1 0h1m1 0h1m-61 1h1m2 0h1m1 0h1m2 0h1m2 0h4m1 0h4m5 0h1m1 0h1m5 0h4m1 0h1m4 0h1m2 0h3m5 0h1m4 0h4m-65 1h4m1 0h2m2 0h2m2 0h1m2 0h2m2 0h1m3 0h2m3 0h1m7 0h1m2 0h2m1 0h1m1 0h7m2 0h2m1 0h1m3 0h1m1 0h2m-65 1h1m1 0h1m1 0h1m2 0h2m1 0h2m1 0h4m1 0h1m1 0h1m4 0h1m4 0h1m1 0h4m1 0h4m1 0h1m2 0h2m1 0h2m3 0h1m2 0h1m4 0h1m1 0h1m-62 1h1m2 0h2m2 0h1m3 0h4m2 0h2m2 0h4m3 0h1m1 0h1m1 0h2m1 0h1m4 0h5m2 0h1m1 0h1m2 0h2m2 0h1m4 0h1m-64 1h1m1 0h4m1 0h3m4 0h1m3 0h1m1 0h1m2 0h2m1 0h2m1 0h4m1 0h1m1 0h2m1 0h1m1 0h1m3 0h2m1 0h2m1 0h3m3 0h4m3 0h1m-65 1h2m1 0h10m1 0h2m1 0h1m1 0h5m2 0h10m1 0h3m1 0h1m2 0h2m1 0h5m1 0h1m1 0h6m2 0h1m-64 1h1m3 0h1m3 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m3 0h9m3 0h1m3 0h2m1 0h1m1 0h2m2 0h1m2 0h1m2 0h4m3 0h1m1 0h2m-64 1h2m1 0h2m1 0h1m1 0h1m1 0h1m1 0h2m1 0h3m3 0h1m1 0h1m3 0h1m1 0h2m1 0h1m1 0h1m5 0h2m1 0h1m1 0h2m2 0h4m1 0h3m1 0h1m1 0h3m1 0h1m-61 1h1m3 0h1m1 0h1m10 0h2m2 0h3m1 0h2m3 0h3m5 0h2m1 0h1m2 0h2m2 0h3m1 0h1m3 0h2m1 0h2m-63 1h1m1 0h5m1 0h2m1 0h1m1 0h2m1 0h1m2 0h1m1 0h3m3 0h7m1 0h2m5 0h2m1 0h1m2 0h1m5 0h5m1 0h2m-64 1h4m1 0h1m1 0h3m2 0h3m2 0h2m1 0h2m2 0h3m1 0h2m1 0h3m1 0h1m1 0h1m1 0h1m1 0h4m1 0h3m4 0h1m1 0h2m2 0h3m1 0h2m-65 1h2m4 0h2m1 0h2m6 0h1m2 0h1m2 0h14m6 0h1m1 0h2m1 0h1m2 0h1m7 0h1m2 0h2m-62 1h1m5 0h5m2 0h1m2 0h1m7 0h1m2 0h6m1 0h1m1 0h2m1 0h1m3 0h1m2 0h1m1 0h1m5 0h2m3 0h4m-64 1h1m1 0h1m2 0h1m1 0h1m1 0h1m1 0h1m1 0h1m3 0h4m1 0h2m2 0h2m2 0h2m1 0h2m1 0h1m1 0h5m1 0h5m1 0h2m2 0h5m1 0h4m-65 1h1m3 0h1m2 0h2m1 0h2m1 0h2m1 0h1m1 0h2m1 0h4m2 0h1m2 0h1m3 0h1m1 0h1m1 0h1m1 0h1m2 0h1m1 0h1m2 0h2m1 0h5m2 0h1m1 0h2m-62 1h1m1 0h6m1 0h3m1 0h5m1 0h3m3 0h5m1 0h1m9 0h4m5 0h2m1 0h2m1 0h1m2 0h1m3 0h1m-64 1h2m2 0h1m2 0h1m2 0h4m3 0h1m2 0h2m2 0h5m2 0h1m1 0h2m1 0h1m2 0h3m2 0h3m1 0h1m4 0h1m2 0h4m-59 1h2m3 0h3m2 0h2m2 0h1m1 0h2m2 0h1m9 0h3m2 0h2m4 0h1m1 0h1m5 0h1m1 0h1m2 0h1m1 0h1m1 0h3m-61 1h1m3 0h1m1 0h4m7 0h1m5 0h3m2 0h1m3 0h1m2 0h5m1 0h3m2 0h3m2 0h1m1 0h1m3 0h1m2 0h3m-63 1h4m1 0h1m1 0h2m2 0h1m2 0h1m1 0h2m4 0h3m1 0h1m1 0h1m1 0h1m5 0h6m3 0h2m1 0h1m1 0h2m2 0h1m1 0h2m2 0h3m-64 1h1m2 0h1m1 0h1m5 0h2m2 0h1m1 0h1m1 0h4m1 0h2m5 0h2m1 0h2m1 0h1m1 0h1m1 0h3m3 0h1m6 0h3m3 0h1m1 0h1m1 0h1m-65 1h2m3 0h3m1 0h1m1 0h3m4 0h3m2 0h3m9 0h1m2 0h1m1 0h1m2 0h2m2 0h1m1 0h1m2 0h2m1 0h3m3 0h3m-63 1h3m1 0h1m1 0h4m1 0h2m1 0h1m2 0h1m3 0h2m2 0h3m1 0h1m1 0h2m1 0h3m1 0h3m8 0h1m1 0h2m1 0h2m1 0h1m4 0h2m-61 1h6m3 0h1m1 0h5m3 0h3m1 0h2m1 0h4m2 0h1m1 0h1m2 0h3m2 0h4m1 0h1m2 0h1m2 0h2m3 0h2m-62 1h1m1 0h1m3 0h3m3 0h2m2 0h1m3 0h2m2 0h1m2 0h1m2 0h2m2 0h4m1 0h1m2 0h2m3 0h3m1 0h1m2 0h2m4 0h3m-65 1h1m3 0h1m1 0h3m4 0h1m1 0h6m1 0h2m1 0h6m2 0h2m1 0h2m1 0h1m1 0h2m2 0h2m2 0h1m3 0h3m1 0h2m2 0h2m1 0h1m-61 1h1m7 0h5m1 0h1m3 0h2m1 0h4m2 0h1m2 0h1m1 0h1m2 0h1m3 0h8m2 0h5m1 0h1m1 0h1m-62 1h2m2 0h1m1 0h2m3 0h3m2 0h1m2 0h2m3 0h1m2 0h5m1 0h1m4 0h2m1 0h2m1 0h1m1 0h1m4 0h1m1 0h1m2 0h2m1 0h2m1 0h2m-63 1h1m2 0h1m2 0h1m2 0h2m1 0h1m1 0h1m4 0h1m1 0h3m2 0h2m1 0h2m1 0h4m4 0h1m3 0h4m4 0h1m1 0h2m1 0h2m3 0h1m-62 1h2m1 0h6m2 0h1m1 0h1m1 0h1m3 0h2m2 0h1m3 0h1m1 0h3m1 0h1m1 0h3m3 0h1m6 0h3m4 0h1m1 0h1m1 0h1m-62 1h1m2 0h1m3 0h1m4 0h1m8 0h1m2 0h4m5 0h2m1 0h2m1 0h1m1 0h1m1 0h1m3 0h3m2 0h1m1 0h2m2 0h1m1 0h3m-62 1h2m1 0h1m1 0h1m2 0h3m1 0h3m1 0h3m3 0h3m2 0h1m1 0h6m2 0h3m6 0h1m3 0h2m1 0h10m-56 1h1m1 0h2m2 0h2m3 0h2m2 0h2m5 0h1m3 0h1m1 0h2m2 0h6m1 0h2m3 0h1m1 0h3m3 0h1m1 0h1m-63 1h7m1 0h2m5 0h2m3 0h1m2 0h2m3 0h1m1 0h1m1 0h1m1 0h1m2 0h5m2 0h5m1 0h7m1 0h1m1 0h4m-64 1h1m5 0h1m1 0h4m1 0h1m4 0h1m1 0h2m2 0h3m3 0h1m3 0h1m2 0h3m3 0h1m1 0h3m4 0h1m3 0h1m3 0h1m-61 1h1m1 0h3m1 0h1m3 0h5m1 0h2m1 0h1m4 0h2m3 0h11m1 0h1m1 0h1m2 0h3m1 0h1m4 0h6m1 0h3m-65 1h1m1 0h3m1 0h1m1 0h1m2 0h1m1 0h2m2 0h1m2 0h1m2 0h2m4 0h3m1 0h6m1 0h1m2 0h1m1 0h1m1 0h2m1 0h3m2 0h1m3 0h2m1 0h1m-63 1h1m1 0h3m1 0h1m1 0h2m1 0h1m3 0h3m4 0h1m1 0h1m1 0h3m7 0h2m4 0h2m1 0h1m2 0h3m1 0h1m1 0h2m2 0h2m1 0h1m2 0h1m-65 1h1m5 0h1m3 0h3m1 0h2m1 0h5m3 0h1m1 0h1m2 0h3m3 0h4m1 0h1m4 0h1m1 0h2m1 0h1m1 0h2m1 0h1m2 0h2m2 0h1m-64 1h7m1 0h1m1 0h3m1 0h3m1 0h1m1 0h1m1 0h8m1 0h1m2 0h1m1 0h1m2 0h5m2 0h2m2 0h2m1 0h5m2 0h2m1 0h1"/></svg>`};
 /* ================= CONTENUTI =================
    Testi dal documento «Contenuti dei servizi e approfondimenti».
@@ -1507,7 +1542,7 @@ function renderFooter() {
     </div>
     <div class="ftr__bottom">
       <span>© ${y} Treart Evolution Srl · P.IVA ${C.piva} · REA ${C.rea} · Cap. soc. ${C.cap}</span>
-      <nav aria-label="Note legali"><a href="#privacy">Privacy</a><a href="#cookie">Cookie</a>
+      <nav aria-label="Note legali"><a href="#privacy">Privacy</a><a href="#cookie">Cookie</a><a href="#crediti">Crediti foto</a>
         <button class="tbc-toggle" type="button" aria-pressed="false" data-tbc-toggle>${ic("eye")}Anteprima: evidenzia i dati da confermare</button></nav>
     </div>
   </div>`;
@@ -2088,6 +2123,14 @@ const CASES = [
   ["[Azienda], [Comune]", "Centralino VoIP e smartphone", "[es. chiamate perse fuori ufficio]", "[es. centralino con app]", "[es. nessuna chiamata persa]"],
 ];
 const WA_GENERIC = "Ciao, vorrei informazioni sui vostri servizi.";
+
+/* ---------- fotografie (img/<nome>-800.webp e -1600.webp, rapporto 3:2) ---------- */
+function foto(slug, sizes) {
+  const f = FOTO[slug];
+  if (!f) return "";
+  return `<img src="img/${slug}-800.webp" srcset="img/${slug}-800.webp 800w, img/${slug}-1600.webp 1600w" sizes="${sizes}" width="1600" height="1067" alt="${esc(f.alt)}" loading="lazy" decoding="async">`;
+}
+const fotoFig = (slug, sizes, cls = "") => FOTO[slug] ? `<figure class="photo${cls ? " " + cls : ""}">${foto(slug, sizes)}</figure>` : "";
 const firstSentence = (s) => { const m = String(s).match(/^(.+?[.!?])\s+(?=[A-ZÀÈÉÌÒÙ«])/); return m ? m[1] : s; };
 
 /* ---------- blocchi ricorrenti ---------- */
@@ -2130,8 +2173,8 @@ function contactSection(o = {}) {
   </div></section>`;
 }
 function guideCard(id) {
-  const g = GUIDES[id];
-  return `<a class="gcard" href="#${id}" data-cat="${g.cat}"><span class="pill">${ic(g.icon)}${g.cat}</span><h3>${g.short}</h3><p>${esc(firstSentence(g.lead))}</p><span class="gcard__foot"><span>${g.min} minuti di lettura</span>${ic("arrow-right")}</span></a>`;
+  const g = GUIDES[id], img = FOTO["guida-" + id];
+  return `<a class="gcard${img ? " gcard--img" : ""}" href="#${id}" data-cat="${g.cat}">${img ? `<span class="gcard__img">${foto("guida-" + id, "(max-width: 700px) 92vw, 400px")}</span>` : ""}<span class="pill">${ic(g.icon)}${g.cat}</span><h3>${g.short}</h3><p>${esc(firstSentence(g.lead))}</p><span class="gcard__foot"><span>${g.min} minuti di lettura</span>${ic("arrow-right")}</span></a>`;
 }
 function serviceCard(id) {
   const s = SERVICES[id], a = AREAS.find((x) => x.id === s.area);
@@ -2166,7 +2209,9 @@ function plansHtml() {
     <a class="btn ${p.id === "business" ? "btn--primary" : "btn--ghost"}" href="#preventivo" data-plan-req="${p.id}">Chiedi questa formula</a></article>`).join("")}</div>`;
 }
 function sectorCards() {
-  return `<div class="sectors">${SECTORS.map((s) => `<a class="sector" href="#settori" data-scroll="settore-${s.id}"><span class="sector__art">${ic(s.icon)}</span><span class="sector__body"><b>${s.name}</b><span>${s.line}</span></span></a>`).join("")}</div>`;
+  return `<div class="sectors">${SECTORS.map((s) => `<a class="sector" href="#settori" data-scroll="settore-${s.id}">${FOTO["settore-" + s.id]
+    ? `<span class="sector__art sector__art--photo">${foto("settore-" + s.id, "(max-width: 600px) 92vw, 260px")}<span class="sector__ic">${ic(s.icon)}</span></span>`
+    : `<span class="sector__art">${ic(s.icon)}</span>`}<span class="sector__body"><b>${s.name}</b><span>${s.line}</span></span></a>`).join("")}</div>`;
 }
 function casesHtml() {
   return `<div class="cases">${CASES.map((c) => `<article class="case"><div class="case__img">${t("[Foto dell’impianto da inserire]")}</div><div class="case__body"><span class="pill">${t(c[0])}</span><h3>${c[1]}</h3>
@@ -2258,8 +2303,10 @@ route("home", {
     ${casesHtml()}</div></section>
 
   <section class="sec"><div class="wrap trust-grid">
-    <figure class="review" style="margin:0"><span class="eyebrow">Recensioni Google</span><blockquote>${t("«[Testo di una recensione Google di un cliente soddisfatto.]»")}</blockquote>
+    <div class="review-photo">
+    <figure class="review"><span class="eyebrow">Recensioni Google</span><blockquote>${t("«[Testo di una recensione Google di un cliente soddisfatto.]»")}</blockquote>
       <figcaption class="muted small">${t("[Nome e cognome], [Azienda]. Valutazione [media] su [N] recensioni")}</figcaption></figure>
+    ${fotoFig("maremma-pascolo", "(max-width: 860px) 92vw, 600px", "photo--wide")}</div>
     <div><span class="eyebrow">Chi siamo</span><h2 class="mt-s" style="font-size:clamp(26px,3vw,38px)">Lavoriamo con le aziende della Maremma, da vicino.</h2>
       <div class="mt-m">${numsHtml()}</div><p class="small muted mt-m">Tecnologie e partner</p>${partnersHtml()}</div>
   </div></section>
@@ -2302,7 +2349,7 @@ function servicePage(id) {
     + `<section class="sec sec--paper"><div class="wrap split"><div class="split__head"><span class="eyebrow">Cosa facciamo</span><h2>Cosa comprende il servizio.</h2>
         <p class="lead">Tutto quello che serve, seguito da un solo referente che conosce la tua azienda.</p>
         <div class="row"><a class="btn btn--dark" href="#preventivo" data-prefill="${id}">Richiedi un preventivo</a></div></div>
-        <div><ul class="does">${s.does.map((d) => `<li>${ic("check")}<span>${t(d)}</span></li>`).join("")}</ul>
+        <div>${fotoFig(id, "(max-width: 860px) 92vw, 720px", "photo--layer photo--does")}<ul class="does">${s.does.map((d) => `<li>${ic("check")}<span>${t(d)}</span></li>`).join("")}</ul>
         ${s.stat ? `<div class="stat"><b>${s.stat.n}</b><p>${s.stat.text} Fonte: <a href="${s.stat.src[1]}" target="_blank" rel="noopener">${s.stat.src[0]}</a>.</p></div>` : ""}</div></div></section>`
     + `<section class="sec"><div class="wrap">${secHead("Come lavoriamo", "Quattro passi, nessuna sorpresa.")}${steps(s.steps)}</div></section>`
     + `<section class="sec sec--paper"><div class="wrap">${secHead("Perché Treart", "Perché sceglierci.")}
@@ -2327,7 +2374,7 @@ route("settori", {
   render: () => ph({ cr: [["Settori"]], eyebrow: "Settori", title: "Soluzioni pensate per il tuo settore.", lead: "Hotel, studi, negozi, aziende agricole, industria: ogni settore ha problemi diversi. Partiamo dai tuoi.", light: true, e: true })
     + `<section class="sec sec--tight"><div class="wrap">${sectorCards()}</div></section>`
     + `<section class="sec sec--paper"><div class="wrap">${SECTORS.map((s) => `<article class="sector-row" id="settore-${s.id}">
-        <div><span class="eyebrow">${s.name}</span><h2>${s.line}</h2><div class="row mt-m">${waBtn(s.wa)}<a class="btn btn--ghost" href="#check-up">Check-up gratuito</a></div></div>
+        <div><span class="eyebrow">${s.name}</span><h2>${s.line}</h2><div class="row mt-m">${waBtn(s.wa)}<a class="btn btn--ghost" href="#check-up">Check-up gratuito</a></div>${fotoFig("settore-" + s.id, "(max-width: 860px) 92vw, 520px", "photo--layer mt-m")}</div>
         <div><h3>I problemi che sentiamo più spesso</h3><ul class="quotes mt-s">${s.pains.map((q) => `<li>${q}</li>`).join("")}</ul>
           <h3 class="mt-m">Cosa ti proponiamo</h3><div class="chips-links mt-s">${s.services.map((id) => `<a class="chip-link" href="#${id}">${ic(SERVICES[id].icon)}${SERVICES[id].short}</a>`).join("")}</div>
           <p class="mt-m"><a class="more" href="#${s.guide}">Leggi la guida: ${GUIDES[s.guide].short} ${ic("arrow-right")}</a></p></div></article>`).join("")}</div></section>`
@@ -2399,6 +2446,7 @@ function guidePage(id) {
   const others = GUIDE_ORDER.filter((x) => x !== id).slice(0, 3);
   return ph({ cr: [["Risorse", "risorse"], [g.cat]], eyebrow: g.cat, title: g.title, lead: `<span class="meta" style="margin:0">${ic("clock")}${g.min} minuti di lettura · aggiornata a ottobre 2026</span>`, light: true, e: true })
     + `<section class="sec sec--tight"><div class="wrap art"><article class="art__body">
+        ${fotoFig("guida-" + id, "(max-width: 980px) 92vw, 760px", "photo--article")}
         <div class="brief"><b>In breve</b>${t(g.lead)}</div>
         ${(g.blocks || []).map(([h, p]) => `<div class="inc-block"><h3>${h}</h3><p>${t(p)}</p></div>`).join("")}
         ${g.body.map((p) => `<p>${t(p)}</p>`).join("")}
@@ -2427,6 +2475,7 @@ route("chi-siamo", {
   desc: () => "Treart Evolution è il partner IT delle aziende di Grosseto e della Maremma: assistenza informatica, sicurezza, reti, telefonia e web.",
   nav: () => "chi-siamo",
   render: () => ph({ cr: [["Chi siamo"]], eyebrow: "Chi siamo", title: "La tecnologia della tua azienda, seguita da vicino.", lead: "Treart Evolution è una società di Grosseto che segue la tecnologia delle aziende della Maremma: assistenza informatica, sicurezza, reti, telefonia e web. Un solo partner, un solo numero da chiamare.", light: true, e: true })
+    + (FOTO["maremma-costa"] ? `<section class="sec sec--tight"><div class="wrap"><figure class="photo photo--banner">${foto("maremma-costa", "(max-width: 1240px) 92vw, 1160px")}<figcaption>Siamo a Grosseto e seguiamo le aziende di tutta la Maremma, dalla costa all’entroterra.</figcaption></figure></div></section>` : "")
     + `<section class="sec"><div class="wrap">${secHead("Come lavoriamo", "Quattro principi, ogni giorno.")}
         <div class="why why--4">
           <div>${icDot("users")}<h3>Un solo referente</h3><p>Rete, telefoni, sicurezza e sito seguiti dalla stessa squadra. Nessuno rimbalza la colpa a qualcun altro.</p></div>
@@ -2668,8 +2717,13 @@ route("cookie", {
     + `<section class="sec sec--tight"><div class="wrap"><div class="art__body">
       <p class="brief"><b>Bozza</b>${t("[Testo da aggiornare se si aggiungono strumenti di statistica o pubblicità]")}</p>
       <h2>Memoria del browser</h2><p>Il sito ricorda solo le tue spunte nelle liste «Cosa fare subito», sul tuo dispositivo. Non usa cookie di profilazione.</p>
-      <h2>Servizi esterni</h2><p>I caratteri tipografici arrivano da Google Fonts. I link a WhatsApp e a Google Maps aprono quei servizi solo se li scegli tu.</p>
+      <h2>Servizi esterni</h2><p>Caratteri tipografici e fotografie sono ospitati insieme al sito: mentre navighi non contatti servizi di altre aziende. I link a WhatsApp e a Google Maps aprono quei servizi solo se li scegli tu.</p>
     </div></div></section>`,
+});
+route("crediti", {
+  title: () => "Crediti fotografici | Treart Evolution", desc: () => "Le fotografie usate nel sito e i loro autori.", nav: () => "",
+  render: () => ph({ cr: [["Crediti fotografici"]], eyebrow: "Note legali", title: "Crediti fotografici", lead: "Le fotografie del sito vengono da Unsplash e sono usate secondo la licenza Unsplash. Grazie ai fotografi.", light: true })
+    + `<section class="sec sec--tight"><div class="wrap"><ul class="credits">${Object.values(FOTO).map((f) => `<li><b>${esc(f.by)}</b><span>${esc(f.alt)}</span><a href="${f.url}" target="_blank" rel="noopener">Vedi su Unsplash</a></li>`).join("")}</ul></div></section>`,
 });
 route("404", {
   title: () => "Pagina non trovata | Treart Evolution", desc: () => "La pagina cercata non esiste.", nav: () => "",

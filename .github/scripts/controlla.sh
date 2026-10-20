@@ -12,6 +12,8 @@ for p in https http; do
   err=$(head -c 300 /tmp/errore-curl 2>/dev/null | tr '\n' ' ')
   if [ "$code" = 200 ] && grep -q 'content="Treart Evolution"' /tmp/pagina.html; then
     log "$p: risponde la nuova versione del sito (HTTP 200)"
+  elif [ "$code" = 401 ]; then
+    log "$p: HTTP 401, il sito è protetto da password (come previsto)"
   elif [ "$code" = 202 ]; then
     log "$p: HTTP 202, verifica anti-bot di SiteGround per i server automatici come GitHub (i visitatori vedono il sito normalmente)"
   elif printf '%s' "$err" | grep -q 'SSL certificate'; then

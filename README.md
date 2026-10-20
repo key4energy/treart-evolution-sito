@@ -29,6 +29,24 @@ Facoltativi: il segreto `SITEGROUND_PORT`, se la porta non è 18765, e la variab
 - `sorgente/`: testi, stili e script del sito, più gli script che generano `public/`.
 - `sorgente/kit/`: logo e caratteri della corporate identity usati dagli script. Open Sans e Gelasio sono distribuiti con licenza SIL Open Font License.
 
+## Fotografie
+
+Le foto vengono da Unsplash e sono usate secondo la [licenza Unsplash](https://unsplash.com/license), che consente l'uso commerciale senza obbligo di citazione; i crediti sono comunque nella pagina «Crediti foto» del sito.
+
+- `sorgente/foto.json`: quale foto va dove, punto di fuoco del ritaglio, testo alternativo e autore.
+- `public/img/`: le foto pronte, in WebP da 1600 e 800 px di larghezza (rapporto 3:2), con toni leggermente scaldati.
+- Ramo `foto-candidate`, cartella `foto/candidate/`: gli originali di tutte le foto valutate, utili per sostituirne qualcuna.
+
+Per rigenerare le foto dagli originali:
+
+```
+git archive foto-candidate foto/candidate | tar -x -C /tmp
+cd sorgente
+python3 prepara_foto.py /tmp/foto/candidate ../public/img
+```
+
+Le foto con persone sono immagini d'archivio: vanno sostituite, appena possibile, con foto reali di persone, sede e impianti Treart.
+
 ## Rigenerare il sito
 
 ```

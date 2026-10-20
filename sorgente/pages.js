@@ -6,6 +6,14 @@ const CASES = [
   ["[Azienda], [Comune]", "Centralino VoIP e smartphone", "[es. chiamate perse fuori ufficio]", "[es. centralino con app]", "[es. nessuna chiamata persa]"],
 ];
 const WA_GENERIC = "Ciao, vorrei informazioni sui vostri servizi.";
+
+/* ---------- fotografie (img/<nome>-800.webp e -1600.webp, rapporto 3:2) ---------- */
+function foto(slug, sizes) {
+  const f = FOTO[slug];
+  if (!f) return "";
+  return `<img src="img/${slug}-800.webp" srcset="img/${slug}-800.webp 800w, img/${slug}-1600.webp 1600w" sizes="${sizes}" width="1600" height="1067" alt="${esc(f.alt)}" loading="lazy" decoding="async">`;
+}
+const fotoFig = (slug, sizes, cls = "") => FOTO[slug] ? `<figure class="photo${cls ? " " + cls : ""}">${foto(slug, sizes)}</figure>` : "";
 const firstSentence = (s) => { const m = String(s).match(/^(.+?[.!?])\s+(?=[A-ZÀÈÉÌÒÙ«])/); return m ? m[1] : s; };
 
 /* ---------- blocchi ricorrenti ---------- */
@@ -48,8 +56,8 @@ function contactSection(o = {}) {
   </div></section>`;
 }
 function guideCard(id) {
-  const g = GUIDES[id];
-  return `<a class="gcard" href="#${id}" data-cat="${g.cat}"><span class="pill">${ic(g.icon)}${g.cat}</span><h3>${g.short}</h3><p>${esc(firstSentence(g.lead))}</p><span class="gcard__foot"><span>${g.min} minuti di lettura</span>${ic("arrow-right")}</span></a>`;
+  const g = GUIDES[id], img = FOTO["guida-" + id];
+  return `<a class="gcard${img ? " gcard--img" : ""}" href="#${id}" data-cat="${g.cat}">${img ? `<span class="gcard__img">${foto("guida-" + id, "(max-width: 700px) 92vw, 400px")}</span>` : ""}<span class="pill">${ic(g.icon)}${g.cat}</span><h3>${g.short}</h3><p>${esc(firstSentence(g.lead))}</p><span class="gcard__foot"><span>${g.min} minuti di lettura</span>${ic("arrow-right")}</span></a>`;
 }
 function serviceCard(id) {
   const s = SERVICES[id], a = AREAS.find((x) => x.id === s.area);
@@ -84,7 +92,9 @@ function plansHtml() {
     <a class="btn ${p.id === "business" ? "btn--primary" : "btn--ghost"}" href="#preventivo" data-plan-req="${p.id}">Chiedi questa formula</a></article>`).join("")}</div>`;
 }
 function sectorCards() {
-  return `<div class="sectors">${SECTORS.map((s) => `<a class="sector" href="#settori" data-scroll="settore-${s.id}"><span class="sector__art">${ic(s.icon)}</span><span class="sector__body"><b>${s.name}</b><span>${s.line}</span></span></a>`).join("")}</div>`;
+  return `<div class="sectors">${SECTORS.map((s) => `<a class="sector" href="#settori" data-scroll="settore-${s.id}">${FOTO["settore-" + s.id]
+    ? `<span class="sector__art sector__art--photo">${foto("settore-" + s.id, "(max-width: 600px) 92vw, 260px")}<span class="sector__ic">${ic(s.icon)}</span></span>`
+    : `<span class="sector__art">${ic(s.icon)}</span>`}<span class="sector__body"><b>${s.name}</b><span>${s.line}</span></span></a>`).join("")}</div>`;
 }
 function casesHtml() {
   return `<div class="cases">${CASES.map((c) => `<article class="case"><div class="case__img">${t("[Foto dell’impianto da inserire]")}</div><div class="case__body"><span class="pill">${t(c[0])}</span><h3>${c[1]}</h3>
@@ -176,8 +186,10 @@ route("home", {
     ${casesHtml()}</div></section>
 
   <section class="sec"><div class="wrap trust-grid">
-    <figure class="review" style="margin:0"><span class="eyebrow">Recensioni Google</span><blockquote>${t("«[Testo di una recensione Google di un cliente soddisfatto.]»")}</blockquote>
+    <div class="review-photo">
+    <figure class="review"><span class="eyebrow">Recensioni Google</span><blockquote>${t("«[Testo di una recensione Google di un cliente soddisfatto.]»")}</blockquote>
       <figcaption class="muted small">${t("[Nome e cognome], [Azienda]. Valutazione [media] su [N] recensioni")}</figcaption></figure>
+    ${fotoFig("maremma-pascolo", "(max-width: 860px) 92vw, 600px", "photo--wide")}</div>
     <div><span class="eyebrow">Chi siamo</span><h2 class="mt-s" style="font-size:clamp(26px,3vw,38px)">Lavoriamo con le aziende della Maremma, da vicino.</h2>
       <div class="mt-m">${numsHtml()}</div><p class="small muted mt-m">Tecnologie e partner</p>${partnersHtml()}</div>
   </div></section>
@@ -220,7 +232,7 @@ function servicePage(id) {
     + `<section class="sec sec--paper"><div class="wrap split"><div class="split__head"><span class="eyebrow">Cosa facciamo</span><h2>Cosa comprende il servizio.</h2>
         <p class="lead">Tutto quello che serve, seguito da un solo referente che conosce la tua azienda.</p>
         <div class="row"><a class="btn btn--dark" href="#preventivo" data-prefill="${id}">Richiedi un preventivo</a></div></div>
-        <div><ul class="does">${s.does.map((d) => `<li>${ic("check")}<span>${t(d)}</span></li>`).join("")}</ul>
+        <div>${fotoFig(id, "(max-width: 860px) 92vw, 720px", "photo--layer photo--does")}<ul class="does">${s.does.map((d) => `<li>${ic("check")}<span>${t(d)}</span></li>`).join("")}</ul>
         ${s.stat ? `<div class="stat"><b>${s.stat.n}</b><p>${s.stat.text} Fonte: <a href="${s.stat.src[1]}" target="_blank" rel="noopener">${s.stat.src[0]}</a>.</p></div>` : ""}</div></div></section>`
     + `<section class="sec"><div class="wrap">${secHead("Come lavoriamo", "Quattro passi, nessuna sorpresa.")}${steps(s.steps)}</div></section>`
     + `<section class="sec sec--paper"><div class="wrap">${secHead("Perché Treart", "Perché sceglierci.")}
@@ -245,7 +257,7 @@ route("settori", {
   render: () => ph({ cr: [["Settori"]], eyebrow: "Settori", title: "Soluzioni pensate per il tuo settore.", lead: "Hotel, studi, negozi, aziende agricole, industria: ogni settore ha problemi diversi. Partiamo dai tuoi.", light: true, e: true })
     + `<section class="sec sec--tight"><div class="wrap">${sectorCards()}</div></section>`
     + `<section class="sec sec--paper"><div class="wrap">${SECTORS.map((s) => `<article class="sector-row" id="settore-${s.id}">
-        <div><span class="eyebrow">${s.name}</span><h2>${s.line}</h2><div class="row mt-m">${waBtn(s.wa)}<a class="btn btn--ghost" href="#check-up">Check-up gratuito</a></div></div>
+        <div><span class="eyebrow">${s.name}</span><h2>${s.line}</h2><div class="row mt-m">${waBtn(s.wa)}<a class="btn btn--ghost" href="#check-up">Check-up gratuito</a></div>${fotoFig("settore-" + s.id, "(max-width: 860px) 92vw, 520px", "photo--layer mt-m")}</div>
         <div><h3>I problemi che sentiamo più spesso</h3><ul class="quotes mt-s">${s.pains.map((q) => `<li>${q}</li>`).join("")}</ul>
           <h3 class="mt-m">Cosa ti proponiamo</h3><div class="chips-links mt-s">${s.services.map((id) => `<a class="chip-link" href="#${id}">${ic(SERVICES[id].icon)}${SERVICES[id].short}</a>`).join("")}</div>
           <p class="mt-m"><a class="more" href="#${s.guide}">Leggi la guida: ${GUIDES[s.guide].short} ${ic("arrow-right")}</a></p></div></article>`).join("")}</div></section>`
@@ -317,6 +329,7 @@ function guidePage(id) {
   const others = GUIDE_ORDER.filter((x) => x !== id).slice(0, 3);
   return ph({ cr: [["Risorse", "risorse"], [g.cat]], eyebrow: g.cat, title: g.title, lead: `<span class="meta" style="margin:0">${ic("clock")}${g.min} minuti di lettura · aggiornata a ottobre 2026</span>`, light: true, e: true })
     + `<section class="sec sec--tight"><div class="wrap art"><article class="art__body">
+        ${fotoFig("guida-" + id, "(max-width: 980px) 92vw, 760px", "photo--article")}
         <div class="brief"><b>In breve</b>${t(g.lead)}</div>
         ${(g.blocks || []).map(([h, p]) => `<div class="inc-block"><h3>${h}</h3><p>${t(p)}</p></div>`).join("")}
         ${g.body.map((p) => `<p>${t(p)}</p>`).join("")}
@@ -345,6 +358,7 @@ route("chi-siamo", {
   desc: () => "Treart Evolution è il partner IT delle aziende di Grosseto e della Maremma: assistenza informatica, sicurezza, reti, telefonia e web.",
   nav: () => "chi-siamo",
   render: () => ph({ cr: [["Chi siamo"]], eyebrow: "Chi siamo", title: "La tecnologia della tua azienda, seguita da vicino.", lead: "Treart Evolution è una società di Grosseto che segue la tecnologia delle aziende della Maremma: assistenza informatica, sicurezza, reti, telefonia e web. Un solo partner, un solo numero da chiamare.", light: true, e: true })
+    + (FOTO["maremma-costa"] ? `<section class="sec sec--tight"><div class="wrap"><figure class="photo photo--banner">${foto("maremma-costa", "(max-width: 1240px) 92vw, 1160px")}<figcaption>Siamo a Grosseto e seguiamo le aziende di tutta la Maremma, dalla costa all’entroterra.</figcaption></figure></div></section>` : "")
     + `<section class="sec"><div class="wrap">${secHead("Come lavoriamo", "Quattro principi, ogni giorno.")}
         <div class="why why--4">
           <div>${icDot("users")}<h3>Un solo referente</h3><p>Rete, telefoni, sicurezza e sito seguiti dalla stessa squadra. Nessuno rimbalza la colpa a qualcun altro.</p></div>
@@ -586,8 +600,13 @@ route("cookie", {
     + `<section class="sec sec--tight"><div class="wrap"><div class="art__body">
       <p class="brief"><b>Bozza</b>${t("[Testo da aggiornare se si aggiungono strumenti di statistica o pubblicità]")}</p>
       <h2>Memoria del browser</h2><p>Il sito ricorda solo le tue spunte nelle liste «Cosa fare subito», sul tuo dispositivo. Non usa cookie di profilazione.</p>
-      <h2>Servizi esterni</h2><p>I caratteri tipografici arrivano da Google Fonts. I link a WhatsApp e a Google Maps aprono quei servizi solo se li scegli tu.</p>
+      <h2>Servizi esterni</h2><p>Caratteri tipografici e fotografie sono ospitati insieme al sito: mentre navighi non contatti servizi di altre aziende. I link a WhatsApp e a Google Maps aprono quei servizi solo se li scegli tu.</p>
     </div></div></section>`,
+});
+route("crediti", {
+  title: () => "Crediti fotografici | Treart Evolution", desc: () => "Le fotografie usate nel sito e i loro autori.", nav: () => "",
+  render: () => ph({ cr: [["Crediti fotografici"]], eyebrow: "Note legali", title: "Crediti fotografici", lead: "Le fotografie del sito vengono da Unsplash e sono usate secondo la licenza Unsplash. Grazie ai fotografi.", light: true })
+    + `<section class="sec sec--tight"><div class="wrap"><ul class="credits">${Object.values(FOTO).map((f) => `<li><b>${esc(f.by)}</b><span>${esc(f.alt)}</span><a href="${f.url}" target="_blank" rel="noopener">Vedi su Unsplash</a></li>`).join("")}</ul></div></section>`,
 });
 route("404", {
   title: () => "Pagina non trovata | Treart Evolution", desc: () => "La pagina cercata non esiste.", nav: () => "",

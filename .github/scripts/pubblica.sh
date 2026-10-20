@@ -48,24 +48,27 @@ if [ -z "$DEST" ]; then
   exit 1
 fi
 
-# 2. caricamento dei file
-FILES=(public/index.html public/og-image.png)
-if ! scp "${OPTS[@]}" -P "$PORT" -p "${FILES[@]}" "$SG_USER@$SG_HOST:$DEST/" 2>/dev/null; then
-  scp -O "${OPTS[@]}" -P "$PORT" -p "${FILES[@]}" "$SG_USER@$SG_HOST:$DEST/"
+# 2. caricamento dei file (sul server non viene cancellato nulla)
+mapfile -t FILES < <(cd public && find . -type f ! -name '.*' | sed 's|^\./||' | sort)
+up() { scp "$@" 2>/dev/null || scp -O "$@"; }
+up "${OPTS[@]}" -P "$PORT" -p public/index.html public/og-image.png "$SG_USER@$SG_HOST:$DEST/"
+if [ -d public/img ]; then
+  ssh_sg "mkdir -p '$DEST/img'"
+  up "${OPTS[@]}" -P "$PORT" -p public/img/* "$SG_USER@$SG_HOST:$DEST/img/"
 fi
-log "Caricati index.html e og-image.png in $DEST"
+log "Caricati ${#FILES[@]} file in $DEST (pagina, immagine di anteprima e foto)"
 
 # 3. verifica: i file sul server devono essere identici a quelli del repository
-ATTESI=$(cd public && sha256sum index.html og-image.png)
-SUL_SERVER=$(ssh_sg "cd '$DEST' && sha256sum index.html og-image.png" 2>/dev/null || true)
+ATTESI=$(cd public && sha256sum "${FILES[@]}")
+SUL_SERVER=$(ssh_sg "cd '$DEST' && sha256sum ${FILES[*]}" 2>/dev/null || true)
 if [ -z "$SUL_SERVER" ]; then
   log "Verifica dei file non disponibile sul server"
 elif [ "$SUL_SERVER" = "$ATTESI" ]; then
-  log "Verifica: i file sul server sono identici a quelli del repository"
+  log "Verifica: i ${#FILES[@]} file sul server sono identici a quelli del repository"
 else
-  log "ERRORE: i file sul server sono diversi da quelli caricati"
-  log "$SUL_SERVER"
+  log "ERRORE: alcuni file sul server sono diversi da quelli caricati"
+  diff <(printf '%s\n' "$ATTESI") <(printf '%s\n' "$SUL_SERVER") | head -n 20 | tee -a "$REPORT"
   exit 1
 fi
 log "Contenuto della cartella:"
-ssh_sg "cd '$DEST' && ls -lAgo" | tee -a "$REPORT"
+ssh_sg "cd '$DEST' && ls -lAgo && echo && echo \"Foto in img/: \$(ls img 2>/dev/null | wc -l)\"" | tee -a "$REPORT"
