@@ -731,9 +731,9 @@ dialog.search{margin-top:8vh; margin-bottom:auto}
 .photo--layer{overflow:visible; background:none; padding:0 14px 14px 0}
 .photo--layer::before{content:""; position:absolute; inset:14px 0 0 14px; border-radius:var(--r-l); background:var(--green-tint-2)}
 .photo--layer img{position:relative; aspect-ratio:4/3; border-radius:var(--r-l)}
-.photo--does{margin-bottom:28px}
-.photo--does img{aspect-ratio:16/9}
-@media (max-width:860px){.photo--does img{aspect-ratio:4/3}}
+.ph .photo--layer::before{background:var(--green)}
+.split .flow{box-shadow:var(--shadow); margin-bottom:28px}
+.hero + .sec{padding-top:0}
 .sector-row .photo{margin-top:28px}
 .photo--wide img{aspect-ratio:16/10}
 .photo--article img{aspect-ratio:16/9}

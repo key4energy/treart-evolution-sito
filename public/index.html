@@ -762,9 +762,9 @@ dialog.search{margin-top:8vh; margin-bottom:auto}
 .photo--layer{overflow:visible; background:none; padding:0 14px 14px 0}
 .photo--layer::before{content:""; position:absolute; inset:14px 0 0 14px; border-radius:var(--r-l); background:var(--green-tint-2)}
 .photo--layer img{position:relative; aspect-ratio:4/3; border-radius:var(--r-l)}
-.photo--does{margin-bottom:28px}
-.photo--does img{aspect-ratio:16/9}
-@media (max-width:860px){.photo--does img{aspect-ratio:4/3}}
+.ph .photo--layer::before{background:var(--green)}
+.split .flow{box-shadow:var(--shadow); margin-bottom:28px}
+.hero + .sec{padding-top:0}
 .sector-row .photo{margin-top:28px}
 .photo--wide img{aspect-ratio:16/10}
 .photo--article img{aspect-ratio:16/9}
@@ -2261,6 +2261,10 @@ route("home", {
     <div>${stage()}</div>
   </div></section>
 
+  <section class="sec sec--tight" aria-labelledby="st-t"><div class="wrap">
+    ${secHead("Per chi lavoriamo", `<span id="st-t">Soluzioni pensate per il tuo settore.</span>`, "", `<a class="more" href="#settori">Tutti i settori ${ic("arrow-right")}</a>`)}
+    ${sectorCards()}</div></section>
+
   <section class="sec sec--paper sec--tight" aria-labelledby="dl-t"><div class="wrap">
     ${secHead("Scadenze da non perdere", `<span id="dl-t">Quattro date che riguardano la tua azienda.</span>`, "", `<a class="more" href="#incentivi">La guida agli incentivi ${ic("arrow-right")}</a>`)}
     <div class="dl-grid">${DEADLINES.map(dlCard).join("")}</div></div></section>
@@ -2284,19 +2288,15 @@ route("home", {
       <div class="tool-cards">${TOOLS.filter((x) => x.id !== "test-sicurezza").map((x) => `<a class="tool-card" href="#${x.id}"${x.anchor ? ` data-scroll="${x.anchor}"` : ""}>${icDot(x.icon)}<b>${x.name}</b><p>${x.line}</p><span class="more">Apri ${ic("arrow-right")}</span></a>`).join("")}</div>
     </div></div></section>
 
-  <section class="sec"><div class="wrap">
-    ${secHead("Come lavoriamo", "Dal primo contatto all’assistenza, in quattro passi.")}
-    ${steps(STEPS4)}
-    <div class="row mt-l"><a class="btn btn--primary btn--lg" href="#check-up">Prenota il sopralluogo gratuito</a><span class="muted">oppure chiama lo <a href="${C.telHref}"><b>${C.tel}</b></a></span></div>
-  </div></section>
-
   <section class="sec sec--paper"><div class="wrap">
     ${secHead("Formule a canone", "Un costo fisso al mese, senza sorprese.", "Scegli la formula o chiedici di comporla su misura.", `<a class="more" href="#formule" data-scroll="configuratore">Quale fa per te? ${ic("arrow-right")}</a>`)}
     ${plansHtml()}</div></section>
 
   <section class="sec"><div class="wrap">
-    ${secHead("Settori", "Soluzioni pensate per il tuo settore.", "", `<a class="more" href="#settori">Tutti i settori ${ic("arrow-right")}</a>`)}
-    ${sectorCards()}</div></section>
+    ${secHead("Come lavoriamo", "Dal primo contatto all’assistenza, in quattro passi.")}
+    ${steps(STEPS4)}
+    <div class="row mt-l"><a class="btn btn--primary btn--lg" href="#check-up">Prenota il sopralluogo gratuito</a><span class="muted">oppure chiama lo <a href="${C.telHref}"><b>${C.tel}</b></a></span></div>
+  </div></section>
 
   <section class="sec sec--paper"><div class="wrap">
     ${secHead("Progetti", "Lavori realizzati in Maremma.", "", `<a class="more" href="#progetti">Vedi tutti i progetti ${ic("arrow-right")}</a>`)}
@@ -2342,14 +2342,14 @@ function servicePage(id) {
   const g = GUIDES[s.guide], tool = TOOLS.find((x) => x.id === s.tool);
   return ph({ cr: [["Servizi", "servizi"], [a.name, "servizi"], [s.short]], eyebrow: a.name, title: s.title, lead: s.sub,
     ctas: `<a class="btn btn--primary btn--lg" href="${ctaHref(s.cta)}"${ctaAttrs(s.cta, { prefill: id })}>${s.cta.label}</a>${waBtn(s.wa, "WhatsApp", "btn btn--light btn--lg")}<span class="ph__call">o chiama lo <a href="${C.telHref}">${C.tel}</a></span>`,
-    side: flow })
+    side: FOTO[id] ? fotoFig(id, "(max-width: 860px) 92vw, 540px", "photo--layer photo--hero") : flow })
     + (notes ? `<section class="sec sec--paper sec--tight"><div class="wrap notes">${notes}</div></section>` : "")
     + `<section class="sec"><div class="wrap">${secHead("Ti riconosci?", "I problemi che risolviamo più spesso.")}
         <div class="pains pains--static">${s.pains.map((q) => `<div class="pain"><p>${q}</p></div>`).join("")}</div></div></section>`
     + `<section class="sec sec--paper"><div class="wrap split"><div class="split__head"><span class="eyebrow">Cosa facciamo</span><h2>Cosa comprende il servizio.</h2>
         <p class="lead">Tutto quello che serve, seguito da un solo referente che conosce la tua azienda.</p>
         <div class="row"><a class="btn btn--dark" href="#preventivo" data-prefill="${id}">Richiedi un preventivo</a></div></div>
-        <div>${fotoFig(id, "(max-width: 860px) 92vw, 720px", "photo--layer photo--does")}<ul class="does">${s.does.map((d) => `<li>${ic("check")}<span>${t(d)}</span></li>`).join("")}</ul>
+        <div>${FOTO[id] ? flow : ""}<ul class="does">${s.does.map((d) => `<li>${ic("check")}<span>${t(d)}</span></li>`).join("")}</ul>
         ${s.stat ? `<div class="stat"><b>${s.stat.n}</b><p>${s.stat.text} Fonte: <a href="${s.stat.src[1]}" target="_blank" rel="noopener">${s.stat.src[0]}</a>.</p></div>` : ""}</div></div></section>`
     + `<section class="sec"><div class="wrap">${secHead("Come lavoriamo", "Quattro passi, nessuna sorpresa.")}${steps(s.steps)}</div></section>`
     + `<section class="sec sec--paper"><div class="wrap">${secHead("Perché Treart", "Perché sceglierci.")}
