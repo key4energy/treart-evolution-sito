@@ -1,0 +1,39 @@
+# Scarica le foto candidate (Unsplash, licenza Unsplash) elencate in foto/candidate.tsv
+name: Scarica foto candidate
+
+on:
+  push:
+    branches: [foto-candidate]
+    paths: ["foto/candidate.tsv"]
+
+permissions:
+  contents: write
+
+jobs:
+  scarica:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - name: Scarica le foto
+        run: |
+          mkdir -p foto/candidate
+          : > foto/candidate/esito.txt
+          tail -n +2 foto/candidate.tsv | while IFS=$'\t' read -r code src author page alt; do
+            [ -n "$code" ] || continue
+            f="foto/candidate/$code.jpg"
+            [ -s "$f" ] && continue
+            if curl -fsSL --retry 3 -o "$f" "https://images.unsplash.com/$src?w=2000&q=80&fm=jpg&fit=max"; then
+              echo "ok $code $(stat -c %s "$f")" >> foto/candidate/esito.txt
+            else
+              rm -f "$f"; echo "ERRORE $code $src" >> foto/candidate/esito.txt
+            fi
+          done
+          cat foto/candidate/esito.txt
+      - name: Salva nel ramo
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add foto/candidate
+          git commit -qm "Foto candidate scaricate da Unsplash" || echo "niente di nuovo"
+          git push -q origin HEAD:foto-candidate
