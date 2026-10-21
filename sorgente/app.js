@@ -270,8 +270,8 @@ function renderFooter() {
   $("#ftr").innerHTML = `<div class="wrap">
     <div class="ftr__top">
       <div class="ftr__brand"><a class="brand" href="#home" aria-label="Treart Evolution, vai alla home">${logo("neg")}</a>
-        <p>Il tuo business, gestito. Partner IT per le aziende di Grosseto e della Maremma: assistenza informatica, sicurezza, reti, telefonia e web.</p>
-        <p class="small">Social: profili LinkedIn e Instagram ${t("[in preparazione]")}</p></div>
+        <p>Il tuo business, gestito. Partner IT con sede a Grosseto, al fianco delle aziende in tutta Italia: assistenza informatica, sicurezza, reti, telefonia e web.</p>
+        <p class="small">Seguici su <a href="${C.facebook}" target="_blank" rel="noopener">Facebook</a></p></div>
       <div><h3>Servizi</h3><ul>${AREAS.map((a) => `<li><a href="#servizi" data-scroll="area-${a.id}">${a.name}</a></li>`).join("")}<li><a href="#formule">Formule a canone</a></li><li><a href="#settori">Settori</a></li></ul></div>
       <div><h3>Strumenti e guide</h3><ul>${TOOLS.map((x) => `<li><a href="#${x.id}"${x.anchor ? ` data-scroll="${x.anchor}"` : ""}>${x.name}</a></li>`).join("")}<li><a href="#risorse">Tutte le guide</a></li></ul></div>
       <div><h3>Azienda</h3><ul><li><a href="#chi-siamo">Chi siamo</a></li><li><a href="#progetti">Progetti</a></li><li><a href="#check-up">Check-up gratuito</a></li><li><a href="#preventivo">Richiedi preventivo</a></li><li><a href="#assistenza">Assistenza clienti</a></li><li><a href="#contatti">Contatti</a></li></ul></div>
@@ -348,8 +348,8 @@ function buildIndex() {
     ["check-up", "Prenota il check-up gratuito", "In azienda o da remoto", "calendar", "sopralluogo check up verifica gratuita appuntamento"],
     ["assistenza", "Assistenza clienti", "Apri una richiesta, urgenze al telefono", "headset", "guasto problema ticket assistenza remota urgenza"],
     ["formule", "Formule a canone", "Essenziale, Business, Completa", "calc", "canone prezzi abbonamento contratto"],
-    ["chi-siamo", "Chi siamo", "Treart Evolution, Grosseto", "users", "azienda storia team partner"],
-    ["progetti", "Progetti", "Lavori realizzati in Maremma", "folder", "casi studio lavori clienti"],
+    ["chi-siamo", "Chi siamo", "Sede a Grosseto, clienti in tutta Italia", "users", "azienda storia team partner italia"],
+    ["progetti", "Progetti", "Alcuni lavori realizzati", "folder", "casi studio lavori clienti hotel firewall centralino"],
     ["privacy", "Informativa privacy", "Come trattiamo i tuoi dati", "lock", "privacy dati gdpr"]].forEach(([r, tt, s, i, k]) => it.push({ g: "Pagine", t: tt, s, r, i, k }));
   it.forEach((x) => { x.n = norm(x.t); x.nk = norm(x.k + " " + x.s); });
   return it;

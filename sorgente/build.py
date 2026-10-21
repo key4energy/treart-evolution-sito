@@ -165,8 +165,13 @@ def foto_ver(slug):
     return h.hexdigest()[:8]
 
 
+def foto_urls(v):
+    pagine = v['pagina'] if isinstance(v['pagina'], list) else [v['pagina']]
+    return ['https://unsplash.com/photos/' + p for p in pagine]
+
+
 foto_js = 'const FOTO = %s;\n' % json.dumps(
-    {k: {'alt': v['alt'], 'by': v['fotografo'], 'url': 'https://unsplash.com/photos/' + v['pagina'], 'v': foto_ver(k)}
+    {k: {'alt': v['alt'], 'by': v['fotografo'], 'urls': foto_urls(v), 'v': foto_ver(k)}
      for k, v in foto.items()},
     ensure_ascii=False)
 js = asset_js + foto_js + qr_js + read('content.js') + '\n' + read('app.js') + '\n' + read('tools.js') + '\n' + read('pages.js') + '\n' + read('boot.js')

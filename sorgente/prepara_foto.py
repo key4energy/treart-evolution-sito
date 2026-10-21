@@ -42,10 +42,38 @@ def warm(im, colore):
     return ImageEnhance.Contrast(im).enhance(1.03)
 
 
+def crop_ratio(im, ratio, fx, fy):
+    w, h = im.size
+    if w / h > ratio:
+        nw, nh = round(h * ratio), h
+    else:
+        nw, nh = w, round(w / ratio)
+    x = min(max(round(fx * w - nw / 2), 0), w - nw)
+    y = min(max(round(fy * h - nh / 2), 0), h - nh)
+    return im.crop((x, y, x + nw, y + nh))
+
+
+def apri(codice):
+    return ImageOps.exif_transpose(Image.open(os.path.join(SRC, codice + '.jpg'))).convert('RGB')
+
+
+def dittico(codici, fuochi, W=2000, gap=12):
+    """Due foto affiancate in un'unica immagine 3:2 (es. centralino e smartphone)."""
+    H = round(W / RATIO)
+    half = (W - gap) // 2
+    out = Image.new('RGB', (W, H), '#FFFFFF')
+    for i, (c, (fx, fy)) in enumerate(zip(codici, fuochi)):
+        part = crop_ratio(apri(c), half / H, fx, fy).resize((half, H), Image.LANCZOS)
+        out.paste(part, (0 if i == 0 else W - half, 0))
+    return out
+
+
 totale = 0
 for slug, f in FOTO.items():
-    im = ImageOps.exif_transpose(Image.open(os.path.join(SRC, f['codice'] + '.jpg'))).convert('RGB')
-    im = warm(crop_32(im, *f['fuoco']), f.get('colore', 0.93))
+    if isinstance(f['codice'], list):
+        im = warm(dittico(f['codice'], f['fuoco']), f.get('colore', 0.93))
+    else:
+        im = warm(crop_32(apri(f['codice']), *f['fuoco']), f.get('colore', 0.93))
     for w, q in SIZES:
         out = os.path.join(OUT, f'{slug}-{w}.webp')
         im.resize((w, round(w / RATIO)), Image.LANCZOS).save(out, 'WEBP', quality=q, method=6)

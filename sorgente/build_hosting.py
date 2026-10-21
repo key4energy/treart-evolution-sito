@@ -40,7 +40,7 @@ cut = rest.index('</style>') + len('</style>')
 css_block, body = rest[:cut], rest[cut:].strip()
 
 DESC = re.search(r'name="description" content="([^"]+)"', head).group(1)
-TITLE = 'Treart Evolution | Assistenza IT, sicurezza, reti e web a Grosseto'
+TITLE = 'Treart Evolution | Assistenza IT, sicurezza, reti e web, da Grosseto in tutta Italia'
 
 
 def b64(data):
@@ -123,7 +123,7 @@ def og_image(path):
     f1 = ImageFont.truetype(f'{KIT}/03-caratteri/OpenSans-SemiBold.ttf', 31)
     f2 = ImageFont.truetype(f'{KIT}/03-caratteri/OpenSans-Bold.ttf', 27)
     d.text((88, top + lh + 44), 'Assistenza IT · Sicurezza · Reti · Telefonia · Web', font=f1, fill='#58585A')
-    d.text((88, top + lh + 96), 'Grosseto e Maremma', font=f2, fill='#5A7722')
+    d.text((88, top + lh + 96), 'Sede a Grosseto, in tutta Italia', font=f2, fill='#5A7722')
     d.rectangle((0, H - 12, W, H), fill='#B3D670')
     im.save(path, optimize=True)
 

@@ -1,29 +1,327 @@
 {
-  "assistenza-informatica": {"codice": "a1", "fuoco": [0.5, 0.5], "alt": "Due persone al lavoro davanti a un portatile, vicino a una finestra luminosa", "fotografo": "KOBU Agency", "pagina": "two-women-talking-while-looking-at-laptop-computer-7okkFhxrxNw"},
-  "installazioni": {"codice": "a5", "fuoco": [0.62, 0.5], "alt": "Tecnico che collega i cavi di rete in un armadio rack", "fotografo": "ThisisEngineering", "pagina": "man-in-black-and-white-plaid-dress-shirt-zBLtU0zbJcU"},
-  "cybersecurity": {"codice": "c3", "fuoco": [0.6, 0.5], "alt": "Lucchetto con le chiavi appoggiato sulla tastiera di un computer", "fotografo": "Sasun Bughdaryan", "pagina": "padlock-and-keys-resting-on-a-computer-keyboard-cX8kNl8X0Ys"},
-  "backup": {"codice": "b3", "fuoco": [0.5, 0.5], "alt": "Dischi di un server con le spie verdi accese", "fotografo": "Domaintechnik", "pagina": "server-rack-with-blinking-green-lights-VHmBX7FnXw0", "colore": 1.0},
-  "vpn": {"codice": "v3", "fuoco": [0.55, 0.62], "alt": "Portatile su una scrivania davanti a una finestra soleggiata", "fotografo": "Mikey Harris", "pagina": "macbook-pro-on-brown-wooden-table-kw0z6RyvC0s"},
-  "videosorveglianza": {"codice": "i5", "fuoco": [0.55, 0.45], "alt": "Tecnico che installa una telecamera di sorveglianza", "fotografo": "Bermix Studio", "pagina": "a-man-working-on-a-wall-with-a-screwdriver-bAGo7O4prtY"},
-  "rete-wifi": {"codice": "w1", "fuoco": [0.5, 0.62], "alt": "Router Wi-Fi su un tavolo di legno", "fotografo": "User_Pascal", "pagina": "a-wireless-router-sits-on-a-wooden-table-mTm0YLorp1Y"},
-  "connettivita": {"codice": "n3", "fuoco": [0.5, 0.5], "alt": "Antenne e parabole sui tetti sotto il cielo azzurro", "fotografo": "Gio L", "pagina": "multiple-tv-antennas-and-satellite-dishes-on-a-weathered-rooftop-H9RkvByHP8U"},
-  "centralini-voip": {"codice": "t1", "fuoco": [0.45, 0.4], "alt": "Persona al telefono alla scrivania di un ufficio", "fotografo": "Berkeley Communications", "pagina": "man-using-ip-phone-inside-room-WEDDt-u3q3o"},
-  "siti-web": {"codice": "x4", "fuoco": [0.5, 0.5], "alt": "Persone che disegnano le pagine di un sito su fogli e post-it", "fotografo": "UX Indonesia", "pagina": "qC2n6RQU4Vw"},
-  "email-domini": {"codice": "e2", "fuoco": [0.5, 0.55], "alt": "Mani che scrivono al portatile", "fotografo": "Glenn Carstens-Peters", "pagina": "npxXWgQ33ZQ"},
-  "hosting": {"codice": "h1", "fuoco": [0.45, 0.5], "alt": "Armadio rack con server e cavi di rete", "fotografo": "Kevin Ache", "pagina": "2JJ3wBHu4_0"},
-  "settore-hotel": {"codice": "o5", "fuoco": [0.5, 0.5], "alt": "Agriturismo in mattoni con giardino e cipressi", "fotografo": "Mattia Bericchia", "pagina": "fSfgZCofQz0"},
-  "settore-studi": {"codice": "p4", "fuoco": [0.5, 0.55], "alt": "Mani con matita, calcolatrice e quaderno su una scrivania", "fotografo": "Jakub Żerdzicki", "pagina": "LNnmSumlwO4"},
-  "settore-negozi": {"codice": "r1", "fuoco": [0.5, 0.5], "alt": "Cliente che paga alla cassa di un bar", "fotografo": "SpotOn", "pagina": "2cGIkBSspFM"},
-  "settore-agri": {"codice": "g3", "fuoco": [0.5, 0.5], "alt": "Vigneti sulle colline nella luce del tramonto", "fotografo": "Johny Goerend", "pagina": "pnigODapPek"},
-  "settore-industria": {"codice": "d3", "fuoco": [0.5, 0.5], "alt": "Saldatore al lavoro tra le scintille in officina", "fotografo": "Christopher Burns", "pagina": "Wiu3w-99tNg"},
-  "guida-nis2": {"codice": "c2", "fuoco": [0.62, 0.5], "alt": "Lucchetto a combinazione appoggiato sulla tastiera", "fotografo": "Sasun Bughdaryan", "pagina": "a-padlock-rests-on-a-computer-keyboard-QP7RBa5r8HM"},
-  "guida-ransomware": {"codice": "c1", "fuoco": [0.5, 0.5], "alt": "Portatile chiuso da catene e da un lucchetto", "fotografo": "FlyD", "pagina": "brown-padlock-on-black-computer-keyboard-FGH69mi53Mw", "colore": 0.72},
-  "guida-email-truffa": {"codice": "e1", "fuoco": [0.5, 0.5], "alt": "Mani sulla tastiera di un portatile in penombra", "fotografo": "Kaitlyn Baker", "pagina": "vZJdYl5JVXY"},
-  "guida-telecamere-regole": {"codice": "s1", "fuoco": [0.5, 0.5], "alt": "Telecamera di sorveglianza fissata a un muro", "fotografo": "Alan J. Hendry", "pagina": "white-surveillance-camera-hanging-on-wall-KNt4zd8HPb0"},
-  "guida-incentivi": {"codice": "k1", "fuoco": [0.55, 0.6], "alt": "Mani che firmano dei documenti su un tavolo", "fotografo": "Romain Dancre", "pagina": "doplSDELX7E"},
-  "guida-spegnimento-rame": {"codice": "n1", "fuoco": [0.5, 0.5], "alt": "Cavi in fibra ottica collegati a un apparato di rete", "fotografo": "Kirill Sh", "pagina": "fiber-optic-cables-in-network-switch-eVWWr6nmDf8"},
-  "guida-wifi-hotel": {"codice": "o4", "fuoco": [0.5, 0.55], "alt": "Reception di un hotel con arredi in legno", "fotografo": "Neon Wang", "pagina": "kfnWOD1Tbp8"},
-  "guida-accessibilita": {"codice": "x1", "fuoco": [0.5, 0.5], "alt": "Bozzetti ad acquerello delle pagine di un sito", "fotografo": "Hal Gatewood", "pagina": "watercolor-wireframe-sketches-tZc3vjPCk-Q"},
-  "maremma-pascolo": {"codice": "g2", "fuoco": [0.45, 0.6], "alt": "Bovino bianco al pascolo in un prato ai piedi delle colline", "fotografo": "carlo marzetti", "pagina": "kCLypfAjAig"},
-  "maremma-costa": {"codice": "m1", "fuoco": [0.5, 0.5], "alt": "Costa con una baia, barche all'ancora e colline verdi", "fotografo": "carlo marzetti", "pagina": "PUi8Tv4msOM"}
+ "assistenza-informatica": {
+  "codice": "a1",
+  "fuoco": [
+   0.5,
+   0.5
+  ],
+  "alt": "Due persone al lavoro davanti a un portatile, vicino a una finestra luminosa",
+  "fotografo": "KOBU Agency",
+  "pagina": "two-women-talking-while-looking-at-laptop-computer-7okkFhxrxNw"
+ },
+ "installazioni": {
+  "codice": "a5",
+  "fuoco": [
+   0.62,
+   0.5
+  ],
+  "alt": "Tecnico che collega i cavi di rete in un armadio rack",
+  "fotografo": "ThisisEngineering",
+  "pagina": "man-in-black-and-white-plaid-dress-shirt-zBLtU0zbJcU"
+ },
+ "cybersecurity": {
+  "codice": "c3",
+  "fuoco": [
+   0.6,
+   0.5
+  ],
+  "alt": "Lucchetto con le chiavi appoggiato sulla tastiera di un computer",
+  "fotografo": "Sasun Bughdaryan",
+  "pagina": "padlock-and-keys-resting-on-a-computer-keyboard-cX8kNl8X0Ys"
+ },
+ "backup": {
+  "codice": "b3",
+  "fuoco": [
+   0.5,
+   0.5
+  ],
+  "alt": "Dischi di un server con le spie verdi accese",
+  "fotografo": "Domaintechnik",
+  "pagina": "server-rack-with-blinking-green-lights-VHmBX7FnXw0",
+  "colore": 1.0
+ },
+ "vpn": {
+  "codice": "v3",
+  "fuoco": [
+   0.55,
+   0.62
+  ],
+  "alt": "Portatile su una scrivania davanti a una finestra soleggiata",
+  "fotografo": "Mikey Harris",
+  "pagina": "macbook-pro-on-brown-wooden-table-kw0z6RyvC0s"
+ },
+ "videosorveglianza": {
+  "codice": "i5",
+  "fuoco": [
+   0.55,
+   0.45
+  ],
+  "alt": "Tecnico che installa una telecamera di sorveglianza",
+  "fotografo": "Bermix Studio",
+  "pagina": "a-man-working-on-a-wall-with-a-screwdriver-bAGo7O4prtY"
+ },
+ "rete-wifi": {
+  "codice": "w1",
+  "fuoco": [
+   0.5,
+   0.62
+  ],
+  "alt": "Router Wi-Fi su un tavolo di legno",
+  "fotografo": "User_Pascal",
+  "pagina": "a-wireless-router-sits-on-a-wooden-table-mTm0YLorp1Y"
+ },
+ "connettivita": {
+  "codice": "n3",
+  "fuoco": [
+   0.5,
+   0.5
+  ],
+  "alt": "Antenne e parabole sui tetti sotto il cielo azzurro",
+  "fotografo": "Gio L",
+  "pagina": "multiple-tv-antennas-and-satellite-dishes-on-a-weathered-rooftop-H9RkvByHP8U"
+ },
+ "centralini-voip": {
+  "codice": "t1",
+  "fuoco": [
+   0.45,
+   0.4
+  ],
+  "alt": "Persona al telefono alla scrivania di un ufficio",
+  "fotografo": "Berkeley Communications",
+  "pagina": "man-using-ip-phone-inside-room-WEDDt-u3q3o"
+ },
+ "siti-web": {
+  "codice": "x4",
+  "fuoco": [
+   0.5,
+   0.5
+  ],
+  "alt": "Persone che disegnano le pagine di un sito su fogli e post-it",
+  "fotografo": "UX Indonesia",
+  "pagina": "qC2n6RQU4Vw"
+ },
+ "email-domini": {
+  "codice": "e2",
+  "fuoco": [
+   0.5,
+   0.55
+  ],
+  "alt": "Mani che scrivono al portatile",
+  "fotografo": "Glenn Carstens-Peters",
+  "pagina": "npxXWgQ33ZQ"
+ },
+ "hosting": {
+  "codice": "h1",
+  "fuoco": [
+   0.45,
+   0.5
+  ],
+  "alt": "Armadio rack con server e cavi di rete",
+  "fotografo": "Kevin Ache",
+  "pagina": "2JJ3wBHu4_0"
+ },
+ "settore-hotel": {
+  "codice": "o5",
+  "fuoco": [
+   0.5,
+   0.5
+  ],
+  "alt": "Agriturismo in mattoni con giardino e cipressi",
+  "fotografo": "Mattia Bericchia",
+  "pagina": "fSfgZCofQz0"
+ },
+ "settore-studi": {
+  "codice": "p4",
+  "fuoco": [
+   0.5,
+   0.55
+  ],
+  "alt": "Mani con matita, calcolatrice e quaderno su una scrivania",
+  "fotografo": "Jakub Żerdzicki",
+  "pagina": "LNnmSumlwO4"
+ },
+ "settore-negozi": {
+  "codice": "r1",
+  "fuoco": [
+   0.5,
+   0.5
+  ],
+  "alt": "Cliente che paga alla cassa di un bar",
+  "fotografo": "SpotOn",
+  "pagina": "2cGIkBSspFM"
+ },
+ "settore-agri": {
+  "codice": "g3",
+  "fuoco": [
+   0.5,
+   0.5
+  ],
+  "alt": "Vigneti sulle colline nella luce del tramonto",
+  "fotografo": "Johny Goerend",
+  "pagina": "pnigODapPek"
+ },
+ "settore-industria": {
+  "codice": "d3",
+  "fuoco": [
+   0.5,
+   0.5
+  ],
+  "alt": "Saldatore al lavoro tra le scintille in officina",
+  "fotografo": "Christopher Burns",
+  "pagina": "Wiu3w-99tNg"
+ },
+ "guida-nis2": {
+  "codice": "c2",
+  "fuoco": [
+   0.62,
+   0.5
+  ],
+  "alt": "Lucchetto a combinazione appoggiato sulla tastiera",
+  "fotografo": "Sasun Bughdaryan",
+  "pagina": "a-padlock-rests-on-a-computer-keyboard-QP7RBa5r8HM"
+ },
+ "guida-ransomware": {
+  "codice": "c1",
+  "fuoco": [
+   0.5,
+   0.5
+  ],
+  "alt": "Portatile chiuso da catene e da un lucchetto",
+  "fotografo": "FlyD",
+  "pagina": "brown-padlock-on-black-computer-keyboard-FGH69mi53Mw",
+  "colore": 0.72
+ },
+ "guida-email-truffa": {
+  "codice": "e1",
+  "fuoco": [
+   0.5,
+   0.5
+  ],
+  "alt": "Mani sulla tastiera di un portatile in penombra",
+  "fotografo": "Kaitlyn Baker",
+  "pagina": "vZJdYl5JVXY"
+ },
+ "guida-telecamere-regole": {
+  "codice": "s1",
+  "fuoco": [
+   0.5,
+   0.5
+  ],
+  "alt": "Telecamera di sorveglianza fissata a un muro",
+  "fotografo": "Alan J. Hendry",
+  "pagina": "white-surveillance-camera-hanging-on-wall-KNt4zd8HPb0"
+ },
+ "guida-incentivi": {
+  "codice": "k1",
+  "fuoco": [
+   0.55,
+   0.6
+  ],
+  "alt": "Mani che firmano dei documenti su un tavolo",
+  "fotografo": "Romain Dancre",
+  "pagina": "doplSDELX7E"
+ },
+ "guida-spegnimento-rame": {
+  "codice": "n1",
+  "fuoco": [
+   0.5,
+   0.5
+  ],
+  "alt": "Cavi in fibra ottica collegati a un apparato di rete",
+  "fotografo": "Kirill Sh",
+  "pagina": "fiber-optic-cables-in-network-switch-eVWWr6nmDf8"
+ },
+ "guida-wifi-hotel": {
+  "codice": "o4",
+  "fuoco": [
+   0.5,
+   0.55
+  ],
+  "alt": "Reception di un hotel con arredi in legno",
+  "fotografo": "Neon Wang",
+  "pagina": "kfnWOD1Tbp8"
+ },
+ "guida-accessibilita": {
+  "codice": "x1",
+  "fuoco": [
+   0.5,
+   0.5
+  ],
+  "alt": "Bozzetti ad acquerello delle pagine di un sito",
+  "fotografo": "Hal Gatewood",
+  "pagina": "watercolor-wireframe-sketches-tZc3vjPCk-Q"
+ },
+ "maremma-pascolo": {
+  "codice": "g2",
+  "fuoco": [
+   0.45,
+   0.6
+  ],
+  "alt": "Bovino bianco al pascolo in un prato ai piedi delle colline",
+  "fotografo": "carlo marzetti",
+  "pagina": "kCLypfAjAig"
+ },
+ "maremma-costa": {
+  "codice": "m1",
+  "fuoco": [
+   0.5,
+   0.5
+  ],
+  "alt": "Costa con una baia, barche all'ancora e colline verdi",
+  "fotografo": "carlo marzetti",
+  "pagina": "PUi8Tv4msOM"
+ },
+ "lavoro-hotel-cavour": {
+  "codice": "hc2",
+  "fuoco": [
+   0.5,
+   0.56
+  ],
+  "alt": "Corridoio di un hotel con le porte delle camere",
+  "fotografo": "Sébastien Lavalaye",
+  "pagina": "long-hotel-hallway-with-red-carpet-and-wall-lamps-W4GKYkt4vqk"
+ },
+ "lavoro-guadalupe": {
+  "codice": "gr7",
+  "fuoco": [
+   0.5,
+   0.5
+  ],
+  "alt": "Piscina tra i fiori, con le colline sullo sfondo",
+  "fotografo": "Meg von Haartman",
+  "pagina": "o6kjBmYeV34"
+ },
+ "lavoro-amped": {
+  "codice": "c4",
+  "fuoco": [
+   0.5,
+   0.45
+  ],
+  "alt": "Lucchetto sulla tastiera di un computer",
+  "fotografo": "FlyD",
+  "pagina": "red-padlock-on-black-computer-keyboard-mT7lXZPjk7U",
+  "colore": 0.85
+ },
+ "lavoro-mfo": {
+  "codice": [
+   "mf2",
+   "mf3"
+  ],
+  "fuoco": [
+   [
+    0.45,
+    0.5
+   ],
+   [
+    0.55,
+    0.45
+   ]
+  ],
+  "alt": "Telefono fisso VoIP e smartphone",
+  "fotografo": "Dan Dennis e Michal Biernat",
+  "pagina": [
+   "black-and-gray-ip-phone-WQqViZ_Zd8M",
+   "person-using-smartphone-in-workspace-h0xEUQXzU38"
+  ]
+ }
 }

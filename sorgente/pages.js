@@ -1,9 +1,22 @@
 /* ================= PAGINE ================= */
 
 const CASES = [
-  ["[Agriturismo], [Comune]", "Wi-Fi in tutta la struttura", "[es. camere senza copertura]", "[es. access point gestiti]", "[es. zero reclami degli ospiti]"],
-  ["[Studio professionale], Grosseto", "Backup e sicurezza dei dati", "[es. backup mai verificato]", "[es. NAS e copia esterna]", "[es. ripristino provato ogni mese]"],
-  ["[Azienda], [Comune]", "Centralino VoIP e smartphone", "[es. chiamate perse fuori ufficio]", "[es. centralino con app]", "[es. nessuna chiamata persa]"],
+  { foto: "lavoro-hotel-cavour", who: "Hotel Cavour, Firenze", area: "Wi-Fi", title: "Wi-Fi in tutte le 100 camere",
+    problem: "La copertura Wi-Fi non arrivava in modo capillare in tutte le 100 camere.",
+    solution: "Una rete di access point gestiti, che copre ogni camera.",
+    result: "L’albergo non riceve più reclami né lamentele sul funzionamento del Wi-Fi." },
+  { foto: "lavoro-guadalupe", who: "Guadalupe Resort, Grosseto", area: "Wi-Fi", title: "Wi-Fi in tutta la struttura",
+    problem: "La copertura Wi-Fi non arrivava in modo capillare in tutta la struttura.",
+    solution: "Una rete di access point gestiti.",
+    result: "Nessun reclamo né lamentela degli ospiti sul funzionamento del Wi-Fi." },
+  { foto: "lavoro-amped", who: "Amped, Trieste", area: "Sicurezza dei dati", title: "Firewall WatchGuard contro gli attacchi esterni",
+    problem: "Un’azienda presente in tanti paesi del mondo, e per questo esposta ad attacchi dall’esterno.",
+    solution: "Firewall WatchGuard, con sicurezza attiva e isolamento sicuro dalla rete esterna.",
+    result: "Attacchi esterni gestiti e dati aziendali conservati al sicuro." },
+  { foto: "lavoro-mfo", who: "MFO Italia, Milano", area: "Telefonia", title: "Un solo centralino per tutte le sedi",
+    problem: "Sedi diverse da collegare in un unico sistema telefonico, con conversazioni da tenere riservate.",
+    solution: "Centralini telefonici VoIP integrati con gli smartphone.",
+    result: "Tutte le sedi su un unico centralino e comunicazioni riservate su canali proprietari, smartphone inclusi." },
 ];
 const WA_GENERIC = "Ciao, vorrei informazioni sui vostri servizi.";
 
@@ -33,7 +46,7 @@ function secHead(eyebrow, title, text, link) {
 function band(title, text, ctas) {
   return `<section class="band">${bigE("band__e")}<div class="wrap"><h2>${title}</h2><p>${text}</p><div class="row">${ctas}</div></div></section>`;
 }
-const defaultBand = () => band("Un solo partner. Un solo numero.", "Assistenza IT, sicurezza, reti, telefonia e web per le aziende di Grosseto e della Maremma, con tecnici in zona e un referente che conosce la tua azienda.",
+const defaultBand = () => band("Un solo partner. Un solo numero.", "Assistenza IT, sicurezza, reti, telefonia e web per le aziende di tutta Italia, dalla nostra sede di Grosseto, con un referente che conosce la tua azienda.",
   `<a class="btn btn--dark btn--lg" href="#check-up">Prenota il check-up gratuito</a><a class="btn btn--ghost btn--lg" href="${C.telHref}">${ic("phone")}Chiama lo ${C.tel}</a>`);
 const waSoft = (label = "Scrivici su WhatsApp") => label;
 
@@ -98,8 +111,9 @@ function sectorCards() {
     : `<span class="sector__art">${ic(s.icon)}</span>`}<span class="sector__body"><b>${s.name}</b><span>${s.line}</span></span></a>`).join("")}</div>`;
 }
 function casesHtml() {
-  return `<div class="cases">${CASES.map((c) => `<article class="case"><div class="case__img">${t("[Foto dell’impianto da inserire]")}</div><div class="case__body"><span class="pill">${t(c[0])}</span><h3>${c[1]}</h3>
-    <dl><dt>Problema</dt><dd>${t(c[2])}</dd><dt>Soluzione</dt><dd>${t(c[3])}</dd><dt>Risultato</dt><dd>${t(c[4])}</dd></dl></div></article>`).join("")}</div>`;
+  return `<div class="cases cases--lavori">${CASES.map((c) => `<article class="case case--real"><div class="case__img">${foto(c.foto, "(max-width: 760px) 92vw, 580px")}<span class="case__tag">Immagine di repertorio</span></div>
+    <div class="case__body"><span class="pill">${c.area} · ${c.who}</span><h3>${c.title}</h3>
+    <dl><dt>Problema</dt><dd>${c.problem}</dd><dt>Soluzione</dt><dd>${c.solution}</dd><dt>Risultato</dt><dd>${c.result}</dd></dl></div></article>`).join("")}</div>`;
 }
 const partnersHtml = () => `<div class="partners" aria-label="Tecnologie e partner">${["Fastweb", "Eolo", "Starlink", "3CX"].map((p) => `<span>${soft(p, "Partner da confermare")}</span>`).join("")}<span>${t("[altri partner]")}</span></div>`;
 const numsHtml = () => `<div class="nums"><div class="num"><b>${t("[N]")}</b><span>anni di attività</span></div><div class="num"><b>${t("[N]")}</b><span>aziende seguite</span></div><div class="num"><b>${t("[N]")}</b><span>impianti realizzati</span></div></div>`;
@@ -129,18 +143,18 @@ function dlCard(d) {
 
 /* ---------- home ---------- */
 route("home", {
-  title: () => "Treart Evolution | Assistenza IT, sicurezza, reti e web a Grosseto",
-  desc: () => "Assistenza informatica, sicurezza, reti e Wi-Fi, centralini VoIP e siti web per le aziende di Grosseto e della Maremma. Un solo partner, un solo numero.",
+  title: () => "Treart Evolution | Assistenza IT, sicurezza, reti e web, da Grosseto in tutta Italia",
+  desc: () => "Assistenza informatica, sicurezza, reti e Wi-Fi, centralini VoIP e siti web per le aziende: sede a Grosseto, interventi in tutta Italia. Un solo partner, un solo numero.",
   nav: () => "",
   render: () => `
   <section class="hero"><div class="wrap">
     <div>
-      <span class="eyebrow">Partner IT per le aziende della Maremma</span>
+      <span class="eyebrow">Partner IT · Sede a Grosseto, operativi in tutta Italia</span>
       <h1>Il tuo business, <span class="swash-word">gestito.<svg viewBox="0 0 300 24" preserveAspectRatio="none" aria-hidden="true" focusable="false"><use href="#swash"/></svg></span></h1>
-      <p class="hero__lead">Rete, sicurezza, telefonia, web e assistenza per le aziende di Grosseto e della Maremma. Un solo partner, un solo numero da chiamare.</p>
+      <p class="hero__lead">Rete, sicurezza, telefonia, web e assistenza per le aziende. Abbiamo sede a Grosseto e lavoriamo in tutta Italia: un solo partner, un solo numero da chiamare.</p>
       <div class="hero__ctas"><a class="btn btn--primary btn--lg" href="#check-up">Prenota il check-up gratuito</a>${waBtn(WA_GENERIC, "Scrivici su WhatsApp", "btn btn--wa btn--lg")}</div>
       <p class="hero__call mt-s">Oppure chiama lo <a href="${C.telHref}">${C.tel}</a></p>
-      <ul class="trust"><li>${ic("pin")}Tecnici in sede a Grosseto</li><li>${ic("monitor")}Assistenza da remoto e in loco</li><li>${ic("clock")}Intervento entro ${t(C.reply)}</li></ul>
+      <ul class="trust"><li>${ic("pin")}Sede a Grosseto, interventi in tutta Italia</li><li>${ic("monitor")}Assistenza da remoto e in loco</li><li>${ic("clock")}Intervento entro ${t(C.reply)}</li></ul>
     </div>
     <div>${stage()}</div>
   </div></section>
@@ -183,7 +197,7 @@ route("home", {
   </div></section>
 
   <section class="sec sec--paper"><div class="wrap">
-    ${secHead("Progetti", "Lavori realizzati in Maremma.", "", `<a class="more" href="#progetti">Vedi tutti i progetti ${ic("arrow-right")}</a>`)}
+    ${secHead("Progetti", "Alcuni lavori realizzati.", "", `<a class="more" href="#progetti">Vedi tutti i progetti ${ic("arrow-right")}</a>`)}
     ${casesHtml()}</div></section>
 
   <section class="sec"><div class="wrap trust-grid">
@@ -191,7 +205,7 @@ route("home", {
     <figure class="review"><span class="eyebrow">Recensioni Google</span><blockquote>${t("«[Testo di una recensione Google di un cliente soddisfatto.]»")}</blockquote>
       <figcaption class="muted small">${t("[Nome e cognome], [Azienda]. Valutazione [media] su [N] recensioni")}</figcaption></figure>
     ${fotoFig("maremma-pascolo", "(max-width: 860px) 92vw, 600px", "photo--wide")}</div>
-    <div><span class="eyebrow">Chi siamo</span><h2 class="mt-s" style="font-size:clamp(26px,3vw,38px)">Lavoriamo con le aziende della Maremma, da vicino.</h2>
+    <div><span class="eyebrow">Chi siamo</span><h2 class="mt-s" style="font-size:clamp(26px,3vw,38px)">Sede a Grosseto, clienti in tutta Italia.</h2>
       <div class="mt-m">${numsHtml()}</div><p class="small muted mt-m">Tecnologie e partner</p>${partnersHtml()}</div>
   </div></section>
 
@@ -205,10 +219,10 @@ route("home", {
 
 /* ---------- servizi ---------- */
 route("servizi", {
-  title: () => "Servizi IT per aziende a Grosseto | Treart Evolution",
-  desc: () => "Assistenza IT, sicurezza, reti e connettività, telefonia e web: dodici servizi per le aziende della Maremma, seguiti da un solo referente.",
+  title: () => "Servizi IT per aziende, da Grosseto in tutta Italia | Treart Evolution",
+  desc: () => "Assistenza IT, sicurezza, reti e connettività, telefonia e web: dodici servizi per le aziende di tutta Italia, seguiti da un solo referente.",
   nav: () => "servizi",
-  render: () => ph({ cr: [["Servizi"]], eyebrow: "Servizi", title: "Cinque aree, un solo referente.", lead: "Dall’assistenza ai computer al sito web: tutta la tecnologia della tua azienda seguita dalla stessa squadra, a Grosseto e in tutta la Maremma.", light: true, e: true,
+  render: () => ph({ cr: [["Servizi"]], eyebrow: "Servizi", title: "Cinque aree, un solo referente.", lead: "Dall’assistenza ai computer al sito web: tutta la tecnologia della tua azienda seguita dalla stessa squadra, dalla sede di Grosseto in tutta Italia.", light: true, e: true,
     ctas: `<a class="btn btn--primary btn--lg" href="#check-up">Prenota il check-up gratuito</a>${waBtn(WA_GENERIC, "Scrivici su WhatsApp", "btn btn--wa btn--lg")}` })
     + `<section class="sec"><div class="wrap">${bento()}</div></section>`
     + `<section class="sec sec--paper sec--tight"><div class="wrap"><div class="note">${icDot("calc")}<p><b>Preferisci un costo fisso?</b> Le formule a canone raccolgono assistenza, sicurezza e monitoraggio in un’unica cifra al mese.</p><a class="btn btn--ghost btn--sm" href="#formule">Vedi le formule</a></div></div></section>`
@@ -253,7 +267,7 @@ SERVICE_ORDER.forEach((id) => route(id, {
 /* ---------- settori ---------- */
 route("settori", {
   title: () => "Settori: hotel, studi, negozi, agricoltura, industria | Treart Evolution",
-  desc: () => "Soluzioni IT pensate per hotel e agriturismi, studi professionali, negozi, aziende agricole e industria in Maremma.",
+  desc: () => "Soluzioni IT pensate per hotel e agriturismi, studi professionali, negozi, aziende agricole e industria, in tutta Italia.",
   nav: () => "settori",
   render: () => ph({ cr: [["Settori"]], eyebrow: "Settori", title: "Soluzioni pensate per il tuo settore.", lead: "Hotel, studi, negozi, aziende agricole, industria: ogni settore ha problemi diversi. Partiamo dai tuoi.", light: true, e: true })
     + `<section class="sec sec--tight"><div class="wrap">${sectorCards()}</div></section>`
@@ -268,7 +282,7 @@ route("settori", {
 /* ---------- formule ---------- */
 route("formule", {
   title: () => "Formule di assistenza IT a canone | Treart Evolution",
-  desc: () => "Assistenza informatica a canone mensile fisso, da 200 € al mese: formule Essenziale, Business e Completa per le aziende della Maremma.",
+  desc: () => "Assistenza informatica a canone mensile fisso, da 200 € al mese: formule Essenziale, Business e Completa per le aziende di tutta Italia.",
   nav: () => "formule",
   render: () => ph({ cr: [["Formule a canone"]], eyebrow: "Formule a canone", title: "Un costo fisso al mese, senza sorprese.", lead: "Scegli la formula o chiedici di comporla su misura. Il canone copre l’assistenza; hardware e progetti nuovi si quotano sempre prima di iniziare.", light: true, e: true })
     + `<section class="sec"><div class="wrap">${plansHtml()}</div></section>`
@@ -356,16 +370,16 @@ GUIDE_ORDER.forEach((id) => route(id, {
 /* ---------- chi siamo e progetti ---------- */
 route("chi-siamo", {
   title: () => "Chi siamo | Treart Evolution, Grosseto",
-  desc: () => "Treart Evolution è il partner IT delle aziende di Grosseto e della Maremma: assistenza informatica, sicurezza, reti, telefonia e web.",
+  desc: () => "Treart Evolution è il partner IT delle aziende, con sede a Grosseto e clienti in tutta Italia: assistenza informatica, sicurezza, reti, telefonia e web.",
   nav: () => "chi-siamo",
-  render: () => ph({ cr: [["Chi siamo"]], eyebrow: "Chi siamo", title: "La tecnologia della tua azienda, seguita da vicino.", lead: "Treart Evolution è una società di Grosseto che segue la tecnologia delle aziende della Maremma: assistenza informatica, sicurezza, reti, telefonia e web. Un solo partner, un solo numero da chiamare.", light: true, e: true })
-    + (FOTO["maremma-costa"] ? `<section class="sec sec--tight"><div class="wrap"><figure class="photo photo--banner">${foto("maremma-costa", "(max-width: 1240px) 92vw, 1160px")}<figcaption>Siamo a Grosseto e seguiamo le aziende di tutta la Maremma, dalla costa all’entroterra.</figcaption></figure></div></section>` : "")
+  render: () => ph({ cr: [["Chi siamo"]], eyebrow: "Chi siamo", title: "La tecnologia della tua azienda, seguita da vicino.", lead: "Treart Evolution ha sede a Grosseto e segue la tecnologia delle aziende in tutta Italia: assistenza informatica, sicurezza, reti, telefonia e web. Un solo partner, un solo numero da chiamare.", light: true, e: true })
+    + (FOTO["maremma-costa"] ? `<section class="sec sec--tight"><div class="wrap"><figure class="photo photo--banner">${foto("maremma-costa", "(max-width: 1240px) 92vw, 1160px")}<figcaption>La nostra sede è a Grosseto. I nostri clienti sono in tutta Italia.</figcaption></figure></div></section>` : "")
     + `<section class="sec"><div class="wrap">${secHead("Come lavoriamo", "Quattro principi, ogni giorno.")}
         <div class="why why--4">
           <div>${icDot("users")}<h3>Un solo referente</h3><p>Rete, telefoni, sicurezza e sito seguiti dalla stessa squadra. Nessuno rimbalza la colpa a qualcun altro.</p></div>
           <div>${icDot("gauge")}<h3>Prevenzione prima dell’emergenza</h3><p>Teniamo d’occhio i sistemi per intervenire prima del guasto, non dopo.</p></div>
           <div>${icDot("chat")}<h3>Parole semplici</h3><p>Preventivi chiari, con canone e costi una tantum separati. Ti spieghiamo cosa compri e perché.</p></div>
-          <div>${icDot("pin")}<h3>Vicini davvero</h3><p>Siamo a Grosseto: quando serve, veniamo in azienda.</p></div>
+          <div>${icDot("pin")}<h3>Vicini, ovunque tu sia</h3><p>Abbiamo sede a Grosseto e lavoriamo in tutta Italia: quando serve, veniamo in azienda.</p></div>
         </div></div></section>`
     + `<section class="sec sec--paper"><div class="wrap split"><div class="split__head"><span class="eyebrow">La nostra storia</span><h2>Da dove veniamo.</h2></div>
         <div style="display:grid;gap:24px"><p class="lead">${t("[Breve storia dell’azienda: anno di fondazione, persone, primi clienti, come è cresciuta]")}</p>${numsHtml()}<div><p class="small muted">Tecnologie e partner</p>${partnersHtml()}</div></div></div></section>`
@@ -378,11 +392,11 @@ route("chi-siamo", {
     + defaultBand() + contactSection({ p: "cs2" }),
 });
 route("progetti", {
-  title: () => "Progetti realizzati in Maremma | Treart Evolution",
-  desc: () => "Reti Wi-Fi, backup, centralini VoIP: i lavori realizzati da Treart Evolution per le aziende della Maremma.",
+  title: () => "Progetti realizzati | Treart Evolution",
+  desc: () => "Wi-Fi per hotel, firewall e sicurezza dei dati, centralini VoIP per più sedi: alcuni lavori realizzati da Treart Evolution in tutta Italia.",
   nav: () => "chi-siamo",
-  render: () => ph({ cr: [["Progetti"]], eyebrow: "Progetti", title: "Lavori realizzati in Maremma.", lead: "Ogni progetto parte da un problema concreto e finisce con un risultato misurabile. Qui raccontiamo come.", light: true, e: true })
-    + `<section class="sec"><div class="wrap">${casesHtml()}<p class="fine mt-m">${t("[Schede di esempio: da sostituire con tre casi reali, con il permesso dei clienti]")}</p></div></section>`
+  render: () => ph({ cr: [["Progetti"]], eyebrow: "Progetti", title: "Alcuni lavori realizzati.", lead: "Ogni progetto parte da un problema concreto e finisce con un risultato misurabile. Qui raccontiamo come.", light: true, e: true })
+    + `<section class="sec"><div class="wrap">${casesHtml()}</div></section>`
     + defaultBand() + contactSection({ title: "Il prossimo progetto può essere il tuo.", p: "pj" }),
 });
 
@@ -410,7 +424,7 @@ route("contatti", {
         ${chCard("stamp", "PEC", soft(C.pec, "PEC dal biglietto 2015: da confermare"), "Per le comunicazioni ufficiali.", `<button class="btn btn--ghost btn--sm" type="button" data-copy="${C.pec}"><span data-label>Copia l’indirizzo</span></button>`)}
         ${chCard("pin", "Sede", `${C.addr1}<br>${C.addr2}`, C.hours + ".", `<a class="btn btn--primary btn--sm" href="${C.maps}" target="_blank" rel="noopener">Indicazioni stradali</a><button class="btn btn--ghost btn--sm" type="button" data-copy="${C.addr1}, ${C.addr2}"><span data-label>Copia l’indirizzo</span></button>`)}
         ${chCard("user", "Commerciale", C.fabio.name, `${soft(C.fabio.tel, "Cellulare dal biglietto 2015: da confermare")} · ${C.fabio.email}`, `<a class="btn btn--primary btn--sm" href="${C.fabio.telHref}">Chiama</a><a class="btn btn--ghost btn--sm" href="mailto:${C.fabio.email}">Scrivi</a>`)}
-      </div></div></section>`
+      </div><p class="small muted mt-m">Seguici anche su <a href="${C.facebook}" target="_blank" rel="noopener">Facebook</a>.</p></div></section>`
     + `<section class="sec sec--tight"><div class="wrap"><div class="note note--qr">${QR.vcard}<p><b>Salva il nostro contatto.</b> Inquadra il codice con la fotocamera del telefono: numero, email e indirizzo vanno in rubrica in un attimo.</p>
         <button class="btn btn--ghost btn--sm" type="button" data-copy="${esc(VCARD_TEXT)}">${ic("copy")}<span data-label>Copia tutti i contatti</span></button></div></div></section>`
     + contactSection({ title: "Scrivici qui.", p: "ct" })
@@ -607,7 +621,7 @@ route("cookie", {
 route("crediti", {
   title: () => "Crediti fotografici | Treart Evolution", desc: () => "Le fotografie usate nel sito e i loro autori.", nav: () => "",
   render: () => ph({ cr: [["Crediti fotografici"]], eyebrow: "Note legali", title: "Crediti fotografici", lead: "Le fotografie del sito vengono da Unsplash e sono usate secondo la licenza Unsplash. Grazie ai fotografi.", light: true })
-    + `<section class="sec sec--tight"><div class="wrap"><ul class="credits">${Object.values(FOTO).map((f) => `<li><b>${esc(f.by)}</b><span>${esc(f.alt)}</span><a href="${f.url}" target="_blank" rel="noopener">Vedi su Unsplash</a></li>`).join("")}</ul></div></section>`,
+    + `<section class="sec sec--tight"><div class="wrap"><ul class="credits">${Object.values(FOTO).map((f) => `<li><b>${esc(f.by)}</b><span>${esc(f.alt)}</span><span class="credits__links">${f.urls.map((u, i) => `<a href="${u}" target="_blank" rel="noopener">Vedi su Unsplash${f.urls.length > 1 ? ` (${i + 1})` : ""}</a>`).join("")}</span></li>`).join("")}</ul></div></section>`,
 });
 route("404", {
   title: () => "Pagina non trovata | Treart Evolution", desc: () => "La pagina cercata non esiste.", nav: () => "",

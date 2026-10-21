@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Treart Evolution | Assistenza IT, sicurezza, reti e web a Grosseto</title>
-<meta name="description" content="Treart Evolution, Grosseto: assistenza informatica, sicurezza, reti e Wi-Fi, centralini VoIP e siti web per le aziende della Maremma. Un solo partner, un solo numero.">
+<title>Treart Evolution | Assistenza IT, sicurezza, reti e web, da Grosseto in tutta Italia</title>
+<meta name="description" content="Treart Evolution: assistenza informatica, sicurezza, reti e Wi-Fi, centralini VoIP e siti web per le aziende. Sede a Grosseto, interventi in tutta Italia. Un solo partner, un solo numero.">
 <!-- Anteprima con dati da confermare: esclusa dai motori di ricerca. Togliere questa riga alla pubblicazione definitiva. -->
 <meta name="robots" content="noindex, nofollow">
 <meta name="theme-color" content="#FFFFFF">
@@ -13,8 +13,8 @@
 <meta property="og:type" content="website">
 <meta property="og:locale" content="it_IT">
 <meta property="og:site_name" content="Treart Evolution">
-<meta property="og:title" content="Treart Evolution | Assistenza IT, sicurezza, reti e web a Grosseto">
-<meta property="og:description" content="Treart Evolution, Grosseto: assistenza informatica, sicurezza, reti e Wi-Fi, centralini VoIP e siti web per le aziende della Maremma. Un solo partner, un solo numero.">
+<meta property="og:title" content="Treart Evolution | Assistenza IT, sicurezza, reti e web, da Grosseto in tutta Italia">
+<meta property="og:description" content="Treart Evolution: assistenza informatica, sicurezza, reti e Wi-Fi, centralini VoIP e siti web per le aziende. Sede a Grosseto, interventi in tutta Italia. Un solo partner, un solo numero.">
 <meta property="og:url" content="https://fabio.treart-evolution.com/">
 <meta property="og:image" content="https://fabio.treart-evolution.com/og-image.png">
 <meta property="og:image:width" content="1200">
@@ -789,6 +789,16 @@ dialog.search{margin-top:8vh; margin-bottom:auto}
 .credits li{display:grid; gap:4px; padding:16px 18px; border:1px solid var(--line); border-radius:var(--r-m); background:var(--white); font-size:15px; line-height:1.45}
 .credits span{color:var(--grey)}
 .credits a{font-weight:600}
+.credits__links{display:flex; flex-wrap:wrap; gap:4px 14px}
+
+/* ---------- lavori realizzati ---------- */
+.cases--lavori{grid-template-columns:repeat(2, minmax(0,1fr))}
+@media (max-width:760px){.cases--lavori{grid-template-columns:minmax(0,1fr)}}
+.case--real{border:1px solid var(--line)}
+.case--real .pill{justify-self:start}
+.case--real .case__img{position:relative; display:block; padding:0; background:var(--green-tint)}
+.case--real .case__img img{display:block; width:100%; height:100%; object-fit:cover}
+.case__tag{position:absolute; right:10px; bottom:10px; padding:3px 10px; border-radius:999px; background:rgba(35,35,37,.62); color:var(--white); font-size:11.5px; font-weight:600}
 
 /* ---------- movimento ridotto ---------- */
 @media (prefers-reduced-motion: reduce){
@@ -815,7 +825,7 @@ dialog.search{margin-top:8vh; margin-bottom:auto}
 <script>
 "use strict";
 const ASSET = {logoVB: "12.94 4.13 341.43 103.11", eVB: "0 0 1034 1043"};
-const FOTO = {"assistenza-informatica": {"alt": "Due persone al lavoro davanti a un portatile, vicino a una finestra luminosa", "by": "KOBU Agency", "url": "https://unsplash.com/photos/two-women-talking-while-looking-at-laptop-computer-7okkFhxrxNw", "v": "c61e44d2"}, "installazioni": {"alt": "Tecnico che collega i cavi di rete in un armadio rack", "by": "ThisisEngineering", "url": "https://unsplash.com/photos/man-in-black-and-white-plaid-dress-shirt-zBLtU0zbJcU", "v": "a2b5f3ad"}, "cybersecurity": {"alt": "Lucchetto con le chiavi appoggiato sulla tastiera di un computer", "by": "Sasun Bughdaryan", "url": "https://unsplash.com/photos/padlock-and-keys-resting-on-a-computer-keyboard-cX8kNl8X0Ys", "v": "e6655358"}, "backup": {"alt": "Dischi di un server con le spie verdi accese", "by": "Domaintechnik", "url": "https://unsplash.com/photos/server-rack-with-blinking-green-lights-VHmBX7FnXw0", "v": "a048e912"}, "vpn": {"alt": "Portatile su una scrivania davanti a una finestra soleggiata", "by": "Mikey Harris", "url": "https://unsplash.com/photos/macbook-pro-on-brown-wooden-table-kw0z6RyvC0s", "v": "d3f0e1b9"}, "videosorveglianza": {"alt": "Tecnico che installa una telecamera di sorveglianza", "by": "Bermix Studio", "url": "https://unsplash.com/photos/a-man-working-on-a-wall-with-a-screwdriver-bAGo7O4prtY", "v": "48169fc5"}, "rete-wifi": {"alt": "Router Wi-Fi su un tavolo di legno", "by": "User_Pascal", "url": "https://unsplash.com/photos/a-wireless-router-sits-on-a-wooden-table-mTm0YLorp1Y", "v": "a2b0c92f"}, "connettivita": {"alt": "Antenne e parabole sui tetti sotto il cielo azzurro", "by": "Gio L", "url": "https://unsplash.com/photos/multiple-tv-antennas-and-satellite-dishes-on-a-weathered-rooftop-H9RkvByHP8U", "v": "fd2ecedc"}, "centralini-voip": {"alt": "Persona al telefono alla scrivania di un ufficio", "by": "Berkeley Communications", "url": "https://unsplash.com/photos/man-using-ip-phone-inside-room-WEDDt-u3q3o", "v": "a9c088a5"}, "siti-web": {"alt": "Persone che disegnano le pagine di un sito su fogli e post-it", "by": "UX Indonesia", "url": "https://unsplash.com/photos/qC2n6RQU4Vw", "v": "5e5303e5"}, "email-domini": {"alt": "Mani che scrivono al portatile", "by": "Glenn Carstens-Peters", "url": "https://unsplash.com/photos/npxXWgQ33ZQ", "v": "4f64a8ef"}, "hosting": {"alt": "Armadio rack con server e cavi di rete", "by": "Kevin Ache", "url": "https://unsplash.com/photos/2JJ3wBHu4_0", "v": "99b8711b"}, "settore-hotel": {"alt": "Agriturismo in mattoni con giardino e cipressi", "by": "Mattia Bericchia", "url": "https://unsplash.com/photos/fSfgZCofQz0", "v": "5b1ddf77"}, "settore-studi": {"alt": "Mani con matita, calcolatrice e quaderno su una scrivania", "by": "Jakub Żerdzicki", "url": "https://unsplash.com/photos/LNnmSumlwO4", "v": "9b7543f3"}, "settore-negozi": {"alt": "Cliente che paga alla cassa di un bar", "by": "SpotOn", "url": "https://unsplash.com/photos/2cGIkBSspFM", "v": "5b1fdcf7"}, "settore-agri": {"alt": "Vigneti sulle colline nella luce del tramonto", "by": "Johny Goerend", "url": "https://unsplash.com/photos/pnigODapPek", "v": "0e51adad"}, "settore-industria": {"alt": "Saldatore al lavoro tra le scintille in officina", "by": "Christopher Burns", "url": "https://unsplash.com/photos/Wiu3w-99tNg", "v": "c4e421d9"}, "guida-nis2": {"alt": "Lucchetto a combinazione appoggiato sulla tastiera", "by": "Sasun Bughdaryan", "url": "https://unsplash.com/photos/a-padlock-rests-on-a-computer-keyboard-QP7RBa5r8HM", "v": "063243e2"}, "guida-ransomware": {"alt": "Portatile chiuso da catene e da un lucchetto", "by": "FlyD", "url": "https://unsplash.com/photos/brown-padlock-on-black-computer-keyboard-FGH69mi53Mw", "v": "35ead886"}, "guida-email-truffa": {"alt": "Mani sulla tastiera di un portatile in penombra", "by": "Kaitlyn Baker", "url": "https://unsplash.com/photos/vZJdYl5JVXY", "v": "9f648e1f"}, "guida-telecamere-regole": {"alt": "Telecamera di sorveglianza fissata a un muro", "by": "Alan J. Hendry", "url": "https://unsplash.com/photos/white-surveillance-camera-hanging-on-wall-KNt4zd8HPb0", "v": "248aed43"}, "guida-incentivi": {"alt": "Mani che firmano dei documenti su un tavolo", "by": "Romain Dancre", "url": "https://unsplash.com/photos/doplSDELX7E", "v": "727a3f99"}, "guida-spegnimento-rame": {"alt": "Cavi in fibra ottica collegati a un apparato di rete", "by": "Kirill Sh", "url": "https://unsplash.com/photos/fiber-optic-cables-in-network-switch-eVWWr6nmDf8", "v": "e877ff73"}, "guida-wifi-hotel": {"alt": "Reception di un hotel con arredi in legno", "by": "Neon Wang", "url": "https://unsplash.com/photos/kfnWOD1Tbp8", "v": "5aade293"}, "guida-accessibilita": {"alt": "Bozzetti ad acquerello delle pagine di un sito", "by": "Hal Gatewood", "url": "https://unsplash.com/photos/watercolor-wireframe-sketches-tZc3vjPCk-Q", "v": "744ebca4"}, "maremma-pascolo": {"alt": "Bovino bianco al pascolo in un prato ai piedi delle colline", "by": "carlo marzetti", "url": "https://unsplash.com/photos/kCLypfAjAig", "v": "dcbde5ea"}, "maremma-costa": {"alt": "Costa con una baia, barche all'ancora e colline verdi", "by": "carlo marzetti", "url": "https://unsplash.com/photos/PUi8Tv4msOM", "v": "2da06742"}};
+const FOTO = {"assistenza-informatica": {"alt": "Due persone al lavoro davanti a un portatile, vicino a una finestra luminosa", "by": "KOBU Agency", "urls": ["https://unsplash.com/photos/two-women-talking-while-looking-at-laptop-computer-7okkFhxrxNw"], "v": "c61e44d2"}, "installazioni": {"alt": "Tecnico che collega i cavi di rete in un armadio rack", "by": "ThisisEngineering", "urls": ["https://unsplash.com/photos/man-in-black-and-white-plaid-dress-shirt-zBLtU0zbJcU"], "v": "a2b5f3ad"}, "cybersecurity": {"alt": "Lucchetto con le chiavi appoggiato sulla tastiera di un computer", "by": "Sasun Bughdaryan", "urls": ["https://unsplash.com/photos/padlock-and-keys-resting-on-a-computer-keyboard-cX8kNl8X0Ys"], "v": "e6655358"}, "backup": {"alt": "Dischi di un server con le spie verdi accese", "by": "Domaintechnik", "urls": ["https://unsplash.com/photos/server-rack-with-blinking-green-lights-VHmBX7FnXw0"], "v": "a048e912"}, "vpn": {"alt": "Portatile su una scrivania davanti a una finestra soleggiata", "by": "Mikey Harris", "urls": ["https://unsplash.com/photos/macbook-pro-on-brown-wooden-table-kw0z6RyvC0s"], "v": "d3f0e1b9"}, "videosorveglianza": {"alt": "Tecnico che installa una telecamera di sorveglianza", "by": "Bermix Studio", "urls": ["https://unsplash.com/photos/a-man-working-on-a-wall-with-a-screwdriver-bAGo7O4prtY"], "v": "48169fc5"}, "rete-wifi": {"alt": "Router Wi-Fi su un tavolo di legno", "by": "User_Pascal", "urls": ["https://unsplash.com/photos/a-wireless-router-sits-on-a-wooden-table-mTm0YLorp1Y"], "v": "a2b0c92f"}, "connettivita": {"alt": "Antenne e parabole sui tetti sotto il cielo azzurro", "by": "Gio L", "urls": ["https://unsplash.com/photos/multiple-tv-antennas-and-satellite-dishes-on-a-weathered-rooftop-H9RkvByHP8U"], "v": "fd2ecedc"}, "centralini-voip": {"alt": "Persona al telefono alla scrivania di un ufficio", "by": "Berkeley Communications", "urls": ["https://unsplash.com/photos/man-using-ip-phone-inside-room-WEDDt-u3q3o"], "v": "a9c088a5"}, "siti-web": {"alt": "Persone che disegnano le pagine di un sito su fogli e post-it", "by": "UX Indonesia", "urls": ["https://unsplash.com/photos/qC2n6RQU4Vw"], "v": "5e5303e5"}, "email-domini": {"alt": "Mani che scrivono al portatile", "by": "Glenn Carstens-Peters", "urls": ["https://unsplash.com/photos/npxXWgQ33ZQ"], "v": "4f64a8ef"}, "hosting": {"alt": "Armadio rack con server e cavi di rete", "by": "Kevin Ache", "urls": ["https://unsplash.com/photos/2JJ3wBHu4_0"], "v": "99b8711b"}, "settore-hotel": {"alt": "Agriturismo in mattoni con giardino e cipressi", "by": "Mattia Bericchia", "urls": ["https://unsplash.com/photos/fSfgZCofQz0"], "v": "5b1ddf77"}, "settore-studi": {"alt": "Mani con matita, calcolatrice e quaderno su una scrivania", "by": "Jakub Żerdzicki", "urls": ["https://unsplash.com/photos/LNnmSumlwO4"], "v": "9b7543f3"}, "settore-negozi": {"alt": "Cliente che paga alla cassa di un bar", "by": "SpotOn", "urls": ["https://unsplash.com/photos/2cGIkBSspFM"], "v": "5b1fdcf7"}, "settore-agri": {"alt": "Vigneti sulle colline nella luce del tramonto", "by": "Johny Goerend", "urls": ["https://unsplash.com/photos/pnigODapPek"], "v": "0e51adad"}, "settore-industria": {"alt": "Saldatore al lavoro tra le scintille in officina", "by": "Christopher Burns", "urls": ["https://unsplash.com/photos/Wiu3w-99tNg"], "v": "c4e421d9"}, "guida-nis2": {"alt": "Lucchetto a combinazione appoggiato sulla tastiera", "by": "Sasun Bughdaryan", "urls": ["https://unsplash.com/photos/a-padlock-rests-on-a-computer-keyboard-QP7RBa5r8HM"], "v": "063243e2"}, "guida-ransomware": {"alt": "Portatile chiuso da catene e da un lucchetto", "by": "FlyD", "urls": ["https://unsplash.com/photos/brown-padlock-on-black-computer-keyboard-FGH69mi53Mw"], "v": "35ead886"}, "guida-email-truffa": {"alt": "Mani sulla tastiera di un portatile in penombra", "by": "Kaitlyn Baker", "urls": ["https://unsplash.com/photos/vZJdYl5JVXY"], "v": "9f648e1f"}, "guida-telecamere-regole": {"alt": "Telecamera di sorveglianza fissata a un muro", "by": "Alan J. Hendry", "urls": ["https://unsplash.com/photos/white-surveillance-camera-hanging-on-wall-KNt4zd8HPb0"], "v": "248aed43"}, "guida-incentivi": {"alt": "Mani che firmano dei documenti su un tavolo", "by": "Romain Dancre", "urls": ["https://unsplash.com/photos/doplSDELX7E"], "v": "727a3f99"}, "guida-spegnimento-rame": {"alt": "Cavi in fibra ottica collegati a un apparato di rete", "by": "Kirill Sh", "urls": ["https://unsplash.com/photos/fiber-optic-cables-in-network-switch-eVWWr6nmDf8"], "v": "e877ff73"}, "guida-wifi-hotel": {"alt": "Reception di un hotel con arredi in legno", "by": "Neon Wang", "urls": ["https://unsplash.com/photos/kfnWOD1Tbp8"], "v": "5aade293"}, "guida-accessibilita": {"alt": "Bozzetti ad acquerello delle pagine di un sito", "by": "Hal Gatewood", "urls": ["https://unsplash.com/photos/watercolor-wireframe-sketches-tZc3vjPCk-Q"], "v": "744ebca4"}, "maremma-pascolo": {"alt": "Bovino bianco al pascolo in un prato ai piedi delle colline", "by": "carlo marzetti", "urls": ["https://unsplash.com/photos/kCLypfAjAig"], "v": "dcbde5ea"}, "maremma-costa": {"alt": "Costa con una baia, barche all'ancora e colline verdi", "by": "carlo marzetti", "urls": ["https://unsplash.com/photos/PUi8Tv4msOM"], "v": "2da06742"}, "lavoro-hotel-cavour": {"alt": "Corridoio di un hotel con le porte delle camere", "by": "Sébastien Lavalaye", "urls": ["https://unsplash.com/photos/long-hotel-hallway-with-red-carpet-and-wall-lamps-W4GKYkt4vqk"], "v": "185eaeb7"}, "lavoro-guadalupe": {"alt": "Piscina tra i fiori, con le colline sullo sfondo", "by": "Meg von Haartman", "urls": ["https://unsplash.com/photos/o6kjBmYeV34"], "v": "f2a6242b"}, "lavoro-amped": {"alt": "Lucchetto sulla tastiera di un computer", "by": "FlyD", "urls": ["https://unsplash.com/photos/red-padlock-on-black-computer-keyboard-mT7lXZPjk7U"], "v": "5b5bd284"}, "lavoro-mfo": {"alt": "Telefono fisso VoIP e smartphone", "by": "Dan Dennis e Michal Biernat", "urls": ["https://unsplash.com/photos/black-and-gray-ip-phone-WQqViZ_Zd8M", "https://unsplash.com/photos/person-using-smartphone-in-workspace-h0xEUQXzU38"], "v": "a3ff8c14"}};
 const QR = {wa: `<svg viewBox="0 0 33 33" role="img" aria-label="QR code per scriverci su WhatsApp" class="qr" xmlns="http://www.w3.org/2000/svg"><path fill="#fff" d="M0 0h33v33h-33z"/><path class="qrline" stroke="#2b2b2d" d="M2 2.5h7m1 0h2m1 0h1m1 0h1m1 0h4m3 0h7m-29 1h1m5 0h1m8 0h1m1 0h1m2 0h1m1 0h1m5 0h1m-29 1h1m1 0h3m1 0h1m2 0h1m1 0h1m1 0h3m2 0h1m3 0h1m1 0h3m1 0h1m-29 1h1m1 0h3m1 0h1m5 0h1m2 0h3m1 0h1m2 0h1m1 0h3m1 0h1m-29 1h1m1 0h3m1 0h1m1 0h3m4 0h1m2 0h2m2 0h1m1 0h3m1 0h1m-29 1h1m5 0h1m1 0h1m2 0h3m2 0h1m1 0h1m1 0h1m1 0h1m5 0h1m-29 1h7m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h7m-20 1h5m2 0h1m1 0h1m-18 1h7m2 0h4m2 0h1m1 0h1m1 0h1m2 0h2m3 0h1m-27 1h4m5 0h1m1 0h2m1 0h4m2 0h1m1 0h2m2 0h1m-29 1h2m2 0h5m2 0h2m1 0h2m5 0h3m1 0h1m-23 1h2m3 0h1m1 0h2m1 0h2m1 0h1m3 0h5m2 0h1m-28 1h4m1 0h2m1 0h1m1 0h1m1 0h2m1 0h1m1 0h1m3 0h1m1 0h1m1 0h4m-25 1h1m2 0h1m2 0h1m1 0h4m1 0h6m1 0h2m2 0h1m-28 1h3m1 0h2m1 0h1m1 0h4m2 0h2m2 0h1m2 0h1m3 0h1m-26 1h1m1 0h2m1 0h1m3 0h2m1 0h1m1 0h7m1 0h2m1 0h1m-25 1h4m1 0h9m3 0h2m1 0h1m1 0h3m-28 1h2m5 0h1m1 0h1m5 0h1m2 0h2m2 0h1m1 0h2m1 0h2m-29 1h1m1 0h2m2 0h1m1 0h1m1 0h1m4 0h2m5 0h3m1 0h1m-27 1h1m1 0h1m2 0h1m2 0h1m1 0h3m2 0h1m3 0h1m2 0h1m1 0h1m3 0h1m-29 1h1m5 0h1m2 0h1m2 0h1m1 0h5m1 0h9m-21 1h3m1 0h1m5 0h3m3 0h2m2 0h1m-29 1h7m1 0h1m2 0h1m3 0h2m1 0h3m1 0h1m1 0h1m2 0h1m-28 1h1m5 0h1m1 0h1m2 0h3m5 0h2m3 0h2m-26 1h1m1 0h3m1 0h1m1 0h2m1 0h1m1 0h1m1 0h1m2 0h1m1 0h9m-29 1h1m1 0h3m1 0h1m1 0h1m1 0h1m1 0h1m2 0h3m1 0h3m1 0h1m1 0h1m-26 1h1m1 0h3m1 0h1m1 0h4m5 0h1m1 0h6m2 0h1m-28 1h1m5 0h1m1 0h4m4 0h1m2 0h4m1 0h1m2 0h1m-28 1h7m2 0h1m2 0h1m1 0h1m1 0h3m2 0h1m2 0h3"/></svg>`, vcard: `<svg viewBox="0 0 69 69" role="img" aria-label="QR code per salvare il contatto di Treart Evolution" class="qr" xmlns="http://www.w3.org/2000/svg"><path fill="#fff" d="M0 0h69v69h-69z"/><path class="qrline" stroke="#2b2b2d" d="M2 2.5h7m1 0h1m1 0h2m1 0h2m1 0h1m1 0h5m1 0h1m5 0h3m1 0h1m2 0h5m2 0h1m1 0h1m2 0h1m3 0h1m1 0h1m2 0h7m-65 1h1m5 0h1m1 0h2m2 0h3m1 0h1m1 0h3m5 0h3m1 0h1m5 0h1m1 0h4m1 0h1m4 0h3m2 0h1m2 0h1m1 0h1m5 0h1m-65 1h1m1 0h3m1 0h1m3 0h2m2 0h1m1 0h3m1 0h3m1 0h1m4 0h1m5 0h2m1 0h1m2 0h2m1 0h6m1 0h1m2 0h1m1 0h1m1 0h1m1 0h3m1 0h1m-65 1h1m1 0h3m1 0h1m1 0h4m2 0h3m1 0h1m1 0h2m1 0h1m3 0h1m2 0h1m2 0h2m1 0h1m1 0h1m2 0h1m1 0h1m4 0h1m1 0h2m1 0h3m2 0h1m1 0h3m1 0h1m-65 1h1m1 0h3m1 0h1m3 0h3m1 0h1m3 0h1m1 0h1m2 0h5m1 0h8m1 0h1m4 0h1m1 0h1m3 0h2m2 0h1m2 0h1m1 0h1m1 0h3m1 0h1m-65 1h1m5 0h1m2 0h2m1 0h2m1 0h2m1 0h1m2 0h2m3 0h1m1 0h1m1 0h1m3 0h1m3 0h3m3 0h3m2 0h1m2 0h3m3 0h1m5 0h1m-65 1h7m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h7m-57 1h4m2 0h3m1 0h3m1 0h1m1 0h1m5 0h1m3 0h1m1 0h4m2 0h6m1 0h2m1 0h1m-53 1h1m1 0h2m1 0h3m1 0h2m2 0h1m1 0h1m2 0h1m1 0h1m4 0h1m1 0h1m2 0h5m3 0h3m6 0h1m3 0h3m2 0h1m1 0h1m2 0h1m1 0h2m-65 1h1m1 0h1m1 0h1m3 0h1m1 0h2m5 0h2m1 0h2m3 0h2m4 0h1m1 0h1m1 0h1m6 0h1m2 0h1m1 0h3m2 0h3m9 0h1m-60 1h2m2 0h2m2 0h3m1 0h1m2 0h1m2 0h1m1 0h1m2 0h1m1 0h1m1 0h6m1 0h3m1 0h2m1 0h2m1 0h1m4 0h1m1 0h1m2 0h2m2 0h1m-64 1h1m2 0h1m1 0h1m1 0h2m2 0h5m4 0h2m1 0h1m2 0h1m1 0h1m3 0h3m1 0h1m1 0h2m1 0h1m1 0h1m4 0h1m8 0h2m1 0h1m2 0h2m-65 1h1m1 0h1m2 0h2m2 0h1m1 0h1m3 0h1m2 0h2m2 0h1m1 0h2m1 0h3m6 0h1m4 0h1m1 0h1m3 0h3m6 0h1m1 0h3m1 0h1m-60 1h1m1 0h1m2 0h1m1 0h1m1 0h1m3 0h2m3 0h2m1 0h1m2 0h1m2 0h1m1 0h2m1 0h4m6 0h1m2 0h5m2 0h3m3 0h1m1 0h2m-60 1h2m1 0h1m3 0h2m2 0h1m2 0h3m1 0h1m1 0h1m3 0h4m3 0h1m2 0h2m2 0h1m1 0h5m1 0h1m2 0h3m1 0h1m1 0h2m1 0h2m-63 1h1m4 0h1m2 0h1m1 0h1m1 0h1m4 0h2m2 0h2m2 0h1m1 0h3m1 0h1m3 0h3m2 0h2m2 0h1m1 0h2m1 0h1m2 0h4m1 0h1m1 0h1m1 0h2m-64 1h1m1 0h1m2 0h6m3 0h1m4 0h2m1 0h2m1 0h4m1 0h4m2 0h1m1 0h1m1 0h1m1 0h2m4 0h3m1 0h2m3 0h1m-58 1h1m1 0h1m1 0h1m1 0h1m1 0h5m5 0h4m3 0h1m1 0h1m3 0h3m1 0h1m2 0h1m1 0h1m4 0h2m9 0h2m2 0h3m-63 1h6m3 0h2m1 0h2m1 0h5m2 0h3m1 0h1m4 0h2m3 0h1m4 0h1m1 0h1m1 0h1m4 0h3m1 0h1m2 0h2m3 0h1m-64 1h2m3 0h1m1 0h2m3 0h3m1 0h2m4 0h5m4 0h1m2 0h2m1 0h2m1 0h1m1 0h5m2 0h1m7 0h2m1 0h3m1 0h1m-65 1h1m2 0h2m1 0h4m1 0h3m4 0h1m1 0h2m8 0h1m2 0h3m1 0h1m2 0h1m4 0h3m1 0h5m2 0h1m2 0h1m1 0h1m1 0h2m-64 1h1m3 0h1m3 0h4m1 0h1m1 0h2m2 0h1m1 0h1m3 0h1m2 0h2m4 0h3m2 0h1m1 0h2m1 0h1m2 0h1m2 0h1m1 0h3m1 0h1m1 0h2m3 0h1m-65 1h3m1 0h1m1 0h1m2 0h2m1 0h1m2 0h2m2 0h2m1 0h5m1 0h5m1 0h4m2 0h1m1 0h2m7 0h1m2 0h1m1 0h1m1 0h1m4 0h1m-61 1h1m4 0h2m1 0h1m1 0h1m2 0h2m3 0h2m2 0h1m1 0h3m1 0h3m2 0h1m3 0h1m1 0h5m1 0h1m1 0h2m1 0h2m1 0h5m2 0h2m-65 1h1m1 0h1m1 0h1m1 0h9m1 0h1m2 0h1m1 0h1m1 0h2m2 0h1m3 0h1m2 0h5m2 0h3m1 0h1m1 0h4m2 0h1m1 0h2m1 0h1m1 0h1m1 0h1m-61 1h1m2 0h1m1 0h1m2 0h1m2 0h4m1 0h4m5 0h1m1 0h1m5 0h4m1 0h1m4 0h1m2 0h3m5 0h1m4 0h4m-65 1h4m1 0h2m2 0h2m2 0h1m2 0h2m2 0h1m3 0h2m3 0h1m7 0h1m2 0h2m1 0h1m1 0h7m2 0h2m1 0h1m3 0h1m1 0h2m-65 1h1m1 0h1m1 0h1m2 0h2m1 0h2m1 0h4m1 0h1m1 0h1m4 0h1m4 0h1m1 0h4m1 0h4m1 0h1m2 0h2m1 0h2m3 0h1m2 0h1m4 0h1m1 0h1m-62 1h1m2 0h2m2 0h1m3 0h4m2 0h2m2 0h4m3 0h1m1 0h1m1 0h2m1 0h1m4 0h5m2 0h1m1 0h1m2 0h2m2 0h1m4 0h1m-64 1h1m1 0h4m1 0h3m4 0h1m3 0h1m1 0h1m2 0h2m1 0h2m1 0h4m1 0h1m1 0h2m1 0h1m1 0h1m3 0h2m1 0h2m1 0h3m3 0h4m3 0h1m-65 1h2m1 0h10m1 0h2m1 0h1m1 0h5m2 0h10m1 0h3m1 0h1m2 0h2m1 0h5m1 0h1m1 0h6m2 0h1m-64 1h1m3 0h1m3 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m3 0h9m3 0h1m3 0h2m1 0h1m1 0h2m2 0h1m2 0h1m2 0h4m3 0h1m1 0h2m-64 1h2m1 0h2m1 0h1m1 0h1m1 0h1m1 0h2m1 0h3m3 0h1m1 0h1m3 0h1m1 0h2m1 0h1m1 0h1m5 0h2m1 0h1m1 0h2m2 0h4m1 0h3m1 0h1m1 0h3m1 0h1m-61 1h1m3 0h1m1 0h1m10 0h2m2 0h3m1 0h2m3 0h3m5 0h2m1 0h1m2 0h2m2 0h3m1 0h1m3 0h2m1 0h2m-63 1h1m1 0h5m1 0h2m1 0h1m1 0h2m1 0h1m2 0h1m1 0h3m3 0h7m1 0h2m5 0h2m1 0h1m2 0h1m5 0h5m1 0h2m-64 1h4m1 0h1m1 0h3m2 0h3m2 0h2m1 0h2m2 0h3m1 0h2m1 0h3m1 0h1m1 0h1m1 0h1m1 0h4m1 0h3m4 0h1m1 0h2m2 0h3m1 0h2m-65 1h2m4 0h2m1 0h2m6 0h1m2 0h1m2 0h14m6 0h1m1 0h2m1 0h1m2 0h1m7 0h1m2 0h2m-62 1h1m5 0h5m2 0h1m2 0h1m7 0h1m2 0h6m1 0h1m1 0h2m1 0h1m3 0h1m2 0h1m1 0h1m5 0h2m3 0h4m-64 1h1m1 0h1m2 0h1m1 0h1m1 0h1m1 0h1m1 0h1m3 0h4m1 0h2m2 0h2m2 0h2m1 0h2m1 0h1m1 0h5m1 0h5m1 0h2m2 0h5m1 0h4m-65 1h1m3 0h1m2 0h2m1 0h2m1 0h2m1 0h1m1 0h2m1 0h4m2 0h1m2 0h1m3 0h1m1 0h1m1 0h1m1 0h1m2 0h1m1 0h1m2 0h2m1 0h5m2 0h1m1 0h2m-62 1h1m1 0h6m1 0h3m1 0h5m1 0h3m3 0h5m1 0h1m9 0h4m5 0h2m1 0h2m1 0h1m2 0h1m3 0h1m-64 1h2m2 0h1m2 0h1m2 0h4m3 0h1m2 0h2m2 0h5m2 0h1m1 0h2m1 0h1m2 0h3m2 0h3m1 0h1m4 0h1m2 0h4m-59 1h2m3 0h3m2 0h2m2 0h1m1 0h2m2 0h1m9 0h3m2 0h2m4 0h1m1 0h1m5 0h1m1 0h1m2 0h1m1 0h1m1 0h3m-61 1h1m3 0h1m1 0h4m7 0h1m5 0h3m2 0h1m3 0h1m2 0h5m1 0h3m2 0h3m2 0h1m1 0h1m3 0h1m2 0h3m-63 1h4m1 0h1m1 0h2m2 0h1m2 0h1m1 0h2m4 0h3m1 0h1m1 0h1m1 0h1m5 0h6m3 0h2m1 0h1m1 0h2m2 0h1m1 0h2m2 0h3m-64 1h1m2 0h1m1 0h1m5 0h2m2 0h1m1 0h1m1 0h4m1 0h2m5 0h2m1 0h2m1 0h1m1 0h1m1 0h3m3 0h1m6 0h3m3 0h1m1 0h1m1 0h1m-65 1h2m3 0h3m1 0h1m1 0h3m4 0h3m2 0h3m9 0h1m2 0h1m1 0h1m2 0h2m2 0h1m1 0h1m2 0h2m1 0h3m3 0h3m-63 1h3m1 0h1m1 0h4m1 0h2m1 0h1m2 0h1m3 0h2m2 0h3m1 0h1m1 0h2m1 0h3m1 0h3m8 0h1m1 0h2m1 0h2m1 0h1m4 0h2m-61 1h6m3 0h1m1 0h5m3 0h3m1 0h2m1 0h4m2 0h1m1 0h1m2 0h3m2 0h4m1 0h1m2 0h1m2 0h2m3 0h2m-62 1h1m1 0h1m3 0h3m3 0h2m2 0h1m3 0h2m2 0h1m2 0h1m2 0h2m2 0h4m1 0h1m2 0h2m3 0h3m1 0h1m2 0h2m4 0h3m-65 1h1m3 0h1m1 0h3m4 0h1m1 0h6m1 0h2m1 0h6m2 0h2m1 0h2m1 0h1m1 0h2m2 0h2m2 0h1m3 0h3m1 0h2m2 0h2m1 0h1m-61 1h1m7 0h5m1 0h1m3 0h2m1 0h4m2 0h1m2 0h1m1 0h1m2 0h1m3 0h8m2 0h5m1 0h1m1 0h1m-62 1h2m2 0h1m1 0h2m3 0h3m2 0h1m2 0h2m3 0h1m2 0h5m1 0h1m4 0h2m1 0h2m1 0h1m1 0h1m4 0h1m1 0h1m2 0h2m1 0h2m1 0h2m-63 1h1m2 0h1m2 0h1m2 0h2m1 0h1m1 0h1m4 0h1m1 0h3m2 0h2m1 0h2m1 0h4m4 0h1m3 0h4m4 0h1m1 0h2m1 0h2m3 0h1m-62 1h2m1 0h6m2 0h1m1 0h1m1 0h1m3 0h2m2 0h1m3 0h1m1 0h3m1 0h1m1 0h3m3 0h1m6 0h3m4 0h1m1 0h1m1 0h1m-62 1h1m2 0h1m3 0h1m4 0h1m8 0h1m2 0h4m5 0h2m1 0h2m1 0h1m1 0h1m1 0h1m3 0h3m2 0h1m1 0h2m2 0h1m1 0h3m-62 1h2m1 0h1m1 0h1m2 0h3m1 0h3m1 0h3m3 0h3m2 0h1m1 0h6m2 0h3m6 0h1m3 0h2m1 0h10m-56 1h1m1 0h2m2 0h2m3 0h2m2 0h2m5 0h1m3 0h1m1 0h2m2 0h6m1 0h2m3 0h1m1 0h3m3 0h1m1 0h1m-63 1h7m1 0h2m5 0h2m3 0h1m2 0h2m3 0h1m1 0h1m1 0h1m1 0h1m2 0h5m2 0h5m1 0h7m1 0h1m1 0h4m-64 1h1m5 0h1m1 0h4m1 0h1m4 0h1m1 0h2m2 0h3m3 0h1m3 0h1m2 0h3m3 0h1m1 0h3m4 0h1m3 0h1m3 0h1m-61 1h1m1 0h3m1 0h1m3 0h5m1 0h2m1 0h1m4 0h2m3 0h11m1 0h1m1 0h1m2 0h3m1 0h1m4 0h6m1 0h3m-65 1h1m1 0h3m1 0h1m1 0h1m2 0h1m1 0h2m2 0h1m2 0h1m2 0h2m4 0h3m1 0h6m1 0h1m2 0h1m1 0h1m1 0h2m1 0h3m2 0h1m3 0h2m1 0h1m-63 1h1m1 0h3m1 0h1m1 0h2m1 0h1m3 0h3m4 0h1m1 0h1m1 0h3m7 0h2m4 0h2m1 0h1m2 0h3m1 0h1m1 0h2m2 0h2m1 0h1m2 0h1m-65 1h1m5 0h1m3 0h3m1 0h2m1 0h5m3 0h1m1 0h1m2 0h3m3 0h4m1 0h1m4 0h1m1 0h2m1 0h1m1 0h2m1 0h1m2 0h2m2 0h1m-64 1h7m1 0h1m1 0h3m1 0h3m1 0h1m1 0h1m1 0h8m1 0h1m2 0h1m1 0h1m2 0h5m2 0h2m2 0h2m1 0h5m2 0h2m1 0h1"/></svg>`};
 /* ================= CONTENUTI =================
    Testi dal documento «Contenuti dei servizi e approfondimenti».
@@ -824,6 +834,7 @@ const QR = {wa: `<svg viewBox="0 0 33 33" role="img" aria-label="QR code per scr
 const C = {
   tel: "0564 176 8249", telIntl: "+39 0564 176 8249", telHref: "tel:+3905641768249",
   wa: "3905641768249",
+  facebook: "https://www.facebook.com/treartevolution/",
   email: "info@treart-evolution.com",
   pec: "pec@pec.treart-evolution.com",
   addr1: "Via Aurelia Nord 76/1", addr2: "58100 Grosseto (GR)",
@@ -852,15 +863,15 @@ const SERVICES = {
   "assistenza-informatica": {
     area: "it", icon: "monitor", name: "Assistenza informatica aziendale", short: "Assistenza informatica", menu: "Help desk, monitoraggio e interventi in sede",
     title: "Il reparto IT della tua azienda, senza doverlo assumere.",
-    sub: "Help desk, monitoraggio e interventi in sede per le aziende di Grosseto e della Maremma. Un referente che conosce i tuoi sistemi e li tiene in ordine prima che si rompano.",
+    sub: "Help desk, monitoraggio e interventi in sede per le aziende, da Grosseto in tutta Italia. Un referente che conosce i tuoi sistemi e li tiene in ordine prima che si rompano.",
     pains: ["«Quando si blocca un PC perdiamo mezza giornata a cercare qualcuno.»", "«Ogni fornitore dà la colpa a un altro.»", "«Non sappiamo quali computer sono aggiornati e quali no.»", "«Il collega bravo col computer fa il tecnico al posto del suo lavoro.»"],
     does: ["Help desk al telefono, su WhatsApp e da remoto, in orario d’ufficio", "Interventi in sede in tutta la provincia", "Monitoraggio continuo di PC, server e rete: gli avvisi arrivano a noi prima che a te", "Aggiornamenti di sicurezza e antivirus gestiti", "Inventario di computer, licenze e scadenze (garanzie, domini, certificati)", "Consulenza sugli acquisti: compri solo quello che serve"],
     steps: [["Check-up gratuito", "In un’ora fotografiamo PC, rete, backup e sicurezza."], ["Proposta chiara", "Canone mensile fisso e cosa include, nero su bianco."], ["Presa in carico", "Attiviamo il monitoraggio e mettiamo in ordine il pregresso."], ["Assistenza continua", "Un referente, un numero, un report ogni mese."]],
-    why: [["users", "Un solo interlocutore", "Per PC, rete, telefoni, telecamere e sito."], ["pin", "Tecnici in zona", "Quando serve, veniamo in azienda."], ["gauge", "Prevenzione invece di emergenza", "Il monitoraggio intercetta i problemi prima del fermo."]],
+    why: [["users", "Un solo interlocutore", "Per PC, rete, telefoni, telecamere e sito."], ["pin", "In azienda quando serve", "Sede a Grosseto, interventi in tutta Italia."], ["gauge", "Prevenzione invece di emergenza", "Il monitoraggio intercetta i problemi prima del fermo."]],
     faq: [["Quanto costa?", "Dipende da postazioni e servizi. Dopo il check-up ricevi un canone mensile fisso, senza sorprese."], ["Lavorate anche da remoto?", "Sì: molti problemi si risolvono in pochi minuti da remoto, sempre con il tuo permesso. Per il resto veniamo in sede."], ["Possiamo tenere il nostro gestionale e i nostri fornitori?", "Sì. Ci coordiniamo noi con loro, così tu hai un solo numero da chiamare."], ["E se il «vostro» tecnico non c’è?", "I tuoi sistemi sono documentati: chiunque della squadra interviene sapendo già dove mettere le mani."]],
     cta: { label: "Prenota il check-up gratuito", to: "check-up", type: "it" },
     wa: "Ciao, vorrei un check-up gratuito dei computer della mia azienda.",
-    seo: ["Assistenza informatica aziende Grosseto | Treart Evolution", "Help desk, monitoraggio e interventi in sede per le PMI della Maremma. Un referente unico e un canone fisso. Check-up gratuito."],
+    seo: ["Assistenza informatica aziende Grosseto | Treart Evolution", "Help desk, monitoraggio e interventi in sede per le PMI di tutta Italia. Un referente unico e un canone fisso. Check-up gratuito."],
     flow: [["gauge", "Monitoraggio", "PC, server e rete sotto controllo"], ["bell", "Avviso", "arriva a noi prima che a te"], ["wrench", "Intervento", "da remoto in pochi minuti o in sede"], ["file", "Report mensile", "cosa abbiamo fatto, in parole semplici"]],
     notes: [{ icon: "shield", text: "Vuoi sapere a che punto è la tua azienda? Fai il test di sicurezza: 10 domande, 2 minuti.", to: "test-sicurezza", label: "Fai il test" }],
     guide: "ransomware", tool: "test-sicurezza", related: ["installazioni", "backup", "cybersecurity"],
@@ -893,7 +904,7 @@ const SERVICES = {
     faq: [["Siamo piccoli, a chi interessiamo?", "Molti attacchi colpiscono a caso migliaia di aziende insieme: i piccoli sono i più esposti perché meno protetti."], ["L’antivirus non basta?", "Non più: le truffe via email e i furti di password passano dove l’antivirus non guarda."], ["Cos’è la NIS2 e ci riguarda?", "È la direttiva europea sulla sicurezza informatica. Anche se non sei obbligato, lo sono molti tuoi clienti, che chiederanno garanzie a chi li fornisce."], ["Quanto costa?", "Dipende da quanti PC e servizi proteggere. Dopo il check-up ricevi un canone chiaro."]],
     cta: { label: "Fai il check-up di sicurezza gratuito", to: "check-up", type: "sicurezza" },
     wa: "Ciao, vorrei sapere quanto è protetta la mia azienda.",
-    seo: ["Sicurezza informatica per aziende a Grosseto | Treart Evolution", "Firewall, protezione dei PC e della posta, formazione e supporto NIS2 per le PMI della Maremma. Check-up di sicurezza gratuito."],
+    seo: ["Sicurezza informatica per aziende a Grosseto | Treart Evolution", "Firewall, protezione dei PC e della posta, formazione e supporto NIS2 per le PMI di tutta Italia. Check-up di sicurezza gratuito."],
     flow: [["mail", "Posta e web", "filtri contro truffe e link pericolosi"], ["shield", "Firewall gestito", "la porta della rete, sorvegliata"], ["monitor", "Protezione dei PC", "riconosce i comportamenti sospetti"], ["users", "Persone", "formazione e doppia verifica"]],
     notes: [{ icon: "file", text: "NIS2: le aziende obbligate stanno chiedendo garanzie di sicurezza ai fornitori. Arriva preparato.", to: "nis2", label: "Leggi la guida" }],
     incentives: ["voucher", "cciaa"],
@@ -944,7 +955,7 @@ const SERVICES = {
     faq: [["Posso vedere le telecamere dal telefono?", "Sì, in diretta e in registrazione, con accesso protetto."], ["Ho dei dipendenti: cosa devo fare?", "Le telecamere che possono riprenderli richiedono un accordo sindacale o l’autorizzazione dell’Ispettorato del lavoro. Ti accompagniamo nella pratica."], ["Funziona anche dove la connessione è debole?", "Sì: registra in loco e, se serve, portiamo la connessione con radio o satellite."]],
     cta: { label: "Prenota il sopralluogo gratuito", to: "check-up", type: "video" },
     wa: "Ciao, vorrei un sopralluogo per la videosorveglianza.",
-    seo: ["Videosorveglianza per aziende a Grosseto | Treart Evolution", "Telecamere professionali, controllo da smartphone e controllo accessi per aziende, negozi e cantieri in Maremma. Sopralluogo gratuito."],
+    seo: ["Videosorveglianza per aziende a Grosseto | Treart Evolution", "Telecamere professionali, controllo da smartphone e controllo accessi per aziende, negozi e cantieri in tutta Italia. Sopralluogo gratuito."],
     flow: [["camera", "Telecamere", "giorno e notte, anche all’esterno"], ["server", "Registratore protetto", "su una rete separata"], ["smartphone", "App sullo smartphone", "diretta, registrazioni e avvisi"], ["file", "Regole rispettate", "cartelli, informativa, accordi"]],
     notes: [{ icon: "eye", text: "Le telecamere servono solo se le immagini si possono usare: le regole da rispettare, in breve.", to: "telecamere-regole", label: "Leggi la guida" }],
     guide: "telecamere-regole", tool: "test-sicurezza", related: ["rete-wifi", "connettivita", "cybersecurity"],
@@ -960,7 +971,7 @@ const SERVICES = {
     faq: [["Perché i ripetitori non bastano?", "Dividono la velocità e si disturbano tra loro. Una rete progettata usa punti di accesso collegati via cavo e coordinati."], ["Possiamo dare il Wi-Fi ai clienti in sicurezza?", "Sì, con una rete ospiti separata che non vede mai i tuoi computer."], ["Bisogna rompere i muri?", "Quasi mai: dove il cavo è difficile usiamo canaline discrete o collegamenti radio."]],
     cta: { label: "Prenota la misura gratuita del tuo Wi-Fi", to: "check-up", type: "wifi" },
     wa: "Ciao, il Wi-Fi in azienda non copre tutto. Possiamo fissare un sopralluogo?",
-    seo: ["Wi-Fi e rete aziendale per hotel e aziende a Grosseto | Treart Evolution", "Copertura Wi-Fi progettata e misurata per hotel, agriturismi, uffici e capannoni in Maremma. Rete ospiti separata e gestione centralizzata."],
+    seo: ["Wi-Fi e rete aziendale per hotel e aziende a Grosseto | Treart Evolution", "Copertura Wi-Fi progettata e misurata per hotel, agriturismi, uffici e capannoni in tutta Italia. Rete ospiti separata e gestione centralizzata."],
     flow: [["globe", "Linea Internet", "fibra, radio o satellite"], ["shield", "Firewall", "controlla cosa entra ed esce"], ["network", "Switch e cavi", "armadio ordinato ed etichettato"], ["wifi", "Access point", "reti separate per ospiti, staff e telecamere"]],
     notes: [{ icon: "bed", text: "Hotel e agriturismi: i lavori sulla rete si fanno in bassa stagione. È il momento di programmarli.", to: "wifi-hotel", label: "Leggi la guida" }],
     incentives: ["voucher"],
@@ -977,7 +988,7 @@ const SERVICES = {
     faq: [["Il satellite è affidabile per un’azienda?", "Sì, nelle zone senza fibra è spesso la scelta migliore, anche come linea di riserva."], ["Cosa succede se la linea cade?", "Con la doppia linea il passaggio è automatico: telefoni e casse continuano a funzionare."], ["Posso tenere il mio operatore?", "Sì: valutiamo la linea attuale e interveniamo solo dove serve."]],
     cta: { label: "Verifica gratis la copertura della tua sede", to: "check-up", type: "linea" },
     wa: "Ciao, vorrei sapere che connessione posso avere all’indirizzo della mia azienda.",
-    seo: ["Internet per aziende in Maremma: fibra, radio e satellite | Treart Evolution", "Connessioni per aziende anche in zone rurali, con linea di riserva automatica. Verifica gratuita della copertura in provincia di Grosseto."],
+    seo: ["Internet per aziende: fibra, radio e satellite | Treart Evolution", "Connessioni per aziende anche in zone rurali, con linea di riserva automatica. Verifica gratuita della copertura all’indirizzo della tua azienda."],
     flow: [["globe", "Linea principale", "fibra o radio"], ["satellite", "Linea di riserva", "satellite o rete mobile"], ["router", "Router con doppia linea", "passa da solo alla riserva"], ["building", "Azienda sempre online", "casse, telefoni, gestionale"]],
     notes: [{ icon: "euro", text: "Per chiedere il Voucher Cloud & Cybersecurity serve una connessione di almeno 30 Mbps in download. Verifichiamo la tua.", to: "incentivi", label: "Scopri il voucher" }],
     guide: "spegnimento-rame", tool: "verifica-rame", related: ["rete-wifi", "centralini-voip", "vpn"],
@@ -1010,7 +1021,7 @@ const SERVICES = {
     faq: [["Quanto tempo serve?", "Un sito aziendale di solito poche settimane; un e-commerce dipende dal numero di prodotti. Lo definiamo nel preventivo."], ["Posso modificarlo da solo?", "Sì, ti formiamo e restiamo a disposizione per tutto il resto."], ["L’accessibilità mi riguarda?", "Se vendi online e non sei una microimpresa, sì. In ogni caso un sito accessibile è più facile per tutti e piace anche a Google."]],
     cta: { label: "Richiedi un’analisi gratuita del tuo sito", to: "check-up", type: "sito" },
     wa: "Ciao, vorrei rifare il sito della mia azienda.",
-    seo: ["Realizzazione siti web ed e-commerce a Grosseto | Treart Evolution", "Siti veloci, trovabili su Google e accessibili, pensati per portare richieste. E-commerce, SEO locale e assistenza in Maremma."],
+    seo: ["Realizzazione siti web ed e-commerce a Grosseto | Treart Evolution", "Siti veloci, trovabili su Google e accessibili, pensati per portare richieste. E-commerce, SEO locale e assistenza in tutta Italia."],
     flow: [["search", "Ricerca su Google", "chi cerca il tuo servizio in zona"], ["monitor", "Pagina chiara", "risposte, prove, contatti"], ["cursor", "Contatto in un clic", "telefono, WhatsApp, modulo"], ["chart", "Richieste misurate", "sai quante arrivano e da dove"]],
     notes: [{ icon: "eye", text: "Vendi online? Dal 28 giugno 2025 gli e-commerce di molte imprese devono essere accessibili, con sanzioni fino a 40.000 €.", to: "accessibilita", label: "Leggi la guida" }],
     incentives: ["voucher"],
@@ -1123,7 +1134,7 @@ const GUIDES = {
     title: "Wi-Fi per hotel e agriturismi: il servizio che gli ospiti provano per primo",
     short: "Wi-Fi per hotel e agriturismi: il servizio che gli ospiti provano per primo",
     lead: "Il Wi-Fi è la prima cosa che un ospite prova e una delle prime che recensisce. In strutture grandi, con muri spessi o edifici separati, i ripetitori non bastano: serve un progetto.",
-    body: ["Le strutture della Maremma hanno spesso casali in pietra, dependance e spazi esterni: è qui che il segnale si perde. Una rete professionale usa punti di accesso collegati via cavo, che passano l’ospite dall’uno all’altro senza interruzioni.", "La rete ospiti va separata da quella di cassa, telecamere e computer: è una regola di sicurezza, non un dettaglio. E va misurata dopo l’installazione, stanza per stanza."],
+    body: ["Molte strutture ricettive hanno casali in pietra, dependance e spazi esterni: è qui che il segnale si perde. Una rete professionale usa punti di accesso collegati via cavo, che passano l’ospite dall’uno all’altro senza interruzioni.", "La rete ospiti va separata da quella di cassa, telecamere e computer: è una regola di sicurezza, non un dettaglio. E va misurata dopo l’installazione, stanza per stanza."],
     todo: ["Rileggi le recensioni: quante parlano del Wi-Fi?", "Prova il segnale nelle camere più lontane e all’esterno.", "Verifica che ospiti e gestionale non siano sulla stessa rete.", "Pianifica i lavori in bassa stagione."],
     cta: { label: "Prenota la misura gratuita del tuo Wi-Fi", to: "check-up", type: "wifi" }, service: "rete-wifi", tool: "test-sicurezza",
     sources: [],
@@ -1222,7 +1233,7 @@ const STEPS4 = [
 const COMPARE = [
   ["Un fornitore per la rete, uno per i telefoni, uno per il sito", "Un referente unico per tutta la tecnologia"],
   ["Si interviene quando qualcosa si è già rotto", "Monitoraggio continuo per prevenire i guasti"],
-  ["Call center lontano, tempi incerti", "Tecnici a Grosseto, in sede quando serve"],
+  ["Call center lontano, tempi incerti", "Un referente diretto e tecnici in azienda quando serve, in tutta Italia"],
   ["Preventivi difficili da confrontare", "Canone e costi una tantum separati e chiari"],
   ["Nessuno conosce l’insieme dei sistemi", "Un solo partner che vede e collega tutto"],
 ];
@@ -1529,8 +1540,8 @@ function renderFooter() {
   $("#ftr").innerHTML = `<div class="wrap">
     <div class="ftr__top">
       <div class="ftr__brand"><a class="brand" href="#home" aria-label="Treart Evolution, vai alla home">${logo("neg")}</a>
-        <p>Il tuo business, gestito. Partner IT per le aziende di Grosseto e della Maremma: assistenza informatica, sicurezza, reti, telefonia e web.</p>
-        <p class="small">Social: profili LinkedIn e Instagram ${t("[in preparazione]")}</p></div>
+        <p>Il tuo business, gestito. Partner IT con sede a Grosseto, al fianco delle aziende in tutta Italia: assistenza informatica, sicurezza, reti, telefonia e web.</p>
+        <p class="small">Seguici su <a href="${C.facebook}" target="_blank" rel="noopener">Facebook</a></p></div>
       <div><h3>Servizi</h3><ul>${AREAS.map((a) => `<li><a href="#servizi" data-scroll="area-${a.id}">${a.name}</a></li>`).join("")}<li><a href="#formule">Formule a canone</a></li><li><a href="#settori">Settori</a></li></ul></div>
       <div><h3>Strumenti e guide</h3><ul>${TOOLS.map((x) => `<li><a href="#${x.id}"${x.anchor ? ` data-scroll="${x.anchor}"` : ""}>${x.name}</a></li>`).join("")}<li><a href="#risorse">Tutte le guide</a></li></ul></div>
       <div><h3>Azienda</h3><ul><li><a href="#chi-siamo">Chi siamo</a></li><li><a href="#progetti">Progetti</a></li><li><a href="#check-up">Check-up gratuito</a></li><li><a href="#preventivo">Richiedi preventivo</a></li><li><a href="#assistenza">Assistenza clienti</a></li><li><a href="#contatti">Contatti</a></li></ul></div>
@@ -1607,8 +1618,8 @@ function buildIndex() {
     ["check-up", "Prenota il check-up gratuito", "In azienda o da remoto", "calendar", "sopralluogo check up verifica gratuita appuntamento"],
     ["assistenza", "Assistenza clienti", "Apri una richiesta, urgenze al telefono", "headset", "guasto problema ticket assistenza remota urgenza"],
     ["formule", "Formule a canone", "Essenziale, Business, Completa", "calc", "canone prezzi abbonamento contratto"],
-    ["chi-siamo", "Chi siamo", "Treart Evolution, Grosseto", "users", "azienda storia team partner"],
-    ["progetti", "Progetti", "Lavori realizzati in Maremma", "folder", "casi studio lavori clienti"],
+    ["chi-siamo", "Chi siamo", "Sede a Grosseto, clienti in tutta Italia", "users", "azienda storia team partner italia"],
+    ["progetti", "Progetti", "Alcuni lavori realizzati", "folder", "casi studio lavori clienti hotel firewall centralino"],
     ["privacy", "Informativa privacy", "Come trattiamo i tuoi dati", "lock", "privacy dati gdpr"]].forEach(([r, tt, s, i, k]) => it.push({ g: "Pagine", t: tt, s, r, i, k }));
   it.forEach((x) => { x.n = norm(x.t); x.nk = norm(x.k + " " + x.s); });
   return it;
@@ -2120,9 +2131,22 @@ function initConfig(root) {
 /* ================= PAGINE ================= */
 
 const CASES = [
-  ["[Agriturismo], [Comune]", "Wi-Fi in tutta la struttura", "[es. camere senza copertura]", "[es. access point gestiti]", "[es. zero reclami degli ospiti]"],
-  ["[Studio professionale], Grosseto", "Backup e sicurezza dei dati", "[es. backup mai verificato]", "[es. NAS e copia esterna]", "[es. ripristino provato ogni mese]"],
-  ["[Azienda], [Comune]", "Centralino VoIP e smartphone", "[es. chiamate perse fuori ufficio]", "[es. centralino con app]", "[es. nessuna chiamata persa]"],
+  { foto: "lavoro-hotel-cavour", who: "Hotel Cavour, Firenze", area: "Wi-Fi", title: "Wi-Fi in tutte le 100 camere",
+    problem: "La copertura Wi-Fi non arrivava in modo capillare in tutte le 100 camere.",
+    solution: "Una rete di access point gestiti, che copre ogni camera.",
+    result: "L’albergo non riceve più reclami né lamentele sul funzionamento del Wi-Fi." },
+  { foto: "lavoro-guadalupe", who: "Guadalupe Resort, Grosseto", area: "Wi-Fi", title: "Wi-Fi in tutta la struttura",
+    problem: "La copertura Wi-Fi non arrivava in modo capillare in tutta la struttura.",
+    solution: "Una rete di access point gestiti.",
+    result: "Nessun reclamo né lamentela degli ospiti sul funzionamento del Wi-Fi." },
+  { foto: "lavoro-amped", who: "Amped, Trieste", area: "Sicurezza dei dati", title: "Firewall WatchGuard contro gli attacchi esterni",
+    problem: "Un’azienda presente in tanti paesi del mondo, e per questo esposta ad attacchi dall’esterno.",
+    solution: "Firewall WatchGuard, con sicurezza attiva e isolamento sicuro dalla rete esterna.",
+    result: "Attacchi esterni gestiti e dati aziendali conservati al sicuro." },
+  { foto: "lavoro-mfo", who: "MFO Italia, Milano", area: "Telefonia", title: "Un solo centralino per tutte le sedi",
+    problem: "Sedi diverse da collegare in un unico sistema telefonico, con conversazioni da tenere riservate.",
+    solution: "Centralini telefonici VoIP integrati con gli smartphone.",
+    result: "Tutte le sedi su un unico centralino e comunicazioni riservate su canali proprietari, smartphone inclusi." },
 ];
 const WA_GENERIC = "Ciao, vorrei informazioni sui vostri servizi.";
 
@@ -2152,7 +2176,7 @@ function secHead(eyebrow, title, text, link) {
 function band(title, text, ctas) {
   return `<section class="band">${bigE("band__e")}<div class="wrap"><h2>${title}</h2><p>${text}</p><div class="row">${ctas}</div></div></section>`;
 }
-const defaultBand = () => band("Un solo partner. Un solo numero.", "Assistenza IT, sicurezza, reti, telefonia e web per le aziende di Grosseto e della Maremma, con tecnici in zona e un referente che conosce la tua azienda.",
+const defaultBand = () => band("Un solo partner. Un solo numero.", "Assistenza IT, sicurezza, reti, telefonia e web per le aziende di tutta Italia, dalla nostra sede di Grosseto, con un referente che conosce la tua azienda.",
   `<a class="btn btn--dark btn--lg" href="#check-up">Prenota il check-up gratuito</a><a class="btn btn--ghost btn--lg" href="${C.telHref}">${ic("phone")}Chiama lo ${C.tel}</a>`);
 const waSoft = (label = "Scrivici su WhatsApp") => label;
 
@@ -2217,8 +2241,9 @@ function sectorCards() {
     : `<span class="sector__art">${ic(s.icon)}</span>`}<span class="sector__body"><b>${s.name}</b><span>${s.line}</span></span></a>`).join("")}</div>`;
 }
 function casesHtml() {
-  return `<div class="cases">${CASES.map((c) => `<article class="case"><div class="case__img">${t("[Foto dell’impianto da inserire]")}</div><div class="case__body"><span class="pill">${t(c[0])}</span><h3>${c[1]}</h3>
-    <dl><dt>Problema</dt><dd>${t(c[2])}</dd><dt>Soluzione</dt><dd>${t(c[3])}</dd><dt>Risultato</dt><dd>${t(c[4])}</dd></dl></div></article>`).join("")}</div>`;
+  return `<div class="cases cases--lavori">${CASES.map((c) => `<article class="case case--real"><div class="case__img">${foto(c.foto, "(max-width: 760px) 92vw, 580px")}<span class="case__tag">Immagine di repertorio</span></div>
+    <div class="case__body"><span class="pill">${c.area} · ${c.who}</span><h3>${c.title}</h3>
+    <dl><dt>Problema</dt><dd>${c.problem}</dd><dt>Soluzione</dt><dd>${c.solution}</dd><dt>Risultato</dt><dd>${c.result}</dd></dl></div></article>`).join("")}</div>`;
 }
 const partnersHtml = () => `<div class="partners" aria-label="Tecnologie e partner">${["Fastweb", "Eolo", "Starlink", "3CX"].map((p) => `<span>${soft(p, "Partner da confermare")}</span>`).join("")}<span>${t("[altri partner]")}</span></div>`;
 const numsHtml = () => `<div class="nums"><div class="num"><b>${t("[N]")}</b><span>anni di attività</span></div><div class="num"><b>${t("[N]")}</b><span>aziende seguite</span></div><div class="num"><b>${t("[N]")}</b><span>impianti realizzati</span></div></div>`;
@@ -2248,18 +2273,18 @@ function dlCard(d) {
 
 /* ---------- home ---------- */
 route("home", {
-  title: () => "Treart Evolution | Assistenza IT, sicurezza, reti e web a Grosseto",
-  desc: () => "Assistenza informatica, sicurezza, reti e Wi-Fi, centralini VoIP e siti web per le aziende di Grosseto e della Maremma. Un solo partner, un solo numero.",
+  title: () => "Treart Evolution | Assistenza IT, sicurezza, reti e web, da Grosseto in tutta Italia",
+  desc: () => "Assistenza informatica, sicurezza, reti e Wi-Fi, centralini VoIP e siti web per le aziende: sede a Grosseto, interventi in tutta Italia. Un solo partner, un solo numero.",
   nav: () => "",
   render: () => `
   <section class="hero"><div class="wrap">
     <div>
-      <span class="eyebrow">Partner IT per le aziende della Maremma</span>
+      <span class="eyebrow">Partner IT · Sede a Grosseto, operativi in tutta Italia</span>
       <h1>Il tuo business, <span class="swash-word">gestito.<svg viewBox="0 0 300 24" preserveAspectRatio="none" aria-hidden="true" focusable="false"><use href="#swash"/></svg></span></h1>
-      <p class="hero__lead">Rete, sicurezza, telefonia, web e assistenza per le aziende di Grosseto e della Maremma. Un solo partner, un solo numero da chiamare.</p>
+      <p class="hero__lead">Rete, sicurezza, telefonia, web e assistenza per le aziende. Abbiamo sede a Grosseto e lavoriamo in tutta Italia: un solo partner, un solo numero da chiamare.</p>
       <div class="hero__ctas"><a class="btn btn--primary btn--lg" href="#check-up">Prenota il check-up gratuito</a>${waBtn(WA_GENERIC, "Scrivici su WhatsApp", "btn btn--wa btn--lg")}</div>
       <p class="hero__call mt-s">Oppure chiama lo <a href="${C.telHref}">${C.tel}</a></p>
-      <ul class="trust"><li>${ic("pin")}Tecnici in sede a Grosseto</li><li>${ic("monitor")}Assistenza da remoto e in loco</li><li>${ic("clock")}Intervento entro ${t(C.reply)}</li></ul>
+      <ul class="trust"><li>${ic("pin")}Sede a Grosseto, interventi in tutta Italia</li><li>${ic("monitor")}Assistenza da remoto e in loco</li><li>${ic("clock")}Intervento entro ${t(C.reply)}</li></ul>
     </div>
     <div>${stage()}</div>
   </div></section>
@@ -2302,7 +2327,7 @@ route("home", {
   </div></section>
 
   <section class="sec sec--paper"><div class="wrap">
-    ${secHead("Progetti", "Lavori realizzati in Maremma.", "", `<a class="more" href="#progetti">Vedi tutti i progetti ${ic("arrow-right")}</a>`)}
+    ${secHead("Progetti", "Alcuni lavori realizzati.", "", `<a class="more" href="#progetti">Vedi tutti i progetti ${ic("arrow-right")}</a>`)}
     ${casesHtml()}</div></section>
 
   <section class="sec"><div class="wrap trust-grid">
@@ -2310,7 +2335,7 @@ route("home", {
     <figure class="review"><span class="eyebrow">Recensioni Google</span><blockquote>${t("«[Testo di una recensione Google di un cliente soddisfatto.]»")}</blockquote>
       <figcaption class="muted small">${t("[Nome e cognome], [Azienda]. Valutazione [media] su [N] recensioni")}</figcaption></figure>
     ${fotoFig("maremma-pascolo", "(max-width: 860px) 92vw, 600px", "photo--wide")}</div>
-    <div><span class="eyebrow">Chi siamo</span><h2 class="mt-s" style="font-size:clamp(26px,3vw,38px)">Lavoriamo con le aziende della Maremma, da vicino.</h2>
+    <div><span class="eyebrow">Chi siamo</span><h2 class="mt-s" style="font-size:clamp(26px,3vw,38px)">Sede a Grosseto, clienti in tutta Italia.</h2>
       <div class="mt-m">${numsHtml()}</div><p class="small muted mt-m">Tecnologie e partner</p>${partnersHtml()}</div>
   </div></section>
 
@@ -2324,10 +2349,10 @@ route("home", {
 
 /* ---------- servizi ---------- */
 route("servizi", {
-  title: () => "Servizi IT per aziende a Grosseto | Treart Evolution",
-  desc: () => "Assistenza IT, sicurezza, reti e connettività, telefonia e web: dodici servizi per le aziende della Maremma, seguiti da un solo referente.",
+  title: () => "Servizi IT per aziende, da Grosseto in tutta Italia | Treart Evolution",
+  desc: () => "Assistenza IT, sicurezza, reti e connettività, telefonia e web: dodici servizi per le aziende di tutta Italia, seguiti da un solo referente.",
   nav: () => "servizi",
-  render: () => ph({ cr: [["Servizi"]], eyebrow: "Servizi", title: "Cinque aree, un solo referente.", lead: "Dall’assistenza ai computer al sito web: tutta la tecnologia della tua azienda seguita dalla stessa squadra, a Grosseto e in tutta la Maremma.", light: true, e: true,
+  render: () => ph({ cr: [["Servizi"]], eyebrow: "Servizi", title: "Cinque aree, un solo referente.", lead: "Dall’assistenza ai computer al sito web: tutta la tecnologia della tua azienda seguita dalla stessa squadra, dalla sede di Grosseto in tutta Italia.", light: true, e: true,
     ctas: `<a class="btn btn--primary btn--lg" href="#check-up">Prenota il check-up gratuito</a>${waBtn(WA_GENERIC, "Scrivici su WhatsApp", "btn btn--wa btn--lg")}` })
     + `<section class="sec"><div class="wrap">${bento()}</div></section>`
     + `<section class="sec sec--paper sec--tight"><div class="wrap"><div class="note">${icDot("calc")}<p><b>Preferisci un costo fisso?</b> Le formule a canone raccolgono assistenza, sicurezza e monitoraggio in un’unica cifra al mese.</p><a class="btn btn--ghost btn--sm" href="#formule">Vedi le formule</a></div></div></section>`
@@ -2372,7 +2397,7 @@ SERVICE_ORDER.forEach((id) => route(id, {
 /* ---------- settori ---------- */
 route("settori", {
   title: () => "Settori: hotel, studi, negozi, agricoltura, industria | Treart Evolution",
-  desc: () => "Soluzioni IT pensate per hotel e agriturismi, studi professionali, negozi, aziende agricole e industria in Maremma.",
+  desc: () => "Soluzioni IT pensate per hotel e agriturismi, studi professionali, negozi, aziende agricole e industria, in tutta Italia.",
   nav: () => "settori",
   render: () => ph({ cr: [["Settori"]], eyebrow: "Settori", title: "Soluzioni pensate per il tuo settore.", lead: "Hotel, studi, negozi, aziende agricole, industria: ogni settore ha problemi diversi. Partiamo dai tuoi.", light: true, e: true })
     + `<section class="sec sec--tight"><div class="wrap">${sectorCards()}</div></section>`
@@ -2387,7 +2412,7 @@ route("settori", {
 /* ---------- formule ---------- */
 route("formule", {
   title: () => "Formule di assistenza IT a canone | Treart Evolution",
-  desc: () => "Assistenza informatica a canone mensile fisso, da 200 € al mese: formule Essenziale, Business e Completa per le aziende della Maremma.",
+  desc: () => "Assistenza informatica a canone mensile fisso, da 200 € al mese: formule Essenziale, Business e Completa per le aziende di tutta Italia.",
   nav: () => "formule",
   render: () => ph({ cr: [["Formule a canone"]], eyebrow: "Formule a canone", title: "Un costo fisso al mese, senza sorprese.", lead: "Scegli la formula o chiedici di comporla su misura. Il canone copre l’assistenza; hardware e progetti nuovi si quotano sempre prima di iniziare.", light: true, e: true })
     + `<section class="sec"><div class="wrap">${plansHtml()}</div></section>`
@@ -2475,16 +2500,16 @@ GUIDE_ORDER.forEach((id) => route(id, {
 /* ---------- chi siamo e progetti ---------- */
 route("chi-siamo", {
   title: () => "Chi siamo | Treart Evolution, Grosseto",
-  desc: () => "Treart Evolution è il partner IT delle aziende di Grosseto e della Maremma: assistenza informatica, sicurezza, reti, telefonia e web.",
+  desc: () => "Treart Evolution è il partner IT delle aziende, con sede a Grosseto e clienti in tutta Italia: assistenza informatica, sicurezza, reti, telefonia e web.",
   nav: () => "chi-siamo",
-  render: () => ph({ cr: [["Chi siamo"]], eyebrow: "Chi siamo", title: "La tecnologia della tua azienda, seguita da vicino.", lead: "Treart Evolution è una società di Grosseto che segue la tecnologia delle aziende della Maremma: assistenza informatica, sicurezza, reti, telefonia e web. Un solo partner, un solo numero da chiamare.", light: true, e: true })
-    + (FOTO["maremma-costa"] ? `<section class="sec sec--tight"><div class="wrap"><figure class="photo photo--banner">${foto("maremma-costa", "(max-width: 1240px) 92vw, 1160px")}<figcaption>Siamo a Grosseto e seguiamo le aziende di tutta la Maremma, dalla costa all’entroterra.</figcaption></figure></div></section>` : "")
+  render: () => ph({ cr: [["Chi siamo"]], eyebrow: "Chi siamo", title: "La tecnologia della tua azienda, seguita da vicino.", lead: "Treart Evolution ha sede a Grosseto e segue la tecnologia delle aziende in tutta Italia: assistenza informatica, sicurezza, reti, telefonia e web. Un solo partner, un solo numero da chiamare.", light: true, e: true })
+    + (FOTO["maremma-costa"] ? `<section class="sec sec--tight"><div class="wrap"><figure class="photo photo--banner">${foto("maremma-costa", "(max-width: 1240px) 92vw, 1160px")}<figcaption>La nostra sede è a Grosseto. I nostri clienti sono in tutta Italia.</figcaption></figure></div></section>` : "")
     + `<section class="sec"><div class="wrap">${secHead("Come lavoriamo", "Quattro principi, ogni giorno.")}
         <div class="why why--4">
           <div>${icDot("users")}<h3>Un solo referente</h3><p>Rete, telefoni, sicurezza e sito seguiti dalla stessa squadra. Nessuno rimbalza la colpa a qualcun altro.</p></div>
           <div>${icDot("gauge")}<h3>Prevenzione prima dell’emergenza</h3><p>Teniamo d’occhio i sistemi per intervenire prima del guasto, non dopo.</p></div>
           <div>${icDot("chat")}<h3>Parole semplici</h3><p>Preventivi chiari, con canone e costi una tantum separati. Ti spieghiamo cosa compri e perché.</p></div>
-          <div>${icDot("pin")}<h3>Vicini davvero</h3><p>Siamo a Grosseto: quando serve, veniamo in azienda.</p></div>
+          <div>${icDot("pin")}<h3>Vicini, ovunque tu sia</h3><p>Abbiamo sede a Grosseto e lavoriamo in tutta Italia: quando serve, veniamo in azienda.</p></div>
         </div></div></section>`
     + `<section class="sec sec--paper"><div class="wrap split"><div class="split__head"><span class="eyebrow">La nostra storia</span><h2>Da dove veniamo.</h2></div>
         <div style="display:grid;gap:24px"><p class="lead">${t("[Breve storia dell’azienda: anno di fondazione, persone, primi clienti, come è cresciuta]")}</p>${numsHtml()}<div><p class="small muted">Tecnologie e partner</p>${partnersHtml()}</div></div></div></section>`
@@ -2497,11 +2522,11 @@ route("chi-siamo", {
     + defaultBand() + contactSection({ p: "cs2" }),
 });
 route("progetti", {
-  title: () => "Progetti realizzati in Maremma | Treart Evolution",
-  desc: () => "Reti Wi-Fi, backup, centralini VoIP: i lavori realizzati da Treart Evolution per le aziende della Maremma.",
+  title: () => "Progetti realizzati | Treart Evolution",
+  desc: () => "Wi-Fi per hotel, firewall e sicurezza dei dati, centralini VoIP per più sedi: alcuni lavori realizzati da Treart Evolution in tutta Italia.",
   nav: () => "chi-siamo",
-  render: () => ph({ cr: [["Progetti"]], eyebrow: "Progetti", title: "Lavori realizzati in Maremma.", lead: "Ogni progetto parte da un problema concreto e finisce con un risultato misurabile. Qui raccontiamo come.", light: true, e: true })
-    + `<section class="sec"><div class="wrap">${casesHtml()}<p class="fine mt-m">${t("[Schede di esempio: da sostituire con tre casi reali, con il permesso dei clienti]")}</p></div></section>`
+  render: () => ph({ cr: [["Progetti"]], eyebrow: "Progetti", title: "Alcuni lavori realizzati.", lead: "Ogni progetto parte da un problema concreto e finisce con un risultato misurabile. Qui raccontiamo come.", light: true, e: true })
+    + `<section class="sec"><div class="wrap">${casesHtml()}</div></section>`
     + defaultBand() + contactSection({ title: "Il prossimo progetto può essere il tuo.", p: "pj" }),
 });
 
@@ -2529,7 +2554,7 @@ route("contatti", {
         ${chCard("stamp", "PEC", soft(C.pec, "PEC dal biglietto 2015: da confermare"), "Per le comunicazioni ufficiali.", `<button class="btn btn--ghost btn--sm" type="button" data-copy="${C.pec}"><span data-label>Copia l’indirizzo</span></button>`)}
         ${chCard("pin", "Sede", `${C.addr1}<br>${C.addr2}`, C.hours + ".", `<a class="btn btn--primary btn--sm" href="${C.maps}" target="_blank" rel="noopener">Indicazioni stradali</a><button class="btn btn--ghost btn--sm" type="button" data-copy="${C.addr1}, ${C.addr2}"><span data-label>Copia l’indirizzo</span></button>`)}
         ${chCard("user", "Commerciale", C.fabio.name, `${soft(C.fabio.tel, "Cellulare dal biglietto 2015: da confermare")} · ${C.fabio.email}`, `<a class="btn btn--primary btn--sm" href="${C.fabio.telHref}">Chiama</a><a class="btn btn--ghost btn--sm" href="mailto:${C.fabio.email}">Scrivi</a>`)}
-      </div></div></section>`
+      </div><p class="small muted mt-m">Seguici anche su <a href="${C.facebook}" target="_blank" rel="noopener">Facebook</a>.</p></div></section>`
     + `<section class="sec sec--tight"><div class="wrap"><div class="note note--qr">${QR.vcard}<p><b>Salva il nostro contatto.</b> Inquadra il codice con la fotocamera del telefono: numero, email e indirizzo vanno in rubrica in un attimo.</p>
         <button class="btn btn--ghost btn--sm" type="button" data-copy="${esc(VCARD_TEXT)}">${ic("copy")}<span data-label>Copia tutti i contatti</span></button></div></div></section>`
     + contactSection({ title: "Scrivici qui.", p: "ct" })
@@ -2726,7 +2751,7 @@ route("cookie", {
 route("crediti", {
   title: () => "Crediti fotografici | Treart Evolution", desc: () => "Le fotografie usate nel sito e i loro autori.", nav: () => "",
   render: () => ph({ cr: [["Crediti fotografici"]], eyebrow: "Note legali", title: "Crediti fotografici", lead: "Le fotografie del sito vengono da Unsplash e sono usate secondo la licenza Unsplash. Grazie ai fotografi.", light: true })
-    + `<section class="sec sec--tight"><div class="wrap"><ul class="credits">${Object.values(FOTO).map((f) => `<li><b>${esc(f.by)}</b><span>${esc(f.alt)}</span><a href="${f.url}" target="_blank" rel="noopener">Vedi su Unsplash</a></li>`).join("")}</ul></div></section>`,
+    + `<section class="sec sec--tight"><div class="wrap"><ul class="credits">${Object.values(FOTO).map((f) => `<li><b>${esc(f.by)}</b><span>${esc(f.alt)}</span><span class="credits__links">${f.urls.map((u, i) => `<a href="${u}" target="_blank" rel="noopener">Vedi su Unsplash${f.urls.length > 1 ? ` (${i + 1})` : ""}</a>`).join("")}</span></li>`).join("")}</ul></div></section>`,
 });
 route("404", {
   title: () => "Pagina non trovata | Treart Evolution", desc: () => "La pagina cercata non esiste.", nav: () => "",
