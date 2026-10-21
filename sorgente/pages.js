@@ -88,7 +88,7 @@ function compareSection() {
 function plansHtml() {
   return `<div class="plans">${PLANS.map((p) => `<article class="plan${p.id === "business" ? " plan--hi" : ""}" data-plan="${p.id}">
     <div class="plan__top"><h3>${p.name}</h3>${p.badge ? `<span class="plan__badge">${p.badge}</span>` : ""}</div>
-    <p class="plan__for">${p.for}</p><p class="plan__price">${t("[da definire]")} € <small>al mese</small></p>
+    <p class="plan__for">${p.for}</p><p class="plan__price">${p.price} € <small>al mese</small></p>
     <ul>${p.inc.map((x) => x.startsWith("+") ? `<li class="plus">${esc(x.slice(1))}</li>` : `<li>${ic("check")}<span>${esc(x)}</span></li>`).join("")}</ul>
     <a class="btn ${p.id === "business" ? "btn--primary" : "btn--ghost"}" href="#preventivo" data-plan-req="${p.id}">Chiedi questa formula</a></article>`).join("")}</div>`;
 }
@@ -140,7 +140,7 @@ route("home", {
       <p class="hero__lead">Rete, sicurezza, telefonia, web e assistenza per le aziende di Grosseto e della Maremma. Un solo partner, un solo numero da chiamare.</p>
       <div class="hero__ctas"><a class="btn btn--primary btn--lg" href="#check-up">Prenota il check-up gratuito</a>${waBtn(WA_GENERIC, "Scrivici su WhatsApp", "btn btn--wa btn--lg")}</div>
       <p class="hero__call mt-s">Oppure chiama lo <a href="${C.telHref}">${C.tel}</a></p>
-      <ul class="trust"><li>${ic("pin")}Tecnici in sede a Grosseto</li><li>${ic("monitor")}Assistenza da remoto e in loco</li><li>${ic("clock")}Risposta entro ${t(C.reply)}</li></ul>
+      <ul class="trust"><li>${ic("pin")}Tecnici in sede a Grosseto</li><li>${ic("monitor")}Assistenza da remoto e in loco</li><li>${ic("clock")}Intervento entro ${t(C.reply)}</li></ul>
     </div>
     <div>${stage()}</div>
   </div></section>
@@ -268,7 +268,7 @@ route("settori", {
 /* ---------- formule ---------- */
 route("formule", {
   title: () => "Formule di assistenza IT a canone | Treart Evolution",
-  desc: () => "Assistenza informatica a canone mensile fisso: formule Essenziale, Business e Completa per le aziende della Maremma.",
+  desc: () => "Assistenza informatica a canone mensile fisso, da 200 € al mese: formule Essenziale, Business e Completa per le aziende della Maremma.",
   nav: () => "formule",
   render: () => ph({ cr: [["Formule a canone"]], eyebrow: "Formule a canone", title: "Un costo fisso al mese, senza sorprese.", lead: "Scegli la formula o chiedici di comporla su misura. Il canone copre l’assistenza; hardware e progetti nuovi si quotano sempre prima di iniziare.", light: true, e: true })
     + `<section class="sec"><div class="wrap">${plansHtml()}</div></section>`
@@ -570,7 +570,7 @@ route("assistenza", {
         <div>${icDot("monitor")}<h3>Assistenza remota</h3><p>Durante la telefonata ti diciamo come avviare il collegamento con ${t("[programma di assistenza remota da confermare]")}, solo con il tuo consenso.</p></div>
       </div></div></section>`
     + `<section class="sec sec--paper sec--tight"><div class="wrap art"><div class="panel"><h2 style="font-size:clamp(22px,2.4vw,28px)">Apri una richiesta di assistenza</h2>${supportForm()}</div>
-        <aside class="aside"><div class="aside-card"><h3>Orari dell’assistenza</h3><p>${C.hours}.</p><p>Fuori orario: ${t("[reperibilità da definire]")}</p></div>
+        <aside class="aside"><div class="aside-card"><h3>Orari dell’assistenza</h3><p>${C.hours}.</p><p><b>Intervento entro ${C.reply}</b> dalla richiesta.</p><p>Fuori orario: ${t("[reperibilità da definire]")}</p></div>
         <div class="aside-card aside-card--light"><h3>Per fare prima</h3><ul class="does does--one">${["Annota il messaggio di errore, o fai una foto dello schermo", "Indica quale computer o apparato ha il problema", "Se puoi, tieni a portata di mano il telefono vicino al PC"].map((x) => `<li>${ic("check")}<span>${x}</span></li>`).join("")}</ul></div></aside></div></section>`,
   after: (m) => {
     const f = $("#f-as", m), al = $("#as-alert", m);

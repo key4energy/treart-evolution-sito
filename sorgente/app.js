@@ -343,7 +343,7 @@ function buildIndex() {
   TOOLS.forEach((x) => it.push({ g: "Strumenti", t: x.name, s: x.line, r: x.id, i: x.icon, k: x.line, scroll: x.anchor }));
   SECTORS.forEach((x) => it.push({ g: "Settori", t: x.name, s: x.line, r: "settori", i: x.icon, k: x.pains.join(" "), scroll: "settore-" + x.id }));
   [["contatti", "Contatti", "Telefono, WhatsApp, email, PEC e sede", "phone", "telefono numero indirizzo sede orari pec mail whatsapp"],
-    ["preventivo", "Richiedi un preventivo", "Tre passi, risposta entro [X] ore", "file", "preventivo prezzo costo offerta"],
+    ["preventivo", "Richiedi un preventivo", "Tre passi, risposta entro 8 ore lavorative", "file", "preventivo prezzo costo offerta"],
     ["check-up", "Prenota il check-up gratuito", "In azienda o da remoto", "calendar", "sopralluogo check up verifica gratuita appuntamento"],
     ["assistenza", "Assistenza clienti", "Apri una richiesta, urgenze al telefono", "headset", "guasto problema ticket assistenza remota urgenza"],
     ["formule", "Formule a canone", "Essenziale, Business, Completa", "calc", "canone prezzi abbonamento contratto"],

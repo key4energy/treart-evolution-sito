@@ -12,7 +12,7 @@ const C = {
   maps: "https://www.google.com/maps/search/?api=1&query=Via+Aurelia+Nord+76%2F1+58100+Grosseto",
   fabio: { name: "Fabio Di Cesare", tel: "+39 392 947 5027", telHref: "tel:+393929475027", email: "fabio@treart-evolution.com" },
   piva: "01575220536", rea: "136469", cap: "€ 10.000,00",
-  reply: "[X] ore lavorative",
+  reply: "8 ore lavorative",
   site: "treart-evolution.com",
 };
 
@@ -376,9 +376,9 @@ const TOOLS = [
 ];
 
 const PLANS = [
-  { id: "essenziale", name: "Essenziale", for: "Per piccoli uffici", inc: ["Help desk da remoto in orario d’ufficio", "Monitoraggio di PC e server", "Aggiornamenti di sicurezza e antivirus gestiti", "Report mensile"] },
-  { id: "business", name: "Business", for: "Per PMI e studi professionali", badge: "Consigliata", inc: ["+Tutto l’Essenziale, più:", "Interventi in sede inclusi", "Backup gestito con prova di ripristino", "Firewall gestito", "Referente dedicato"] },
-  { id: "completa", name: "Completa", for: "Per aziende con più sedi", inc: ["+Tutto il Business, più:", "Centralino VoIP gestito", "Rete, Wi-Fi e telecamere in assistenza", "Supporto per la NIS2"] },
+  { id: "essenziale", name: "Essenziale", price: 200, for: "Per piccoli uffici", inc: ["Help desk da remoto in orario d’ufficio", "Monitoraggio di PC e server", "Aggiornamenti di sicurezza e antivirus gestiti", "Report mensile"] },
+  { id: "business", name: "Business", price: 500, for: "Per PMI e studi professionali", badge: "Consigliata", inc: ["+Tutto l’Essenziale, più:", "Interventi in sede inclusi", "Backup gestito con prova di ripristino", "Firewall gestito", "Referente dedicato"] },
+  { id: "completa", name: "Completa", price: 800, for: "Per aziende con più sedi", inc: ["+Tutto il Business, più:", "Centralino VoIP gestito", "Rete, Wi-Fi e telecamere in assistenza", "Supporto per la NIS2"] },
 ];
 const MATRIX = [
   ["Help desk da remoto in orario d’ufficio", 1, 1, 1], ["Monitoraggio di PC e server", 1, 1, 1], ["Aggiornamenti e antivirus gestiti", 1, 1, 1], ["Report mensile", 1, 1, 1],

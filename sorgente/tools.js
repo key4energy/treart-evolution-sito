@@ -281,7 +281,7 @@ function initConfig(root) {
     out.innerHTML = `<span class="eyebrow">La formula giusta per te</span>
       <div><div class="big">${plan.name}</div><p>Perché hai ${why.join(", ")}.</p></div>
       <ul class="prio prio--ok">${plan.inc.map((x) => `<li>${ic(x.startsWith("+") ? "plus" : "check")}<span>${esc(x.replace(/^\+/, ""))}</span></li>`).join("")}</ul>
-      <div class="kv"><span>Canone indicativo</span><b>${t("[da definire]")} €/mese</b></div>
+      <div class="kv"><span>Canone</span><b>${plan.price} € al mese</b></div>
       <div class="row"><a class="btn btn--primary" href="#preventivo" data-go-notes>Richiedi la formula ${plan.name}</a></div>`;
     $$(".plan").forEach((p) => p.classList.toggle("plan--rec", p.dataset.plan === id));
   };
