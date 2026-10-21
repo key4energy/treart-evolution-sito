@@ -424,7 +424,7 @@ route("contatti", {
         ${chCard("stamp", "PEC", soft(C.pec, "PEC dal biglietto 2015: da confermare"), "Per le comunicazioni ufficiali.", `<button class="btn btn--ghost btn--sm" type="button" data-copy="${C.pec}"><span data-label>Copia l’indirizzo</span></button>`)}
         ${chCard("pin", "Sede", `${C.addr1}<br>${C.addr2}`, C.hours + ".", `<a class="btn btn--primary btn--sm" href="${C.maps}" target="_blank" rel="noopener">Indicazioni stradali</a><button class="btn btn--ghost btn--sm" type="button" data-copy="${C.addr1}, ${C.addr2}"><span data-label>Copia l’indirizzo</span></button>`)}
         ${chCard("user", "Commerciale", C.fabio.name, `${soft(C.fabio.tel, "Cellulare dal biglietto 2015: da confermare")} · ${C.fabio.email}`, `<a class="btn btn--primary btn--sm" href="${C.fabio.telHref}">Chiama</a><a class="btn btn--ghost btn--sm" href="mailto:${C.fabio.email}">Scrivi</a>`)}
-      </div><p class="small muted mt-m">Seguici anche su <a href="${C.facebook}" target="_blank" rel="noopener">Facebook</a>.</p></div></section>`
+      </div><p class="small muted mt-m">Seguici anche su <a href="${C.facebook}" target="_blank" rel="noopener">Facebook</a> e <a href="${C.instagram}" target="_blank" rel="noopener">Instagram</a>.</p></div></section>`
     + `<section class="sec sec--tight"><div class="wrap"><div class="note note--qr">${QR.vcard}<p><b>Salva il nostro contatto.</b> Inquadra il codice con la fotocamera del telefono: numero, email e indirizzo vanno in rubrica in un attimo.</p>
         <button class="btn btn--ghost btn--sm" type="button" data-copy="${esc(VCARD_TEXT)}">${ic("copy")}<span data-label>Copia tutti i contatti</span></button></div></div></section>`
     + contactSection({ title: "Scrivici qui.", p: "ct" })

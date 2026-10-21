@@ -271,7 +271,7 @@ function renderFooter() {
     <div class="ftr__top">
       <div class="ftr__brand"><a class="brand" href="#home" aria-label="Treart Evolution, vai alla home">${logo("neg")}</a>
         <p>Il tuo business, gestito. Partner IT con sede a Grosseto, al fianco delle aziende in tutta Italia: assistenza informatica, sicurezza, reti, telefonia e web.</p>
-        <p class="small">Seguici su <a href="${C.facebook}" target="_blank" rel="noopener">Facebook</a></p></div>
+        <p class="small">Seguici su <a href="${C.facebook}" target="_blank" rel="noopener">Facebook</a> e <a href="${C.instagram}" target="_blank" rel="noopener">Instagram</a></p></div>
       <div><h3>Servizi</h3><ul>${AREAS.map((a) => `<li><a href="#servizi" data-scroll="area-${a.id}">${a.name}</a></li>`).join("")}<li><a href="#formule">Formule a canone</a></li><li><a href="#settori">Settori</a></li></ul></div>
       <div><h3>Strumenti e guide</h3><ul>${TOOLS.map((x) => `<li><a href="#${x.id}"${x.anchor ? ` data-scroll="${x.anchor}"` : ""}>${x.name}</a></li>`).join("")}<li><a href="#risorse">Tutte le guide</a></li></ul></div>
       <div><h3>Azienda</h3><ul><li><a href="#chi-siamo">Chi siamo</a></li><li><a href="#progetti">Progetti</a></li><li><a href="#check-up">Check-up gratuito</a></li><li><a href="#preventivo">Richiedi preventivo</a></li><li><a href="#assistenza">Assistenza clienti</a></li><li><a href="#contatti">Contatti</a></li></ul></div>

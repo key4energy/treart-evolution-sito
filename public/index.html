@@ -835,6 +835,7 @@ const C = {
   tel: "0564 176 8249", telIntl: "+39 0564 176 8249", telHref: "tel:+3905641768249",
   wa: "3905641768249",
   facebook: "https://www.facebook.com/treartevolution/",
+  instagram: "https://www.instagram.com/treart_evolution/",
   email: "info@treart-evolution.com",
   pec: "pec@pec.treart-evolution.com",
   addr1: "Via Aurelia Nord 76/1", addr2: "58100 Grosseto (GR)",
@@ -1541,7 +1542,7 @@ function renderFooter() {
     <div class="ftr__top">
       <div class="ftr__brand"><a class="brand" href="#home" aria-label="Treart Evolution, vai alla home">${logo("neg")}</a>
         <p>Il tuo business, gestito. Partner IT con sede a Grosseto, al fianco delle aziende in tutta Italia: assistenza informatica, sicurezza, reti, telefonia e web.</p>
-        <p class="small">Seguici su <a href="${C.facebook}" target="_blank" rel="noopener">Facebook</a></p></div>
+        <p class="small">Seguici su <a href="${C.facebook}" target="_blank" rel="noopener">Facebook</a> e <a href="${C.instagram}" target="_blank" rel="noopener">Instagram</a></p></div>
       <div><h3>Servizi</h3><ul>${AREAS.map((a) => `<li><a href="#servizi" data-scroll="area-${a.id}">${a.name}</a></li>`).join("")}<li><a href="#formule">Formule a canone</a></li><li><a href="#settori">Settori</a></li></ul></div>
       <div><h3>Strumenti e guide</h3><ul>${TOOLS.map((x) => `<li><a href="#${x.id}"${x.anchor ? ` data-scroll="${x.anchor}"` : ""}>${x.name}</a></li>`).join("")}<li><a href="#risorse">Tutte le guide</a></li></ul></div>
       <div><h3>Azienda</h3><ul><li><a href="#chi-siamo">Chi siamo</a></li><li><a href="#progetti">Progetti</a></li><li><a href="#check-up">Check-up gratuito</a></li><li><a href="#preventivo">Richiedi preventivo</a></li><li><a href="#assistenza">Assistenza clienti</a></li><li><a href="#contatti">Contatti</a></li></ul></div>
@@ -2554,7 +2555,7 @@ route("contatti", {
         ${chCard("stamp", "PEC", soft(C.pec, "PEC dal biglietto 2015: da confermare"), "Per le comunicazioni ufficiali.", `<button class="btn btn--ghost btn--sm" type="button" data-copy="${C.pec}"><span data-label>Copia l’indirizzo</span></button>`)}
         ${chCard("pin", "Sede", `${C.addr1}<br>${C.addr2}`, C.hours + ".", `<a class="btn btn--primary btn--sm" href="${C.maps}" target="_blank" rel="noopener">Indicazioni stradali</a><button class="btn btn--ghost btn--sm" type="button" data-copy="${C.addr1}, ${C.addr2}"><span data-label>Copia l’indirizzo</span></button>`)}
         ${chCard("user", "Commerciale", C.fabio.name, `${soft(C.fabio.tel, "Cellulare dal biglietto 2015: da confermare")} · ${C.fabio.email}`, `<a class="btn btn--primary btn--sm" href="${C.fabio.telHref}">Chiama</a><a class="btn btn--ghost btn--sm" href="mailto:${C.fabio.email}">Scrivi</a>`)}
-      </div><p class="small muted mt-m">Seguici anche su <a href="${C.facebook}" target="_blank" rel="noopener">Facebook</a>.</p></div></section>`
+      </div><p class="small muted mt-m">Seguici anche su <a href="${C.facebook}" target="_blank" rel="noopener">Facebook</a> e <a href="${C.instagram}" target="_blank" rel="noopener">Instagram</a>.</p></div></section>`
     + `<section class="sec sec--tight"><div class="wrap"><div class="note note--qr">${QR.vcard}<p><b>Salva il nostro contatto.</b> Inquadra il codice con la fotocamera del telefono: numero, email e indirizzo vanno in rubrica in un attimo.</p>
         <button class="btn btn--ghost btn--sm" type="button" data-copy="${esc(VCARD_TEXT)}">${ic("copy")}<span data-label>Copia tutti i contatti</span></button></div></div></section>`
     + contactSection({ title: "Scrivici qui.", p: "ct" })
