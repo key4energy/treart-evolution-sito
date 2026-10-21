@@ -1536,6 +1536,7 @@ function renderFooter() {
       <div><h3>Contatti</h3><address>
         <span>${C.addr1}<br>${C.addr2}</span>
         <a href="${C.telHref}">${C.tel}</a>
+        <a href="${waHref(WA_GENERIC)}" target="_blank" rel="noopener">WhatsApp ${C.tel}</a>
         <a href="mailto:${C.email}">${C.email}</a>
         <span>PEC ${soft(C.pec, "PEC dal biglietto 2015: da confermare")}</span>
         <span>${C.hours}</span></address></div>
@@ -2152,7 +2153,7 @@ function band(title, text, ctas) {
 }
 const defaultBand = () => band("Un solo partner. Un solo numero.", "Assistenza IT, sicurezza, reti, telefonia e web per le aziende di Grosseto e della Maremma, con tecnici in zona e un referente che conosce la tua azienda.",
   `<a class="btn btn--dark btn--lg" href="#check-up">Prenota il check-up gratuito</a><a class="btn btn--ghost btn--lg" href="${C.telHref}">${ic("phone")}Chiama lo ${C.tel}</a>`);
-const waSoft = (label = "Scrivici su WhatsApp") => soft(label, "WhatsApp Business da attivare sul numero 0564 176 8249");
+const waSoft = (label = "Scrivici su WhatsApp") => label;
 
 function contactSection(o = {}) {
   const { title = "Parliamo del tuo progetto.", text, service, p = "cs" } = o;
@@ -2164,7 +2165,7 @@ function contactSection(o = {}) {
       <p class="lead">${text || `Raccontaci cosa ti serve: ti rispondiamo entro ${t(C.reply)} con un preventivo o una data per il sopralluogo.`}</p>
       <div class="channels">
         <a class="channel" href="${C.telHref}">${icDot("phone")}<span><b>${C.tel}</b><span>${C.hours}</span></span></a>
-        <a class="channel" href="${waHref(svc ? svc.wa : WA_GENERIC)}" target="_blank" rel="noopener">${icDot("chat")}<span><b>${waSoft()}</b><span>Anche con foto e documenti</span></span></a>
+        <a class="channel" href="${waHref(svc ? svc.wa : WA_GENERIC)}" target="_blank" rel="noopener">${icDot("chat")}<span><b>${waSoft()}</b><span>${C.tel} · anche con foto e documenti</span></span></a>
         <a class="channel" href="mailto:${C.email}">${icDot("mail")}<span><b>${C.email}</b><span>Per capitolati e richieste dettagliate</span></span></a>
         <a class="channel" href="${C.maps}" target="_blank" rel="noopener">${icDot("pin")}<span><b>${C.addr1}</b><span>${C.addr2} · apri in Google Maps</span></span></a>
       </div>
@@ -2522,7 +2523,7 @@ route("contatti", {
       </div></div></section>`
     + `<section class="sec sec--paper"><div class="wrap">${secHead("Tutti i canali", "Telefono, WhatsApp, email o di persona.")}<div class="ch-grid">
         ${chCard("phone", "Telefono", C.tel, C.hours + ".", `<a class="btn btn--primary btn--sm" href="${C.telHref}">Chiama</a><button class="btn btn--ghost btn--sm" type="button" data-copy="${C.telIntl}"><span data-label>Copia il numero</span></button>`)}
-        ${chCard("chat", "WhatsApp", soft(C.tel, "WhatsApp Business da attivare sul numero fisso"), "Scrivici quando vuoi: rispondiamo in orario d’ufficio. Puoi mandarci foto e documenti.", `<a class="btn btn--primary btn--sm" href="${waHref(WA_GENERIC)}" target="_blank" rel="noopener">Apri WhatsApp</a>`, QR.wa)}
+        ${chCard("chat", "WhatsApp", C.tel, "Scrivici quando vuoi: rispondiamo in orario d’ufficio. Puoi mandarci foto e documenti.", `<a class="btn btn--primary btn--sm" href="${waHref(WA_GENERIC)}" target="_blank" rel="noopener">Apri WhatsApp</a>`, QR.wa)}
         ${chCard("mail", "Email", C.email, "Per capitolati, documenti e richieste dettagliate.", `<a class="btn btn--primary btn--sm" href="mailto:${C.email}">Scrivi un’email</a><button class="btn btn--ghost btn--sm" type="button" data-copy="${C.email}"><span data-label>Copia l’indirizzo</span></button>`)}
         ${chCard("stamp", "PEC", soft(C.pec, "PEC dal biglietto 2015: da confermare"), "Per le comunicazioni ufficiali.", `<button class="btn btn--ghost btn--sm" type="button" data-copy="${C.pec}"><span data-label>Copia l’indirizzo</span></button>`)}
         ${chCard("pin", "Sede", `${C.addr1}<br>${C.addr2}`, C.hours + ".", `<a class="btn btn--primary btn--sm" href="${C.maps}" target="_blank" rel="noopener">Indicazioni stradali</a><button class="btn btn--ghost btn--sm" type="button" data-copy="${C.addr1}, ${C.addr2}"><span data-label>Copia l’indirizzo</span></button>`)}

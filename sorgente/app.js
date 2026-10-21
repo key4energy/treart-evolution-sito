@@ -278,6 +278,7 @@ function renderFooter() {
       <div><h3>Contatti</h3><address>
         <span>${C.addr1}<br>${C.addr2}</span>
         <a href="${C.telHref}">${C.tel}</a>
+        <a href="${waHref(WA_GENERIC)}" target="_blank" rel="noopener">WhatsApp ${C.tel}</a>
         <a href="mailto:${C.email}">${C.email}</a>
         <span>PEC ${soft(C.pec, "PEC dal biglietto 2015: da confermare")}</span>
         <span>${C.hours}</span></address></div>
