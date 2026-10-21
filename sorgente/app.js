@@ -284,7 +284,7 @@ function renderFooter() {
         <span>${C.hours}</span></address></div>
     </div>
     <div class="ftr__bottom">
-      <span>© ${y} Treart Evolution Srl · P.IVA ${C.piva} · REA ${C.rea} · Cap. soc. ${C.cap}</span>
+      <span>© ${y} Treart Evolution Srl · P.IVA ${C.piva} · REA ${C.rea} · Cap. soc. ${C.cap}<br>Tutti i prezzi indicati sono IVA esclusa.</span>
       <nav aria-label="Note legali"><a href="#privacy">Privacy</a><a href="#cookie">Cookie</a><a href="#crediti">Crediti foto</a>
         <button class="tbc-toggle" type="button" aria-pressed="false" data-tbc-toggle>${ic("eye")}Anteprima: evidenzia i dati da confermare</button></nav>
     </div>

@@ -387,6 +387,7 @@ const MATRIX = [
 ];
 const PLAN_FAQ = [
   ["Cosa non è compreso nel canone?", "L’hardware nuovo, le licenze e i progetti, per esempio un nuovo impianto Wi-Fi, si quotano a parte e sempre prima di iniziare. [Elenco delle esclusioni da definire]"],
+  ["I prezzi comprendono l’IVA?", "No: tutti i prezzi indicati sul sito sono IVA esclusa."],
   ["Quanto dura il contratto?", "Durata minima e preavviso: [da definire]."],
   ["Posso cambiare formula?", "Sì: se l’azienda cresce, passi alla formula successiva. [Condizioni da definire]"],
   ["E se non voglio un canone?", "Facciamo anche interventi singoli su preventivo. [Tariffa oraria da definire]"],

@@ -1206,6 +1206,7 @@ const MATRIX = [
 ];
 const PLAN_FAQ = [
   ["Cosa non è compreso nel canone?", "L’hardware nuovo, le licenze e i progetti, per esempio un nuovo impianto Wi-Fi, si quotano a parte e sempre prima di iniziare. [Elenco delle esclusioni da definire]"],
+  ["I prezzi comprendono l’IVA?", "No: tutti i prezzi indicati sul sito sono IVA esclusa."],
   ["Quanto dura il contratto?", "Durata minima e preavviso: [da definire]."],
   ["Posso cambiare formula?", "Sì: se l’azienda cresce, passi alla formula successiva. [Condizioni da definire]"],
   ["E se non voglio un canone?", "Facciamo anche interventi singoli su preventivo. [Tariffa oraria da definire]"],
@@ -1542,7 +1543,7 @@ function renderFooter() {
         <span>${C.hours}</span></address></div>
     </div>
     <div class="ftr__bottom">
-      <span>© ${y} Treart Evolution Srl · P.IVA ${C.piva} · REA ${C.rea} · Cap. soc. ${C.cap}</span>
+      <span>© ${y} Treart Evolution Srl · P.IVA ${C.piva} · REA ${C.rea} · Cap. soc. ${C.cap}<br>Tutti i prezzi indicati sono IVA esclusa.</span>
       <nav aria-label="Note legali"><a href="#privacy">Privacy</a><a href="#cookie">Cookie</a><a href="#crediti">Crediti foto</a>
         <button class="tbc-toggle" type="button" aria-pressed="false" data-tbc-toggle>${ic("eye")}Anteprima: evidenzia i dati da confermare</button></nav>
     </div>
