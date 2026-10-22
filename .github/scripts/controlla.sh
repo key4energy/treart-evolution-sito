@@ -26,4 +26,16 @@ for p in https http; do
     log "$p: HTTP $code $err"
   fi
 done
+
+# altre pagine statiche (es. privacy e condizioni dell'app social richieste da Meta)
+for f in public/*.html; do
+  pg=$(basename "$f")
+  [ "$pg" = index.html ] && continue
+  code=$(curl -sS -L -m 25 -o /tmp/altra.html -w '%{http_code}' "https://$SITE/$pg" 2>/dev/null || true)
+  if [ "$code" = 200 ] && cmp -s /tmp/altra.html "$f"; then
+    log "https://$SITE/$pg: online, aggiornata"
+  else
+    log "https://$SITE/$pg: HTTP ${code:-000}"
+  fi
+done
 exit 0

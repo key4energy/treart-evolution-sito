@@ -4,7 +4,7 @@ Anteprima del nuovo sito di Treart Evolution, pubblicata su https://fabio.treart
 
 ## Come si pubblica
 
-A ogni modifica di `public/` sul ramo `main`, il workflow **Pubblica su SiteGround** si collega a SiteGround via SSH e carica `index.html` e `og-image.png` nella cartella del sottodominio. Sul server non viene cancellato nessun file: se c'era già una pagina iniziale, viene conservata come `index.html.originale`.
+A ogni modifica di `public/` sul ramo `main`, il workflow **Pubblica su SiteGround** si collega a SiteGround via SSH e carica tutti i file di `public/` (sottocartelle comprese) nella cartella del sottodominio. Sul server non viene cancellato nessun file: se c'era già una pagina iniziale, viene conservata come `index.html.originale`.
 
 L'esito di ogni pubblicazione si legge nella scheda **Actions** e nel file `esito-pubblicazione.txt` del ramo `esito-pubblicazione`.
 
@@ -56,6 +56,15 @@ python3 build_hosting.py ../public
 ```
 
 `build.py` genera anche la versione di anteprima, `sito-treart-evolution.html`.
+
+## Pagine dell'app social
+
+Per pubblicare su Facebook e Instagram si usa un'app Meta interna, «Treart Evolution Social». Meta chiede, per metterla in modalità Live, un'informativa privacy e delle condizioni d'uso raggiungibili online:
+
+- https://fabio.treart-evolution.com/privacy-app.html (istruzioni per la cancellazione dei dati: `privacy-app.html#cancellazione-dati`)
+- https://fabio.treart-evolution.com/condizioni-app.html
+
+Si rigenerano con `python3 sorgente/pagine_app.py public`, che copia anche il carattere in `public/font/`.
 
 ## Prima della pubblicazione definitiva
 

@@ -50,13 +50,18 @@ fi
 
 # 2. caricamento dei file (sul server non viene cancellato nulla)
 mapfile -t FILES < <(cd public && find . -type f ! -name '.*' | sed 's|^\./||' | sort)
+mapfile -t DIRS < <(cd public && find . -mindepth 1 -type d | sed 's|^\./||' | sort)
 up() { scp "$@" 2>/dev/null || scp -O "$@"; }
-up "${OPTS[@]}" -P "$PORT" -p public/index.html public/og-image.png "$SG_USER@$SG_HOST:$DEST/"
-if [ -d public/img ]; then
-  ssh_sg "mkdir -p '$DEST/img'"
-  up "${OPTS[@]}" -P "$PORT" -p public/img/* "$SG_USER@$SG_HOST:$DEST/img/"
+if [ ${#DIRS[@]} -gt 0 ]; then
+  ssh_sg "cd '$DEST' && mkdir -p$(printf " '%s'" "${DIRS[@]}")"
 fi
-log "Caricati ${#FILES[@]} file in $DEST (pagina, immagine di anteprima e foto)"
+# una copia per cartella: pagine e immagine di anteprima, poi img/, font/, social/...
+for d in . "${DIRS[@]}"; do
+  mapfile -t F < <(cd public && find "$d" -maxdepth 1 -type f ! -name '.*' | sort)
+  [ ${#F[@]} -gt 0 ] || continue
+  (cd public && up "${OPTS[@]}" -P "$PORT" -p "${F[@]}" "$SG_USER@$SG_HOST:$DEST/$d/")
+done
+log "Caricati ${#FILES[@]} file in $DEST (pagine, immagine di anteprima, foto e caratteri)"
 log "$(ssh_sg "bash -s -- '$DEST'" < .github/scripts/htaccess.sh 2>&1)"
 
 # 3. verifica: i file sul server devono essere identici a quelli del repository
