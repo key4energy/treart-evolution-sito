@@ -1,0 +1,25 @@
+Pubblicazione n. 12 del 24/10/2026 03:58 - commit 60cface
+Warning: Permanently added '[itm4.siteground.biz]:18765' (ED25519) to the list of known hosts.
+CARTELLA=www/fabio.treart-evolution.com/public_html
+Caricati 67 file in www/fabio.treart-evolution.com/public_html (pagine, immagine di anteprima, foto e caratteri)
+Regola anti-cache per le pagine già presente in .htaccess
+Verifica: i 67 file sul server sono identici a quelli del repository
+Contenuto della cartella:
+total 788
+-rw-r--r-- 1    266 Oct 20 18:51 .htaccess
+drwxr-xr-x 3   4096 Oct 20 18:11 .well-known
+-rw-r--r-- 1  90305 Oct 20 17:26 Default.html
+-rw-r--r-- 1  43741 Oct 24 01:58 condizioni-app.html
+drwxr-xr-x 2   4096 Oct 22 09:03 font
+drwxr-xr-x 2   4096 Oct 21 03:48 img
+-rw-r--r-- 1 517817 Oct 24 01:58 index.html
+-rw-r--r-- 1  76062 Oct 24 01:58 og-image.png
+-rw-r--r-- 1  45167 Oct 24 01:58 privacy-app.html
+
+Foto in img/: 62
+Indirizzo IP di fabio.treart-evolution.com: 35.214.246.228
+https: risponde la pagina appena pubblicata (HTTP 200, cache SiteGround MISS)
+http: risponde la pagina appena pubblicata (HTTP 200, cache SiteGround MISS)
+https://fabio.treart-evolution.com/condizioni-app.html: online, aggiornata
+https://fabio.treart-evolution.com/privacy-app.html: online, aggiornata
+Esito complessivo: success
