@@ -57,6 +57,12 @@ python3 build_hosting.py ../public
 
 `build.py` genera anche la versione di anteprima, `sito-treart-evolution.html`.
 
+## Partner e badge ufficiali
+
+I partner confermati (3CX Bronze Partner e WatchGuard) sono nell'elenco `PARTNERS` di `sorgente/content.js`. Compaiono nella home (sezione «Sicurezza gestita»), in Chi siamo (sezione «Partner ufficiali», raggiungibile da `#chi-siamo` con il pulsante «Cosa significa per te») e in cima alle pagine Centralini VoIP e Cybersecurity.
+
+Per mostrare i badge ufficiali al posto del nome in testo: scaricali dai portali partner dei produttori, salvali in `public/img/partner/`, scrivi il percorso nel campo `badge` (per esempio `"img/partner/3cx-bronze-partner.png"`) e rigenera il sito. Il livello di partnership WatchGuard e la certificazione 3CX dei tecnici sono segnati come dati da confermare.
+
 ## Pagine dell'app social
 
 Per pubblicare su Facebook e Instagram si usa un'app Meta interna, «Treart Evolution Social». Meta chiede, per metterla in modalità Live, un'informativa privacy e delle condizioni d'uso raggiungibili online:

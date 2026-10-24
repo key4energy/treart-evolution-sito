@@ -26,6 +26,19 @@ const AREAS = [
   { id: "web", name: "Web", icon: "globe", ga: "web", line: "Siti, email e hosting che portano clienti, non solo visite.", status: "Sito online", services: ["siti-web", "email-domini", "hosting"] },
 ];
 
+/* Partner ufficiali dei produttori (confermati dall’assistenza tecnica Treart, ottobre 2026).
+   «badge»: badge ufficiale scaricato dal portale partner del produttore, da salvare in
+   public/img/partner/ (per esempio "img/partner/3cx-bronze-partner.png"); finché è vuoto
+   il sito mostra nome e livello in testo. «levelNote»: livello ancora da confermare. */
+const PARTNERS = [
+  { id: "3cx", name: "3CX", level: "Bronze Partner", levelNote: "", badge: "", service: "centralini-voip", icon: "phone", area: "Centralini VoIP",
+    line: "Progettiamo, installiamo e seguiamo centralini 3CX in cloud o in sede, come partner ufficiale del produttore.",
+    gives: ["Licenze originali e rinnovi gestiti da noi, senza scadenze dimenticate", "Centralino configurato secondo gli standard 3CX, su misura per la tua organizzazione", "Aggiornamenti, modifiche e assistenza da {{tecnici certificati 3CX|Certificazione 3CX dei tecnici da confermare}}"] },
+  { id: "watchguard", name: "WatchGuard", level: "Partner", levelNote: "Livello di partnership WatchGuard da confermare (es. Silver, Gold)", badge: "", service: "cybersecurity", icon: "shield", area: "Sicurezza della rete",
+    line: "Proteggiamo la rete delle aziende con i firewall WatchGuard, configurati su misura e gestiti da noi ogni giorno.",
+    gives: ["Firewall e licenze di sicurezza originali, rinnovate per tempo", "Configurazione cucita sulla tua rete, non lasciata alle impostazioni di fabbrica", "Aggiornamenti e controlli continui, con un referente che conosce i tuoi sistemi"] },
+];
+
 const INCENTIVE_NOTE = {
   voucher: "Questo servizio può rientrare nel Voucher Cloud & Cybersecurity del Ministero: contributo del 50% della spesa, fino a 20.000 €. Domande dal 10 novembre 2026, in ordine di arrivo.",
   cciaa: "Oppure nel Bando Doppia Transizione della Camera di commercio: 60% fino a 5.000 €, per imprese di Grosseto e Livorno. Le spese vanno pagate prima della domanda, entro il 10 novembre 2026.",
@@ -66,17 +79,17 @@ const SERVICES = {
   },
   "cybersecurity": {
     area: "sec", icon: "shield", name: "Cybersecurity", short: "Cybersecurity", menu: "Firewall, protezione dei PC e della posta",
-    title: "Proteggi dati, clienti e reputazione. Prima che sia troppo tardi.",
+    title: "Proteggi dati, clienti e reputazione. Senza pensieri.",
     sub: "Firewall, protezione dei computer e della posta, monitoraggio e formazione: una difesa su misura per la tua azienda, gestita da noi ogni giorno.",
     pains: ["«Abbiamo l’antivirus, quindi siamo tranquilli.»", "«Ci arrivano email di fornitori che chiedono di cambiare l’IBAN.»", "«Un nostro cliente grande ci ha chiesto come gestiamo la sicurezza.»", "«Se domani ci bloccano i file, non sappiamo da dove ripartire.»"],
-    does: ["Analisi dei rischi: dove la tua azienda è scoperta, spiegato in parole semplici", "Firewall gestito: la porta d’ingresso della rete, sorvegliata e aggiornata", "Protezione avanzata dei computer (EDR): riconosce i comportamenti sospetti, non solo i virus noti", "Protezione della posta da truffe, allegati e link pericolosi", "Accessi sicuri: password robuste e doppia verifica sugli account importanti", "Formazione del personale con simulazioni di email truffa", "Supporto per le richieste di sicurezza dei clienti e per la NIS2"],
+    does: ["Analisi dei rischi: dove la tua azienda è scoperta, spiegato in parole semplici", "Firewall WatchGuard gestito: la porta d’ingresso della rete, sorvegliata e aggiornata", "Protezione avanzata dei computer (EDR): riconosce i comportamenti sospetti, non solo i virus noti", "Protezione della posta da truffe, allegati e link pericolosi", "Accessi sicuri: password robuste e doppia verifica sugli account importanti", "Formazione del personale con simulazioni di email truffa", "Supporto per le richieste di sicurezza dei clienti e per la NIS2"],
     stat: { n: "507", text: "attacchi informatici gravi in Italia nel 2025: il 42% in più dell’anno prima e il 9,6% di tutti quelli registrati nel mondo.", src: ["Rapporto Clusit 2026", "https://www.01net.it/rapporto-clusit-2026-cybersecurity-ai-ransomware/"] },
     steps: [["Check-up di sicurezza gratuito", "Un rapporto chiaro su cosa sistemare prima."], ["Piano di intervento", "In ordine di priorità e di costo."], ["Attivazione delle protezioni", "Senza fermare il lavoro."], ["Monitoraggio continuo", "Aggiornamenti e un rapporto periodico."]],
     why: [["network", "Sicurezza integrata", "Con rete, backup e PC che già gestiamo: nessuna falla tra un fornitore e l’altro."], ["chat", "Linguaggio chiaro", "Sai sempre cosa stai comprando e perché."], ["file", "Pronti per la NIS2", "Per i requisiti che le aziende grandi chiedono ai loro fornitori."]],
     faq: [["Siamo piccoli, a chi interessiamo?", "Molti attacchi colpiscono a caso migliaia di aziende insieme: i piccoli sono i più esposti perché meno protetti."], ["L’antivirus non basta?", "Non più: le truffe via email e i furti di password passano dove l’antivirus non guarda."], ["Cos’è la NIS2 e ci riguarda?", "È la direttiva europea sulla sicurezza informatica. Anche se non sei obbligato, lo sono molti tuoi clienti, che chiederanno garanzie a chi li fornisce."], ["Quanto costa?", "Dipende da quanti PC e servizi proteggere. Dopo il check-up ricevi un canone chiaro."]],
     cta: { label: "Fai il check-up di sicurezza gratuito", to: "check-up", type: "sicurezza" },
     wa: "Ciao, vorrei sapere quanto è protetta la mia azienda.",
-    seo: ["Sicurezza informatica per aziende a Grosseto | Treart Evolution", "Firewall, protezione dei PC e della posta, formazione e supporto NIS2 per le PMI di tutta Italia. Check-up di sicurezza gratuito."],
+    seo: ["Sicurezza informatica per aziende a Grosseto | Treart Evolution", "Firewall WatchGuard, protezione dei PC e della posta, formazione e supporto NIS2 per le PMI di tutta Italia. Check-up di sicurezza gratuito."],
     flow: [["mail", "Posta e web", "filtri contro truffe e link pericolosi"], ["shield", "Firewall gestito", "la porta della rete, sorvegliata"], ["monitor", "Protezione dei PC", "riconosce i comportamenti sospetti"], ["users", "Persone", "formazione e doppia verifica"]],
     notes: [{ icon: "file", text: "NIS2: le aziende obbligate stanno chiedendo garanzie di sicurezza ai fornitori. Arriva preparato.", to: "nis2", label: "Leggi la guida" }],
     incentives: ["voucher", "cciaa"],
@@ -170,13 +183,13 @@ const SERVICES = {
     title: "Il numero dell’ufficio sul tuo smartphone. Ovunque tu sia.",
     sub: "Centralini VoIP professionali installati e gestiti da noi: chiamate smistate al posto giusto, nessun cliente perso, costi più bassi delle linee tradizionali.",
     pains: ["«I clienti chiamano e il telefono squilla a vuoto.»", "«Quando sono fuori ufficio perdo le chiamate.»", "«Il vecchio centralino si guasta e nessuno lo ripara più.»", "«La bolletta del telefono è sempre troppo alta.»"],
-    does: ["Analisi delle linee, dei numeri e di come arrivano le chiamate", "Centralino {{3CX|Partner da confermare}} in cloud o in sede, su misura per la tua organizzazione", "Portabilità dei numeri che hai già: i clienti continuano a chiamarti come prima", "App per smartphone e computer: chiami e ricevi con il numero aziendale", "Risponditore automatico, code di attesa e orari di apertura", "Messaggi vocali via email e inoltro automatico sui cellulari", "Telefoni da scrivania configurati, formazione e assistenza", "Verifica di allarmi, POS e fax collegati alla vecchia linea"],
+    does: ["Analisi delle linee, dei numeri e di come arrivano le chiamate", "Centralino 3CX in cloud o in sede, su misura per la tua organizzazione", "Portabilità dei numeri che hai già: i clienti continuano a chiamarti come prima", "App per smartphone e computer: chiami e ricevi con il numero aziendale", "Risponditore automatico, code di attesa e orari di apertura", "Messaggi vocali via email e inoltro automatico sui cellulari", "Telefoni da scrivania configurati, formazione e assistenza", "Verifica di allarmi, POS e fax collegati alla vecchia linea"],
     steps: [["Sopralluogo", "Verifica della linea e degli apparati collegati."], ["Progetto", "Interni, smistamento e messaggi pensati sul tuo modo di lavorare."], ["Attivazione", "Con portabilità dei numeri, senza interrompere il servizio."], ["Assistenza e modifiche", "Quando servono: nuovi colleghi, orari, ferie."]],
     why: [["users", "Un solo referente", "Centralino, linea Internet e rete: se qualcosa non va, sai chi chiamare."], ["wrench", "Su misura", "Configurazione pensata per te, non un pacchetto uguale per tutti."], ["phone", "Linee professionali", "Linee VoIP di operatori partner [nomi da confermare]."]],
     faq: [["Posso tenere il mio numero?", "Sì, con la portabilità il numero passa sul nuovo centralino."], ["Serve la fibra?", "Serve una connessione stabile. La verifichiamo e, se non basta, proponiamo fibra, radio o satellite."], ["Cosa succede se manca Internet o la corrente?", "Le chiamate si deviano in automatico sui cellulari; per gli apparati in ufficio consigliamo un gruppo di continuità."], ["Quanto costa?", "Dipende da utenti, linee e funzioni. Dopo il sopralluogo ricevi canone e costi una tantum separati."]],
     cta: { label: "Verifica gratis linea e centralino", to: "check-up", type: "linea" },
     wa: "Ciao, vorrei informazioni su un centralino VoIP per la mia azienda.",
-    seo: ["Centralino VoIP per aziende a Grosseto | Treart Evolution", "Centralini in cloud o in sede, numero aziendale sullo smartphone e portabilità dei numeri. Pronti per lo spegnimento delle linee in rame."],
+    seo: ["Centralino VoIP per aziende a Grosseto | Treart Evolution", "Centralini 3CX in cloud o in sede da partner ufficiale, numero aziendale sullo smartphone e portabilità dei numeri. Pronti per lo spegnimento del rame."],
     flow: [["phone", "Il cliente chiama", "il tuo numero di sempre"], ["server", "Centralino", "risponditore, code e orari"], ["smartphone", "Risponde chi è libero", "in ufficio o sullo smartphone"], ["mail", "Nessuna chiamata persa", "messaggi vocali via email"]],
     notes: [{ icon: "alert", text: "Entro il 2028 si spengono circa 6.800 centrali in rame: centralini, allarmi e POS analogici vanno verificati.", to: "verifica-rame", label: "Fai la verifica" }],
     incentives: ["voucher"],

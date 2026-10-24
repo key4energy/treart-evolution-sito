@@ -115,7 +115,43 @@ function casesHtml() {
     <div class="case__body"><span class="pill">${c.area} · ${c.who}</span><h3>${c.title}</h3>
     <dl><dt>Problema</dt><dd>${c.problem}</dd><dt>Soluzione</dt><dd>${c.solution}</dd><dt>Risultato</dt><dd>${c.result}</dd></dl></div></article>`).join("")}</div>`;
 }
-const partnersHtml = () => `<div class="partners" aria-label="Tecnologie e partner">${["Fastweb", "Eolo", "Starlink", "3CX"].map((p) => `<span>${soft(p, "Partner da confermare")}</span>`).join("")}<span>${t("[altri partner]")}</span></div>`;
+const partnersHtml = () => `<div class="partners" aria-label="Tecnologie e partner">${PARTNERS.map((p) => `<span class="is-ok">${ic("check")}<span>${esc(p.name)} ${p.levelNote ? soft(p.level, p.levelNote) : esc(p.level)}</span></span>`).join("")}${["Fastweb", "Eolo", "Starlink"].map((p) => `<span>${soft(p, "Partner da confermare")}</span>`).join("")}<span>${t("[altri partner]")}</span></div>`;
+
+/* ---------- partner ufficiali e sicurezza gestita ---------- */
+// badge del partner: l'immagine ufficiale se c'è (PARTNERS[].badge), altrimenti nome e livello in testo
+function certBadge(p, cls = "") {
+  const lvl = p.levelNote ? soft(p.level, p.levelNote) : esc(p.level);
+  const inner = p.badge
+    ? `<img src="${esc(p.badge)}" alt="${esc(p.name + " " + p.level)}" loading="lazy" decoding="async">`
+    : `${ic("check-circle")}<span><b>${esc(p.name)}</b><small>${lvl}</small></span>`;
+  return `<a class="cert${p.badge ? " cert--img" : ""}${cls ? " " + cls : ""}" href="#${p.service}">${inner}</a>`;
+}
+function partnerNote(p) {
+  const lvl = p.levelNote ? soft(p.level, p.levelNote) : esc(p.level);
+  const mark = p.badge ? `<img class="note__badge" src="${esc(p.badge)}" alt="${esc(p.name + " " + p.level)}" loading="lazy" decoding="async">` : icDot("check-circle");
+  return `<div class="note note--partner">${mark}<p><b>${esc(p.name)} ${lvl}.</b> ${t(p.line)}</p><a class="btn btn--ghost btn--sm" href="#chi-siamo" data-scroll="partner">Cosa significa per te</a></div>`;
+}
+function partnerCards() {
+  return `<div class="pcards">${PARTNERS.map((p) => `<article class="pcard">
+    <div class="pcard__top">${certBadge(p, "cert--lg")}<span class="pill">${ic(p.icon)}${p.area}</span></div>
+    <p>${t(p.line)}</p>
+    <ul class="pcard__list">${p.gives.map((g) => `<li>${ic("check")}<span>${t(g)}</span></li>`).join("")}</ul>
+    <a class="more" href="#${p.service}">${SERVICES[p.service].short} ${ic("arrow-right")}</a></article>`).join("")}</div>`;
+}
+const SECURE = [
+  ["cloud", "Dati sempre recuperabili", "Backup automatici in sede e in cloud, controllati ogni giorno e provati con ripristini reali.", "backup"],
+  ["mail", "Posta protetta", "Filtri contro truffe e allegati pericolosi, doppia verifica sugli account e un team che riconosce i messaggi sospetti.", "email-domini"],
+  ["shield", "Rete sorvegliata", "Firewall WatchGuard configurato sulla tua rete e aggiornato da noi: la porta d’ingresso dell’azienda, sempre controllata.", "cybersecurity"],
+  ["users", "Tecnici che conoscono i tuoi sistemi", "Monitoraggio continuo, aggiornamenti gestiti e un referente unico: i problemi si risolvono prima che tu li noti.", "assistenza-informatica"],
+];
+function secureSection() {
+  return `<section class="sec sec--paper" aria-labelledby="sicura-t"><div class="wrap">
+    ${secHead("Sicurezza gestita", `<span id="sicura-t">La tua azienda protetta. Senza pensieri.</span>`, "Dati, posta e rete protetti da sistemi professionali e da tecnici che li seguono ogni giorno. Tu lavori tranquillo, al resto pensiamo noi.")}
+    <div class="secure">${SECURE.map(([i, h, p, id]) => `<a class="gcard" href="#${id}">${icDot(i)}<h3>${h}</h3><p>${p}</p><span class="gcard__foot"><span>${SERVICES[id].short}</span>${ic("arrow-right")}</span></a>`).join("")}</div>
+    <div class="secure__foot"><div class="certs" role="group" aria-label="Partner ufficiali"><span class="certs__label">Partner ufficiali</span>${PARTNERS.map((p) => certBadge(p)).join("")}</div>
+      <a class="btn btn--primary btn--lg" href="#check-up" data-checkup="sicurezza" data-prefill="cybersecurity">Prenota il check-up di sicurezza gratuito</a></div>
+  </div></section>`;
+}
 const numsHtml = () => `<div class="nums"><div class="num"><b>${t("[N]")}</b><span>anni di attività</span></div><div class="num"><b>${t("[N]")}</b><span>aziende seguite</span></div><div class="num"><b>${t("[N]")}</b><span>impianti realizzati</span></div></div>`;
 
 function stage() {
@@ -178,6 +214,8 @@ route("home", {
 
   ${compareSection()}
 
+  ${secureSection()}
+
   <section class="sec sec--dark"><div class="wrap">
     ${secHead("Strumenti gratuiti", "Scopri in due minuti dove la tua azienda è scoperta.", "Strumenti semplici e senza registrazione: le risposte restano sul tuo dispositivo.")}
     <div class="tools">
@@ -234,7 +272,8 @@ function servicePage(id) {
   const s = SERVICES[id], a = AREAS.find((x) => x.id === s.area);
   const flow = `<div class="flow" role="group" aria-label="Come funziona"><div class="flow__title"><b>Come funziona</b>${icDot(s.icon)}</div>
     <ol>${s.flow.map(([i, h, sub]) => `<li>${icDot(i)}<span><b>${h}</b><span>${sub}</span></span></li>`).join("")}</ol></div>`;
-  let notes = (s.notes || []).map((n) => `<div class="note">${icDot(n.icon)}<p>${t(n.text)}</p><a class="btn btn--ghost btn--sm" href="#${n.to}">${n.label}</a></div>`).join("");
+  let notes = PARTNERS.filter((p) => p.service === id).map(partnerNote).join("")
+    + (s.notes || []).map((n) => `<div class="note">${icDot(n.icon)}<p>${t(n.text)}</p><a class="btn btn--ghost btn--sm" href="#${n.to}">${n.label}</a></div>`).join("");
   const inc = (s.incentives || []).filter((k) => k !== "cciaa" || dlState(DEADLINES.find((d) => d.id === "cciaa")) !== "past").filter((k) => k !== "voucher" || dlState(DEADLINES.find((d) => d.id === "voucher")) !== "past");
   if (inc.length) notes += `<div class="note note--green">${icDot("euro")}<p><b>Incentivi.</b> ${inc.map((k) => INCENTIVE_NOTE[k]).join(" ")}</p><a class="btn btn--primary btn--sm" href="#trova-incentivo">Verifica in un minuto</a></div>`;
   const g = GUIDES[s.guide], tool = TOOLS.find((x) => x.id === s.tool);
@@ -381,11 +420,12 @@ route("chi-siamo", {
           <div>${icDot("chat")}<h3>Parole semplici</h3><p>Preventivi chiari, con canone e costi una tantum separati. Ti spieghiamo cosa compri e perché.</p></div>
           <div>${icDot("pin")}<h3>Vicini, ovunque tu sia</h3><p>Abbiamo sede a Grosseto e lavoriamo in tutta Italia: quando serve, veniamo in azienda.</p></div>
         </div></div></section>`
-    + `<section class="sec sec--paper"><div class="wrap split"><div class="split__head"><span class="eyebrow">La nostra storia</span><h2>Da dove veniamo.</h2></div>
+    + `<section class="sec sec--paper" id="partner" style="scroll-margin-top:calc(var(--hdr-h) + 8px)"><div class="wrap">${secHead("Partner ufficiali", "Tecnologie di produttori leader, installate da chi le conosce.", "Siamo partner ufficiali dei produttori con cui lavoriamo: per te significa prodotti e licenze originali, configurazioni secondo i loro standard e un solo referente per installazione, aggiornamenti e assistenza.")}${partnerCards()}</div></section>`
+    + `<section class="sec"><div class="wrap split"><div class="split__head"><span class="eyebrow">La nostra storia</span><h2>Da dove veniamo.</h2></div>
         <div style="display:grid;gap:24px"><p class="lead">${t("[Breve storia dell’azienda: anno di fondazione, persone, primi clienti, come è cresciuta]")}</p>${numsHtml()}<div><p class="small muted">Tecnologie e partner</p>${partnersHtml()}</div></div></div></section>`
-    + `<section class="sec"><div class="wrap">${secHead("Le persone", "Chi trovi dall’altra parte del telefono.")}
+    + `<section class="sec sec--paper"><div class="wrap">${secHead("Le persone", "Chi trovi dall’altra parte del telefono.")}
         <div class="cases">${[1, 2, 3].map(() => `<article class="case"><div class="case__img">${t("[Foto]")}</div><div class="case__body"><h3>${t("[Nome e cognome]")}</h3><p class="muted">${t("[Ruolo]")}</p></div></article>`).join("")}</div></div></section>`
-    + `<section class="sec sec--paper sec--tight"><div class="wrap"><div class="facts">
+    + `<section class="sec sec--tight"><div class="wrap"><div class="facts">
         <div><span>Ragione sociale</span><b>Treart Evolution Srl</b></div><div><span>Sede</span><b>${C.addr1}, ${C.addr2}</b></div>
         <div><span>Partita IVA</span><b>${C.piva}</b></div><div><span>REA</span><b>${C.rea}</b></div><div><span>Capitale sociale</span><b>${C.cap}</b></div>
         <div><span>PEC</span><b>${soft(C.pec, "PEC dal biglietto 2015: da confermare")}</b></div></div></div></section>`
