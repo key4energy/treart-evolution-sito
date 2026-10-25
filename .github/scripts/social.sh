@@ -31,6 +31,49 @@ errore() {
     || echo "risposta non leggibile"
 }
 
+# se l'utente di sistema non vede Pagine: dove sta la Pagina e cosa gli è assegnato
+diagnosi() {
+  local r e bid nome
+  log ""
+  log "Diagnosi:"
+  r=$(graph "$META_TOKEN" GET "me/assigned_pages?fields=id,name,tasks")
+  e=$(printf '%s' "$r" | errore)
+  if [ -z "$e" ]; then
+    log "  Pagine assegnate (elenco diretto): $(jq -r '[.data[] | "\(.name) [\((.tasks // []) | join(","))]"] | if length == 0 then "nessuna" else join("; ") end' <<<"$r")"
+  else
+    log "  Pagine assegnate (elenco diretto): non leggibile ($e)"
+  fi
+  r=$(graph "$META_TOKEN" GET "me/businesses?fields=id,name")
+  e=$(printf '%s' "$r" | errore)
+  if [ -n "$e" ]; then
+    log "  portfolio dell'utente di sistema: non leggibile ($e)"
+    return 0
+  fi
+  if [ "$(jq '.data | length' <<<"$r")" -eq 0 ]; then
+    log "  portfolio dell'utente di sistema: nessuno"
+    return 0
+  fi
+  for bid in $(jq -r '.data[].id' <<<"$r"); do
+    nome=$(jq -r --arg id "$bid" '.data[] | select(.id == $id) | .name' <<<"$r")
+    log "  portfolio «$nome» (id $bid)"
+    local op cp
+    op=$(graph "$META_TOKEN" GET "$bid/owned_pages?fields=id,name")
+    e=$(printf '%s' "$op" | errore)
+    if [ -z "$e" ]; then
+      log "    Pagine di proprietà del portfolio: $(jq -r '[.data[] | "\(.name) (id \(.id))"] | if length == 0 then "nessuna" else join("; ") end' <<<"$op")"
+    else
+      log "    Pagine di proprietà del portfolio: non leggibili ($e)"
+    fi
+    cp=$(graph "$META_TOKEN" GET "$bid/client_pages?fields=id,name")
+    e=$(printf '%s' "$cp" | errore)
+    if [ -z "$e" ]; then
+      log "    Pagine condivise con il portfolio: $(jq -r '[.data[] | "\(.name) (id \(.id))"] | if length == 0 then "nessuna" else join("; ") end' <<<"$cp")"
+    else
+      log "    Pagine condivise con il portfolio: non leggibili ($e)"
+    fi
+  done
+}
+
 prova() {
   log ""
   log "== Prova in sola lettura =="
@@ -62,6 +105,7 @@ prova() {
   log "Pagine assegnate all'utente di sistema: $n"
   if [ "$n" -eq 0 ]; then
     log "ERRORE: nessuna Pagina assegnata (Impostazioni > Utenti di sistema > Assegna risorse > Pagine)"
+    diagnosi
     return 1
   fi
 
