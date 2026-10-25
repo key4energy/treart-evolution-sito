@@ -2,6 +2,8 @@
 
 Anteprima del nuovo sito di Treart Evolution, pubblicata su https://fabio.treart-evolution.com.
 
+La versione per https://treart-evolution.com è nella cartella `produzione/` e va online solo con il via di Fabio (vedi «Passaggio al nuovo sito»).
+
 ## Come si pubblica
 
 A ogni modifica di `public/` sul ramo `main`, il workflow **Pubblica su SiteGround** si collega a SiteGround via SSH e carica tutti i file di `public/` (sottocartelle comprese) nella cartella del sottodominio. Sul server non viene cancellato nessun file: se c'era già una pagina iniziale, viene conservata come `index.html.originale`.
@@ -26,6 +28,7 @@ Facoltativi: il segreto `SITEGROUND_PORT`, se la porta non è 18765, e la variab
 ## Struttura
 
 - `public/`: i file pubblicati. `index.html` è una pagina unica e autonoma, con caratteri e icone incorporati; `og-image.png` è l'immagine delle anteprime dei link.
+- `produzione/`: la stessa pagina nella versione per treart-evolution.com (visibile ai motori di ricerca, senza gli strumenti dell'anteprima), con `robots.txt`, `sitemap.xml`, icone e `.htaccess` con i reindirizzamenti dai vecchi indirizzi di WordPress.
 - `sorgente/`: testi, stili e script del sito, più gli script che generano `public/`.
 - `sorgente/kit/`: logo e caratteri della corporate identity usati dagli script. Open Sans e Gelasio sono distribuiti con licenza SIL Open Font License.
 
@@ -53,15 +56,16 @@ Le foto con persone sono immagini d'archivio: vanno sostituite, appena possibile
 pip install segno fonttools brotli pillow
 cd sorgente
 python3 build_hosting.py ../public
+python3 build_produzione.py
 ```
 
-`build.py` genera anche la versione di anteprima, `sito-treart-evolution.html`.
+`build.py` genera anche la versione di anteprima, `sito-treart-evolution.html`. `build_produzione.py` va eseguito dopo ogni modifica, così `produzione/` resta allineata all'anteprima: la pubblicazione su treart-evolution.com controlla che lo sia e altrimenti si ferma.
 
 ## Partner e badge ufficiali
 
 I partner confermati (3CX Bronze Partner e WatchGuard) sono nell'elenco `PARTNERS` di `sorgente/content.js`. Compaiono nella home (sezione «Sicurezza gestita»), in Chi siamo (sezione «Partner ufficiali», raggiungibile da `#chi-siamo` con il pulsante «Cosa significa per te») e in cima alle pagine Centralini VoIP e Cybersecurity.
 
-Per mostrare i badge ufficiali al posto del nome in testo: scaricali dai portali partner dei produttori, salvali in `public/img/partner/`, scrivi il percorso nel campo `badge` (per esempio `"img/partner/3cx-bronze-partner.png"`) e rigenera il sito. Il livello di partnership WatchGuard e la certificazione 3CX dei tecnici sono segnati come dati da confermare.
+Per mostrare i badge ufficiali al posto del nome in testo: scaricali dai portali partner dei produttori, salvali in `public/img/partner/`, scrivi il percorso nel campo `badge` (per esempio `"img/partner/3cx-bronze-partner.png"`) e rigenera il sito. Il livello di partnership WatchGuard (Silver) non è indicato, per scelta di Fabio; i tecnici sono certificati 3CX.
 
 ## Pagine dell'app social
 
@@ -82,18 +86,30 @@ Il workflow **Social** usa la chiave `META_TOKEN` (segreto del repository: token
 - `{"azione": "copertina", "approvata_da": "...", "file": "public/social/....png", "offset_y": 50}`: nuova copertina, senza post nel diario.
 - `{"azione": "cerca-categorie", "parole": ["informatic"]}` e `{"azione": "categorie", "approvata_da": "...", "categorie": ["id", ...]}`: ricerca e scelta delle categorie (massimo 3).
 
+L'esito si legge nel ramo `esito-social` (file `esito-social.txt`). Le chiavi non vengono mai stampate. Ogni pubblicazione avviene solo dopo l'ok esplicito di Fabio.
+
 ## Sito attuale (treart-evolution.com)
 
 Il sito attuale è un WordPress (tema Bricks) sullo stesso account SiteGround. Il workflow **Sito attuale** vi accede via SSH con le stesse chiavi della pubblicazione e si avvia aggiungendo un file JSON in `manutenzione/richieste/`:
 
 - `{"azione": "ispeziona"}`: sola lettura (WordPress, tema, plugin, dove compare «key4energy», link ai social della pagina iniziale);
 - `{"azione": "sostituisci", "approvata_da": "...", "sostituzioni": [["vecchio", "nuovo"]]}`: sostituzione con `wp search-replace`;
-- `{"azione": "rimuovi-link", "approvata_da": "...", "link": "..."}`: toglie dai modelli Bricks le voci con quel link.
+- `{"azione": "rimuovi-link", "approvata_da": "...", "link": "..."}`: toglie dai modelli Bricks le voci con quel link;
+- `{"azione": "backup"}`: backup completo (tutti i file e il database) in `~/backup-sito-attuale/` sul server, scaricabile per 7 giorni dalla pagina dell'esecuzione su GitHub (sezione Artifacts);
+- `{"azione": "elenca-indirizzi"}`: sola lettura, tutti gli indirizzi pubblici del sito (servono per i reindirizzamenti).
 
 Prima di ogni modifica viene salvata una copia del database in `~/backup-sito-attuale/` sul server. L'esito si legge nel ramo `esito-sito-attuale`.
 
-L'esito si legge nel ramo `esito-social` (file `esito-social.txt`). Le chiavi non vengono mai stampate. Ogni pubblicazione avviene solo dopo l'ok esplicito di Fabio.
+## Passaggio al nuovo sito (treart-evolution.com)
 
-## Prima della pubblicazione definitiva
+Si fa con lo stesso workflow **Sito attuale**, solo dopo il via esplicito di Fabio:
 
-La pagina contiene `<meta name="robots" content="noindex, nofollow">`, perché è un'anteprima con dati ancora da confermare. Va tolta in `build_hosting.py` quando il sito andrà su treart-evolution.com.
+- `{"azione": "prova-pubblicazione"}`: sola lettura. Controlla che `produzione/` sia allineata all'anteprima e mostra cosa c'è oggi sul server (file, `.htaccess`, plugin, come risponde il sito).
+- `{"azione": "pubblica-produzione", "approvata_da": "..."}`: carica `produzione/` sul server in `~/www/treart-evolution.com/nuovo-sito-in-arrivo`, la verifica file per file e poi la mette online. La prima volta salva una copia del database e sposta **tutti** i file di WordPress in `~/www/treart-evolution.com/wordpress-archiviato-DATA`, fuori da `public_html` (non più raggiungibili dal web); il database di WordPress non viene toccato. Restano nella cartella pubblica i file di verifica (`.well-known`, `google*.html`, `BingSiteAuth.xml`). Poi svuota la cache di SiteGround e controlla dal server pagina iniziale, file e reindirizzamenti: se la pagina iniziale non risponde, rimette subito online WordPress. Le volte successive aggiorna i file del nuovo sito (la versione precedente resta in `sito-statico-precedente`).
+- `{"azione": "ripristina-wordpress", "approvata_da": "...", "archivio": "wordpress-archiviato-DATA"}`: rimette online WordPress (senza `archivio`, l'ultimo archiviato); il nuovo sito va in `sito-statico-ritirato-DATA`.
+
+Lo stato attuale è scritto sul server in `~/www/treart-evolution.com/STATO-SITO.txt`.
+
+I reindirizzamenti permanenti (301) dai vecchi indirizzi di WordPress sono in `sorgente/build_produzione.py`: pagine e articoli vanno alla pagina del servizio corrispondente (per esempio `/backup-il-vero-salvavita-dei-tuoi-dati/` → `/#backup`), le vecchie mappe del sito a `/sitemap.xml`, tutto il resto che non esiste più alla home.
+
+Dopo il passaggio: inviare `https://treart-evolution.com/sitemap.xml` in Google Search Console.
