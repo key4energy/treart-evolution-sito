@@ -61,7 +61,8 @@ with open(FONT, 'rb') as f:
 fav32 = png_b64(f'{KIT}/01-logo/png/favicon-32.png')
 fav180 = png_b64(f'{KIT}/01-logo/png/favicon-180.png')
 
-ROBOTS = (f'<link rel="canonical" href="{SITE}">' if PROD else
+# su treart-evolution.com resta il codice di verifica del dominio per Pinterest già presente nel sito precedente
+ROBOTS = (f'<link rel="canonical" href="{SITE}">\n<meta name="p:domain_verify" content="6cf26ab217996b7dae280488dadd4746">' if PROD else
           '<!-- Anteprima: esclusa dai motori di ricerca (la versione di produzione si genera con TREART_PRODUZIONE=1) -->\n<meta name="robots" content="noindex, nofollow">')
 
 page = f'''<!doctype html>

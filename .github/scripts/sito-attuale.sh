@@ -29,7 +29,7 @@ ARRIVO_REL="www/$DOM/nuovo-sito-in-arrivo"
 remoto_produzione() { ssh_sg "bash -s -- $*" < .github/scripts/sito-produzione-remoto.sh 2>&1 | grep -v '^Warning: Permanently added' | tee -a "$REPORT"; return "${PIPESTATUS[0]}"; }
 
 # righe che distinguono la pagina di produzione da quella di anteprima
-normalizza() { sed -e 's/const PROD = \(true\|false\);//' -e '/<link rel="canonical"/d' -e '/<meta name="robots"/d' -e '/<!-- Anteprima:/d' -e '/og:url/d' -e '/og:image" content/d' "$1"; }
+normalizza() { sed -e 's/const PROD = \(true\|false\);//' -e '/<link rel="canonical"/d' -e '/p:domain_verify/d' -e '/<meta name="robots"/d' -e '/<!-- Anteprima:/d' -e '/og:url/d' -e '/og:image" content/d' "$1"; }
 
 controlla_produzione() {  # controlli sulla cartella produzione/ del repository
   local ok=0
