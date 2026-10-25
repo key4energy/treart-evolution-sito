@@ -85,6 +85,7 @@ Il workflow **Social** usa la chiave `META_TOKEN` (segreto del repository: token
 - `{"azione": "controlla-pagina"}`: controllo completo in sola lettura (informazioni, foto profilo, copertina, post, statistiche); i dettagli vanno nella cartella `dettagli/` del ramo `esito-social`.
 - `{"azione": "copertina", "approvata_da": "...", "file": "public/social/....png", "offset_y": 50}`: nuova copertina, senza post nel diario.
 - `{"azione": "cerca-categorie", "parole": ["informatic"]}` e `{"azione": "categorie", "approvata_da": "...", "categorie": ["id", ...]}`: ricerca e scelta delle categorie (massimo 3).
+- `{"azione": "diagnosi-instagram"}`: sola lettura, perché il collegamento di Instagram alla Pagina non riesce (portfolio della Pagina, account Instagram già collegati).
 
 L'esito si legge nel ramo `esito-social` (file `esito-social.txt`). Le chiavi non vengono mai stampate. Ogni pubblicazione avviene solo dopo l'ok esplicito di Fabio.
 
