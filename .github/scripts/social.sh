@@ -26,7 +26,7 @@ fi
 graph() { # graph CHIAVE METODO PERCORSO [altri argomenti di curl]
   local tok=$1 met=$2 path=$3
   shift 3
-  curl -sS -m 60 -X "$met" -H "Authorization: Bearer $tok" "$G/$path" "$@"
+  curl -sS -g -m 60 -X "$met" -H "Authorization: Bearer $tok" "$G/$path" "$@"
 }
 # messaggio d'errore di Meta, se c'è
 errore() {
@@ -280,6 +280,78 @@ aggiorna_pagina() {
   return $esito
 }
 
+# controllo completo delle informazioni della Pagina (sola lettura): {"azione": "controlla-pagina"}
+# Scrive il riepilogo nell'esito e i dettagli in $ESITO_DIR (pagina.json, post.json, foto-profilo.jpg, copertina.jpg).
+controlla_pagina() {
+  local f=$1 campo r e out="${ESITO_DIR:-.}"
+  mkdir -p "$out"
+  pagina "$(jq -r '.pagina // empty' "$f")" || return 1
+  log "== Controllo delle informazioni della Pagina «$PAGE_NAME» (id $PAGE_ID), sola lettura =="
+  local campi=(name username link category category_list about description company_overview mission products
+    general_info founded impressum website phone emails single_line_address location hours price_range
+    is_published verification_status fan_count followers_count rating_count overall_star_rating checkins
+    whatsapp_number instagram_business_account connected_instagram_account
+    "picture.width(720).height(720){url,is_silhouette,width,height}" "cover{source,offset_x,offset_y}")
+  echo '{}' > "$out/pagina.json"
+  for campo in "${campi[@]}"; do
+    r=$(graph "$PAGE_TOKEN" GET "$PAGE_ID?fields=$campo")
+    e=$(printf '%s' "$r" | errore)
+    local nome=${campo%%.*}
+    nome=${nome%%\{*}
+    if [ -n "$e" ]; then
+      log "  $nome: non disponibile ($e)"
+      jq --arg k "$nome" --arg e "$e" '.[$k] = {"errore": $e}' "$out/pagina.json" > "$out/t.json" && mv "$out/t.json" "$out/pagina.json"
+    else
+      local v
+      v=$(jq -c --arg k "$nome" '.[$k] // null' <<<"$r")
+      log "  $nome: $(jq -r 'if . == null then "(vuoto)" elif type == "string" then (gsub("\n"; " ⏎ ") | .[0:300]) else (tostring | .[0:300]) end' <<<"$v")"
+      jq --arg k "$nome" --argjson v "$v" '.[$k] = $v' "$out/pagina.json" > "$out/t.json" && mv "$out/t.json" "$out/pagina.json"
+    fi
+  done
+
+  # pulsante d'azione e schede (possono non essere disponibili per le Pagine nuove)
+  r=$(graph "$PAGE_TOKEN" GET "$PAGE_ID/call_to_actions?fields=type,status,web_url,intl_number_with_plus,email_address")
+  e=$(printf '%s' "$r" | errore)
+  if [ -z "$e" ]; then
+    log "  pulsante d'azione: $(jq -c '.data' <<<"$r")"
+  else
+    log "  pulsante d'azione: non leggibile ($e)"
+  fi
+
+  # immagini attuali
+  local u
+  u=$(jq -r '.picture.data.url // empty' "$out/pagina.json")
+  [ -n "$u" ] && curl -sSL -m 60 -o "$out/foto-profilo.jpg" "$u" && log "  foto profilo salvata ($(wc -c < "$out/foto-profilo.jpg") byte)"
+  u=$(jq -r '.cover.source // empty' "$out/pagina.json")
+  [ -n "$u" ] && curl -sSL -m 60 -o "$out/copertina.jpg" "$u" && log "  copertina salvata ($(wc -c < "$out/copertina.jpg") byte)"
+
+  # post: frequenza e ultimi contenuti
+  r=$(graph "$PAGE_TOKEN" GET "$PAGE_ID/posts?limit=100&fields=created_time,message,permalink_url,full_picture,status_type")
+  e=$(printf '%s' "$r" | errore)
+  if [ -z "$e" ]; then
+    jq '.data' <<<"$r" > "$out/post.json"
+    log "  post letti: $(jq 'length' "$out/post.json") (ultimi 100 al massimo)"
+    log "  post per anno: $(jq -r 'group_by(.created_time[0:4]) | map("\(.[0].created_time[0:4]): \(length)") | join(", ")' "$out/post.json")"
+    jq -r '.[0:10][] | "   - \(.created_time[0:10])  \((.message // "(senza testo)") | gsub("\n"; " ") | .[0:90])"' "$out/post.json" | tee -a "$REPORT"
+  else
+    log "  post: non leggibili ($e)"
+  fi
+
+  # statistiche degli ultimi 28 giorni (alcune metriche possono non essere più disponibili)
+  local m
+  for m in page_impressions_unique page_post_engagements page_views_total page_follows page_daily_follows_unique; do
+    r=$(graph "$PAGE_TOKEN" GET "$PAGE_ID/insights?metric=$m&period=days_28")
+    e=$(printf '%s' "$r" | errore)
+    if [ -z "$e" ]; then
+      log "  statistica $m (28 giorni): $(jq -r '.data[0].values[-1].value // "-" | tostring' <<<"$r")"
+    else
+      log "  statistica $m: non disponibile"
+    fi
+  done
+  log ""
+  log "Controllo completato: nessuna modifica effettuata."
+}
+
 # richieste aggiunte con questo push (se non ce ne sono, per esempio da «Run workflow», si fa la prova)
 RICHIESTE=()
 if [ -n "${BEFORE:-}" ] && ! [[ "$BEFORE" =~ ^0+$ ]] && git cat-file -e "$BEFORE^{commit}" 2>/dev/null; then
@@ -296,6 +368,7 @@ for f in "${RICHIESTE[@]}"; do
   case "$az" in
     prova) prova || stato=1 ;;
     aggiorna-pagina) aggiorna_pagina "$f" || stato=1 ;;
+    controlla-pagina) controlla_pagina "$f" || stato=1 ;;
     *) log "ERRORE: azione «$az» non riconosciuta"; stato=1 ;;
   esac
 done

@@ -22,6 +22,7 @@ jobs:
     timeout-minutes: 10
     env:
       REPORT: ${{ github.workspace }}/esito-social.txt
+      ESITO_DIR: ${{ github.workspace }}/esito-social-dettagli
     steps:
       - uses: actions/checkout@v4
         with:
@@ -43,6 +44,7 @@ jobs:
           echo "Esito complessivo: $JOB_STATUS" >> "$REPORT"
           dir=$(mktemp -d)
           cp "$REPORT" "$dir/"
+          if [ -d "$ESITO_DIR" ]; then mkdir -p "$dir/dettagli" && cp -r "$ESITO_DIR"/. "$dir/dettagli/"; fi
           cd "$dir"
           git init -q -b esito-social
           git add .
