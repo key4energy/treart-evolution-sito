@@ -354,6 +354,93 @@ controlla_pagina() {
   log "Controllo completato: nessuna modifica effettuata."
 }
 
+# nuova copertina: {"azione": "copertina", "approvata_da": "...", "file": "public/social/....png", "offset_y": 50}
+# Carica la foto senza pubblicarla nel diario, la imposta come copertina e la rilegge.
+copertina() {
+  local f=$1 file oy r e foto out="${ESITO_DIR:-.}"
+  file=$(jq -r '.file // empty' "$f")
+  oy=$(jq -r '.offset_y // 50' "$f")
+  if [ ! -f "$file" ]; then
+    log "ERRORE: immagine «$file» non trovata nel repository"
+    return 1
+  fi
+  pagina "$(jq -r '.pagina // empty' "$f")" || return 1
+  log "== Copertina della Pagina «$PAGE_NAME» (id $PAGE_ID) =="
+  log "Approvazione: $(jq -r '.approvata_da // "non indicata"' "$f")"
+  r=$(curl -sS -m 180 -X POST -H "Authorization: Bearer $PAGE_TOKEN" -F "source=@$file" -F "published=false" "$G/$PAGE_ID/photos")
+  e=$(printf '%s' "$r" | errore)
+  foto=$(jq -r '.id // empty' <<<"$r" 2>/dev/null)
+  if [ -n "$e" ] || [ -z "$foto" ]; then
+    log "ERRORE: caricamento della foto non riuscito: ${e:-risposta senza id}"
+    return 1
+  fi
+  log "  foto caricata, non pubblicata nel diario (id $foto)"
+  r=$(graph "$PAGE_TOKEN" POST "$PAGE_ID" --data-urlencode "cover=$foto" --data-urlencode "offset_y=$oy" --data-urlencode "no_feed_story=true")
+  e=$(printf '%s' "$r" | errore)
+  if [ -n "$e" ]; then
+    log "ERRORE: la foto non è stata impostata come copertina: $e"
+    return 1
+  fi
+  r=$(graph "$PAGE_TOKEN" GET "$PAGE_ID?fields=cover{id,source,offset_y}")
+  log "  copertina attuale: id $(jq -r '.cover.id // "-"' <<<"$r"), spostamento verticale $(jq -r '.cover.offset_y // "-"' <<<"$r")"
+  local u
+  u=$(jq -r '.cover.source // empty' <<<"$r")
+  if [ -n "$u" ]; then
+    mkdir -p "$out"
+    curl -sSL -m 60 -o "$out/copertina-attuale.jpg" "$u" && log "  copertina attuale salvata per il controllo"
+  fi
+  if [ "$(jq -r '.cover.id // ""' <<<"$r")" = "$foto" ]; then
+    log "  copertina: aggiornata"
+  else
+    log "  ATTENZIONE: Meta non mostra ancora la nuova foto come copertina"
+    return 1
+  fi
+}
+
+# elenco delle categorie di Meta che contengono certe parole (sola lettura):
+# {"azione": "cerca-categorie", "parole": ["informatic", "telecomunic"]}
+cerca_categorie() {
+  local f=$1 r e out="${ESITO_DIR:-.}" re
+  pagina "$(jq -r '.pagina // empty' "$f")" || return 1
+  log "== Ricerca delle categorie di Meta =="
+  r=$(graph "$PAGE_TOKEN" GET "fb_page_categories?locale=it_IT")
+  e=$(printf '%s' "$r" | errore)
+  if [ -n "$e" ]; then
+    log "ERRORE: elenco delle categorie non disponibile: $e"
+    return 1
+  fi
+  mkdir -p "$out"
+  printf '%s' "$r" > "$out/categorie.json"
+  re=$(jq -r '(.parole // []) | join("|")' "$f")
+  log "  categorie trovate in tutto: $(jq '[.. | objects | select(has("id") and has("name"))] | unique_by(.id) | length' <<<"$r")"
+  jq -r --arg re "$re" '[.. | objects | select(has("id") and has("name"))] | unique_by(.id) | .[] | select(.name | test($re; "i")) | "   - \(.name) (id \(.id))"' <<<"$r" | sort | tee -a "$REPORT"
+}
+
+# categorie della Pagina: {"azione": "categorie", "approvata_da": "...", "categorie": ["id1", "id2", "id3"]}
+categorie() {
+  local f=$1 r e lista
+  pagina "$(jq -r '.pagina // empty' "$f")" || return 1
+  log "== Categorie della Pagina «$PAGE_NAME» (id $PAGE_ID) =="
+  log "Approvazione: $(jq -r '.approvata_da // "non indicata"' "$f")"
+  lista=$(jq -c '.categorie' "$f")
+  r=$(graph "$PAGE_TOKEN" GET "$PAGE_ID?fields=category_list")
+  log "  prima: $(jq -r '[.category_list[]?.name] | join(", ")' <<<"$r")"
+  r=$(graph "$PAGE_TOKEN" POST "$PAGE_ID" --data-urlencode "category_list=$lista")
+  e=$(printf '%s' "$r" | errore)
+  if [ -n "$e" ]; then
+    log "ERRORE: categorie non aggiornate: $e"
+    return 1
+  fi
+  r=$(graph "$PAGE_TOKEN" GET "$PAGE_ID?fields=category_list")
+  log "  adesso: $(jq -r '[.category_list[]?.name] | join(", ")' <<<"$r")"
+  if [ "$(jq -cS '[.category_list[]?.id] | sort' <<<"$r")" = "$(jq -cS '.categorie | sort' "$f")" ]; then
+    log "  categorie: aggiornate"
+  else
+    log "  ATTENZIONE: le categorie lette non corrispondono a quelle richieste"
+    return 1
+  fi
+}
+
 # richieste aggiunte con questo push (se non ce ne sono, per esempio da «Run workflow», si fa la prova)
 RICHIESTE=()
 if [ -n "${BEFORE:-}" ] && ! [[ "$BEFORE" =~ ^0+$ ]] && git cat-file -e "$BEFORE^{commit}" 2>/dev/null; then
@@ -371,6 +458,9 @@ for f in "${RICHIESTE[@]}"; do
     prova) prova || stato=1 ;;
     aggiorna-pagina) aggiorna_pagina "$f" || stato=1 ;;
     controlla-pagina) controlla_pagina "$f" || stato=1 ;;
+    copertina) copertina "$f" || stato=1 ;;
+    cerca-categorie) cerca_categorie "$f" || stato=1 ;;
+    categorie) categorie "$f" || stato=1 ;;
     *) log "ERRORE: azione «$az» non riconosciuta"; stato=1 ;;
   esac
 done

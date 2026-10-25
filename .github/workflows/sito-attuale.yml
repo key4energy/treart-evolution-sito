@@ -1,0 +1,54 @@
+# Manutenzione del sito attuale treart-evolution.com (WordPress su SiteGround) via SSH.
+# Si avvia aggiungendo un file JSON in manutenzione/richieste/ sul ramo main
+# (vedi .github/scripts/sito-attuale.sh). Le modifiche avvengono solo dopo l'ok esplicito di Fabio.
+name: Sito attuale
+
+on:
+  push:
+    branches: [main]
+    paths: ["manutenzione/richieste/**"]
+
+permissions:
+  contents: write
+
+concurrency:
+  group: siteground
+  cancel-in-progress: false
+
+jobs:
+  manutenzione:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      REPORT: ${{ github.workspace }}/esito-sito-attuale.txt
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Esegui le richieste
+        env:
+          SG_KEY: ${{ secrets.SITEGROUND_SSH_KEY }}
+          SG_PASS: ${{ secrets.SITEGROUND_SSH_PASSPHRASE }}
+          SG_HOST: ${{ secrets.SITEGROUND_HOST }}
+          SG_USER: ${{ secrets.SITEGROUND_USER }}
+          SG_PORT: ${{ secrets.SITEGROUND_PORT }}
+          BEFORE: ${{ github.event.before }}
+        run: bash .github/scripts/sito-attuale.sh
+
+      - name: Salva l'esito nel ramo esito-sito-attuale
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+          JOB_STATUS: ${{ job.status }}
+        run: |
+          [ -f "$REPORT" ] || echo "Nessun esito registrato" > "$REPORT"
+          echo "Esito complessivo: $JOB_STATUS" >> "$REPORT"
+          dir=$(mktemp -d)
+          cp "$REPORT" "$dir/"
+          cd "$dir"
+          git init -q -b esito-sito-attuale
+          git add .
+          git -c user.name="github-actions[bot]" -c user.email="41898282+github-actions[bot]@users.noreply.github.com" \
+            commit -qm "Esito sito attuale n. $GITHUB_RUN_NUMBER"
+          git push -qf "https://x-access-token:${GH_TOKEN}@github.com/${GITHUB_REPOSITORY}.git" HEAD:esito-sito-attuale
