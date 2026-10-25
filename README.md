@@ -77,6 +77,7 @@ Si rigenerano con `python3 sorgente/pagine_app.py public`, che copia anche il ca
 Il workflow **Social** usa la chiave `META_TOKEN` (segreto del repository: token senza scadenza dell'utente di sistema «pubblicazioni» del portfolio Treart Evolution, app «Treart Evolution Social»). Si avvia aggiungendo sul ramo `main` un file JSON in `social/richieste/`:
 
 - `{"azione": "prova"}`: lettura di verifica della chiave, della Pagina e degli ultimi post, senza pubblicare nulla.
+- `{"azione": "aggiorna-pagina", "approvata_da": "...", "campi": {"about": "..."}}`: aggiorna le informazioni della Pagina (`about`, `description`, `website`, `phone`) e le rilegge per conferma.
 
 L'esito si legge nel ramo `esito-social` (file `esito-social.txt`). Le chiavi non vengono mai stampate. Ogni pubblicazione avviene solo dopo l'ok esplicito di Fabio.
 
