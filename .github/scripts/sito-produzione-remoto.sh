@@ -52,12 +52,12 @@ svuota_cache() {  # $1: cartella di WordPress (attiva o archiviata) da cui usare
      && wp --path="$1" sg purge >/dev/null 2>&1; then
     echo "Cache di SiteGround svuotata"
   else
-    echo "ATTENZIONE: cache di SiteGround non svuotata in automatico: se la pagina vecchia resta visibile, svuotala in Site Tools > Speed > Caching > Dynamic Cache"
+    echo "Cache di SiteGround: svuotamento automatico non disponibile (plugin Speed Optimizer non attivo); la verifica qui sotto dice se serve farlo da Site Tools"
   fi
 }
 
 risposta() {  # codice HTTP e impronta della pagina $1 vista dal server; $2 = file dove salvarla
-  local code i
+  local code
   for _ in 1 2 3; do
     code=$(curl -sS -m 30 -o "$2" -w '%{http_code}' "$1" 2>/dev/null)
     [ "${code:-000}" != 000 ] && break
@@ -86,8 +86,8 @@ case "$AZ" in
     ls -lAgo "$D" | head -n 80
     echo
     if [ -f "$D/.htaccess" ]; then
-      echo "== .htaccess attuale (resterà nell'archivio di WordPress) =="
-      sed -n '1,150p' "$D/.htaccess"
+      echo "== .htaccess attuale, $(wc -l < "$D/.htaccess") righe (resterà nell'archivio di WordPress) =="
+      sed -n '1,400p' "$D/.htaccess"
       echo
     fi
     if [ -f "$D/.user.ini" ]; then
@@ -120,6 +120,16 @@ case "$AZ" in
     for u in "https://$DOM/" "http://$DOM/" "https://www.$DOM/" "http://www.$DOM/" \
              "https://$DOM/contatti/" "https://$DOM/wp-includes/js/jquery/jquery.min.js" "http://$DOM/wp-includes/js/jquery/jquery.min.js"; do
       h=$(curl -sS -m 30 -o /dev/null -D - "$u" 2>&1 | tr -d '\r' | grep -i -E '^(HTTP/|location:|x-proxy-cache:|curl:)' | tr '\n' ' ')
+      echo "$u -> ${h:-nessuna risposta}"
+    done
+    echo
+    echo "== Codici di verifica e statistiche nella pagina iniziale attuale (da portare nel nuovo sito se servono) =="
+    curl -sS -m 30 "https://$DOM/" 2>/dev/null | grep -o -i -E '<meta[^>]*(google-site-verification|msvalidate\.01|yandex-verification|p:domain_verify|facebook-domain-verification)[^>]*>|googletagmanager\.com/[a-z/.]*\?id=[A-Z0-9-]+|G-[A-Z0-9]{6,12}|GTM-[A-Z0-9]{4,10}|UA-[0-9]+-[0-9]+' | sort -u | head -n 20
+    echo "(fine elenco)"
+    echo
+    echo "== Per confronto: una pagina statica sullo stesso server (anteprima) =="
+    for u in "https://fabio.$DOM/" "https://fabio.$DOM/robots.txt" "https://fabio.$DOM/inesistente/"; do
+      h=$(curl -sS -m 30 -o /dev/null -D - "$u" 2>&1 | tr -d '\r' | grep -i -E '^(HTTP/|location:|x-proxy-cache:|cache-control:|expires:|curl:)' | tr '\n' ' ')
       echo "$u -> ${h:-nessuna risposta}"
     done
     ;;
