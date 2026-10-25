@@ -77,7 +77,20 @@ Si rigenerano con `python3 sorgente/pagine_app.py public`, che copia anche il ca
 Il workflow **Social** usa la chiave `META_TOKEN` (segreto del repository: token senza scadenza dell'utente di sistema «pubblicazioni» del portfolio Treart Evolution, app «Treart Evolution Social»). Si avvia aggiungendo sul ramo `main` un file JSON in `social/richieste/`:
 
 - `{"azione": "prova"}`: lettura di verifica della chiave, della Pagina e degli ultimi post, senza pubblicare nulla.
-- `{"azione": "aggiorna-pagina", "approvata_da": "...", "campi": {"about": "..."}}`: aggiorna le informazioni della Pagina (`about`, `description`, `website`, `phone`) e le rilegge per conferma.
+- `{"azione": "aggiorna-pagina", "approvata_da": "...", "campi": {"about": "..."}}`: aggiorna le informazioni della Pagina (`about`, `description`, `website`, `phone`, `hours`, `impressum`) e le rilegge per conferma.
+- `{"azione": "controlla-pagina"}`: controllo completo in sola lettura (informazioni, foto profilo, copertina, post, statistiche); i dettagli vanno nella cartella `dettagli/` del ramo `esito-social`.
+- `{"azione": "copertina", "approvata_da": "...", "file": "public/social/....png", "offset_y": 50}`: nuova copertina, senza post nel diario.
+- `{"azione": "cerca-categorie", "parole": ["informatic"]}` e `{"azione": "categorie", "approvata_da": "...", "categorie": ["id", ...]}`: ricerca e scelta delle categorie (massimo 3).
+
+## Sito attuale (treart-evolution.com)
+
+Il sito attuale è un WordPress (tema Bricks) sullo stesso account SiteGround. Il workflow **Sito attuale** vi accede via SSH con le stesse chiavi della pubblicazione e si avvia aggiungendo un file JSON in `manutenzione/richieste/`:
+
+- `{"azione": "ispeziona"}`: sola lettura (WordPress, tema, plugin, dove compare «key4energy», link ai social della pagina iniziale);
+- `{"azione": "sostituisci", "approvata_da": "...", "sostituzioni": [["vecchio", "nuovo"]]}`: sostituzione con `wp search-replace`;
+- `{"azione": "rimuovi-link", "approvata_da": "...", "link": "..."}`: toglie dai modelli Bricks le voci con quel link.
+
+Prima di ogni modifica viene salvata una copia del database in `~/backup-sito-attuale/` sul server. L'esito si legge nel ramo `esito-sito-attuale`.
 
 L'esito si legge nel ramo `esito-social` (file `esito-social.txt`). Le chiavi non vengono mai stampate. Ogni pubblicazione avviene solo dopo l'ok esplicito di Fabio.
 
