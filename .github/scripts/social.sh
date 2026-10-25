@@ -447,6 +447,44 @@ categorie() {
   fi
 }
 
+# sola lettura: perché il collegamento di Instagram alla Pagina non riesce
+# (portfolio della Pagina e dell'app, Instagram già collegati, account Instagram dei portfolio)
+diagnosi_instagram() {
+  log ""
+  log "== Diagnosi del collegamento con Instagram (sola lettura) =="
+  pagina || return 1
+  log "Pagina «$PAGE_NAME» (id $PAGE_ID)"
+  local c r e bid bids=""
+  for c in 'owner_business{id,name}' 'business{id,name}' 'instagram_business_account{id,username}' \
+           'connected_instagram_account{id,username}' 'connected_page_backed_instagram_account{id,username}' \
+           does_viewer_have_page_permission_link_ig has_transitioned_to_new_page_experience is_owned; do
+    r=$(graph "$PAGE_TOKEN" GET "$PAGE_ID?fields=$c")
+    e=$(printf '%s' "$r" | errore)
+    if [ -z "$e" ]; then
+      log "  ${c%%\{*}: $(jq -c 'del(.id) | if . == {} then "(vuoto)" else . end' <<<"$r")"
+      bids="$bids $(jq -r '.owner_business.id // .business.id // empty' <<<"$r")"
+    else
+      log "  ${c%%\{*}: non leggibile ($e)"
+    fi
+  done
+  diagnosi
+  r=$(graph "$META_TOKEN" GET "me/businesses?fields=id")
+  bids="$bids $(jq -r '.data[]?.id' <<<"$r" 2>/dev/null)"
+  for bid in $(printf '%s\n' $bids | awk 'NF && !seen[$0]++'); do
+    for c in owned_instagram_accounts instagram_accounts; do
+      r=$(graph "$META_TOKEN" GET "$bid/$c?fields=id,username")
+      e=$(printf '%s' "$r" | errore)
+      if [ -z "$e" ]; then
+        log "  portfolio $bid, $c: $(jq -r '[.data[]? | "@\(.username // "?") (id \(.id))"] | if length == 0 then "nessuno" else join("; ") end' <<<"$r")"
+      else
+        log "  portfolio $bid, $c: non leggibile ($e)"
+      fi
+    done
+  done
+  log ""
+  log "Diagnosi completata: nessuna modifica effettuata."
+}
+
 # richieste aggiunte con questo push (se non ce ne sono, per esempio da «Run workflow», si fa la prova)
 RICHIESTE=()
 if [ -n "${BEFORE:-}" ] && ! [[ "$BEFORE" =~ ^0+$ ]] && git cat-file -e "$BEFORE^{commit}" 2>/dev/null; then
@@ -467,6 +505,7 @@ for f in "${RICHIESTE[@]}"; do
     copertina) copertina "$f" || stato=1 ;;
     cerca-categorie) cerca_categorie "$f" || stato=1 ;;
     categorie) categorie "$f" || stato=1 ;;
+    diagnosi-instagram) diagnosi_instagram || stato=1 ;;
     *) log "ERRORE: azione «$az» non riconosciuta"; stato=1 ;;
   esac
 done
