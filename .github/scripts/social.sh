@@ -3,6 +3,9 @@
 #
 # Una richiesta è un file JSON in social/richieste/, aggiunto con un commit sul ramo main:
 #   {"azione": "prova"}   lettura di verifica: non pubblica nulla
+#   {"azione": "aggiorna-pagina", "approvata_da": "...", "campi": {"about": "..."}}
+#                         aggiorna le informazioni della Pagina (about, description, website, phone)
+# Le azioni che modificano la Pagina si usano solo dopo l'ok esplicito di Fabio, riportato in approvata_da.
 #
 # L'esito va nel ramo esito-social (file esito-social.txt). Le chiavi non vengono mai stampate:
 # quella dell'utente di sistema è un segreto di GitHub, quella della Pagina viene mascherata.
@@ -202,6 +205,81 @@ prova() {
   log "Prova completata: nessuna pubblicazione effettuata."
 }
 
+# chiave della Pagina (quella indicata nella richiesta, altrimenti la prima assegnata)
+pagina() {
+  local want=${1:-} r e p
+  r=$(graph "$META_TOKEN" GET "me/accounts?fields=id,name,access_token,tasks")
+  e=$(printf '%s' "$r" | errore)
+  if [ -n "$e" ]; then
+    log "ERRORE: elenco delle Pagine non leggibile: $e"
+    return 1
+  fi
+  if [ -n "$want" ]; then
+    p=$(jq -c --arg id "$want" '.data[] | select(.id == $id)' <<<"$r")
+  else
+    p=$(jq -c '.data[0] // empty' <<<"$r")
+  fi
+  if [ -z "$p" ]; then
+    log "ERRORE: Pagina non assegnata all'utente di sistema"
+    return 1
+  fi
+  PAGE_ID=$(jq -r .id <<<"$p")
+  PAGE_NAME=$(jq -r .name <<<"$p")
+  PAGE_TOKEN=$(jq -r '.access_token // empty' <<<"$p")
+  [ -n "$PAGE_TOKEN" ] && echo "::add-mask::$PAGE_TOKEN"
+  if [ -z "$PAGE_TOKEN" ]; then
+    log "ERRORE: chiave della Pagina non disponibile"
+    return 1
+  fi
+}
+
+# aggiorna le informazioni della Pagina: {"azione": "aggiorna-pagina", "campi": {"about": "..."}}
+aggiorna_pagina() {
+  local f=$1 k v r e prima dopo elenco
+  local campi=()
+  mapfile -t campi < <(jq -r '.campi // {} | keys[]' "$f")
+  if [ ${#campi[@]} -eq 0 ]; then
+    log "ERRORE: nessun campo da aggiornare"
+    return 1
+  fi
+  for k in "${campi[@]}"; do
+    case "$k" in
+      about|description|website|phone) ;;
+      *) log "ERRORE: il campo «$k» non è tra quelli consentiti (about, description, website, phone)"; return 1 ;;
+    esac
+  done
+  pagina "$(jq -r '.pagina // empty' "$f")" || return 1
+  log "== Aggiornamento delle informazioni della Pagina «$PAGE_NAME» (id $PAGE_ID) =="
+  log "Approvazione: $(jq -r '.approvata_da // "non indicata"' "$f")"
+  elenco=$(IFS=,; echo "${campi[*]}")
+  prima=$(graph "$PAGE_TOKEN" GET "$PAGE_ID?fields=$elenco")
+  local args=()
+  for k in "${campi[@]}"; do
+    v=$(jq -r --arg k "$k" '.campi[$k]' "$f")
+    args+=(--data-urlencode "$k=$v")
+  done
+  r=$(graph "$PAGE_TOKEN" POST "$PAGE_ID" "${args[@]}")
+  e=$(printf '%s' "$r" | errore)
+  if [ -n "$e" ]; then
+    log "ERRORE: aggiornamento non riuscito: $e"
+    return 1
+  fi
+  dopo=$(graph "$PAGE_TOKEN" GET "$PAGE_ID?fields=$elenco")
+  local esito=0
+  for k in "${campi[@]}"; do
+    v=$(jq -r --arg k "$k" '.campi[$k]' "$f")
+    log "  $k, prima: $(jq -r --arg k "$k" '.[$k] // "-"' <<<"$prima")"
+    log "  $k, adesso: $(jq -r --arg k "$k" '.[$k] // "-"' <<<"$dopo")"
+    if [ "$(jq -r --arg k "$k" '.[$k] // ""' <<<"$dopo")" = "$v" ]; then
+      log "  $k: aggiornato"
+    else
+      log "  ATTENZIONE: $k non corrisponde al testo richiesto"
+      esito=1
+    fi
+  done
+  return $esito
+}
+
 # richieste aggiunte con questo push (se non ce ne sono, per esempio da «Run workflow», si fa la prova)
 RICHIESTE=()
 if [ -n "${BEFORE:-}" ] && ! [[ "$BEFORE" =~ ^0+$ ]] && git cat-file -e "$BEFORE^{commit}" 2>/dev/null; then
@@ -217,6 +295,7 @@ for f in "${RICHIESTE[@]}"; do
   az=$(jq -r '.azione // empty' "$f" 2>/dev/null || true)
   case "$az" in
     prova) prova || stato=1 ;;
+    aggiorna-pagina) aggiorna_pagina "$f" || stato=1 ;;
     *) log "ERRORE: azione «$az» non riconosciuta"; stato=1 ;;
   esac
 done
