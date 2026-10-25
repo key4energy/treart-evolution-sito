@@ -4,7 +4,7 @@
 # Una richiesta è un file JSON in social/richieste/, aggiunto con un commit sul ramo main:
 #   {"azione": "prova"}   lettura di verifica: non pubblica nulla
 #   {"azione": "aggiorna-pagina", "approvata_da": "...", "campi": {"about": "..."}}
-#                         aggiorna le informazioni della Pagina (about, description, website, phone)
+#                         aggiorna le informazioni della Pagina (about, description, website, phone, hours, impressum)
 # Le azioni che modificano la Pagina si usano solo dopo l'ok esplicito di Fabio, riportato in approvata_da.
 #
 # L'esito va nel ramo esito-social (file esito-social.txt). Le chiavi non vengono mai stampate:
@@ -244,8 +244,8 @@ aggiorna_pagina() {
   fi
   for k in "${campi[@]}"; do
     case "$k" in
-      about|description|website|phone) ;;
-      *) log "ERRORE: il campo «$k» non è tra quelli consentiti (about, description, website, phone)"; return 1 ;;
+      about|description|website|phone|hours|impressum) ;;
+      *) log "ERRORE: il campo «$k» non è tra quelli consentiti (about, description, website, phone, hours, impressum)"; return 1 ;;
     esac
   done
   pagina "$(jq -r '.pagina // empty' "$f")" || return 1
@@ -255,7 +255,8 @@ aggiorna_pagina() {
   prima=$(graph "$PAGE_TOKEN" GET "$PAGE_ID?fields=$elenco")
   local args=()
   for k in "${campi[@]}"; do
-    v=$(jq -r --arg k "$k" '.campi[$k]' "$f")
+    # testo così com'è; oggetti (per esempio gli orari) in JSON compatto
+    v=$(jq -r --arg k "$k" '.campi[$k] | if type == "string" then . else tojson end' "$f")
     args+=(--data-urlencode "$k=$v")
   done
   r=$(graph "$PAGE_TOKEN" POST "$PAGE_ID" "${args[@]}")
@@ -265,15 +266,16 @@ aggiorna_pagina() {
     return 1
   fi
   dopo=$(graph "$PAGE_TOKEN" GET "$PAGE_ID?fields=$elenco")
-  local esito=0
+  local esito=0 voluto ora
   for k in "${campi[@]}"; do
-    v=$(jq -r --arg k "$k" '.campi[$k]' "$f")
-    log "  $k, prima: $(jq -r --arg k "$k" '.[$k] // "-"' <<<"$prima")"
-    log "  $k, adesso: $(jq -r --arg k "$k" '.[$k] // "-"' <<<"$dopo")"
-    if [ "$(jq -r --arg k "$k" '.[$k] // ""' <<<"$dopo")" = "$v" ]; then
+    log "  $k, prima: $(jq -r --arg k "$k" '.[$k] // "-" | if type == "string" then . else tojson end' <<<"$prima")"
+    log "  $k, adesso: $(jq -r --arg k "$k" '.[$k] // "-" | if type == "string" then . else tojson end' <<<"$dopo")"
+    voluto=$(jq -cS --arg k "$k" '.campi[$k]' "$f")
+    ora=$(jq -cS --arg k "$k" '.[$k] // null' <<<"$dopo")
+    if [ "$ora" = "$voluto" ]; then
       log "  $k: aggiornato"
     else
-      log "  ATTENZIONE: $k non corrisponde al testo richiesto"
+      log "  ATTENZIONE: $k non corrisponde a quanto richiesto"
       esito=1
     fi
   done

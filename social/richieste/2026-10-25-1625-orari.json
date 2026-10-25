@@ -1,0 +1,13 @@
+{
+  "azione": "aggiorna-pagina",
+  "approvata_da": "Fabio, in chat, domenica 25 ottobre 2026 alle 16:24 («Gli orari giusti sono quelli nel sito»)",
+  "campi": {
+    "hours": {
+      "mon_1_open": "08:30", "mon_1_close": "13:00", "mon_2_open": "14:00", "mon_2_close": "17:30",
+      "tue_1_open": "08:30", "tue_1_close": "13:00", "tue_2_open": "14:00", "tue_2_close": "17:30",
+      "wed_1_open": "08:30", "wed_1_close": "13:00", "wed_2_open": "14:00", "wed_2_close": "17:30",
+      "thu_1_open": "08:30", "thu_1_close": "13:00", "thu_2_open": "14:00", "thu_2_close": "17:30",
+      "fri_1_open": "08:30", "fri_1_close": "13:00", "fri_2_open": "14:00", "fri_2_close": "17:30"
+    }
+  }
+}
