@@ -1,0 +1,51 @@
+# Richieste per la Pagina Facebook di Treart Evolution con la chiave META_TOKEN.
+# Si avvia aggiungendo un file JSON in social/richieste/ sul ramo main (vedi .github/scripts/social.sh).
+# Ogni pubblicazione avviene solo dopo l'ok esplicito di Fabio.
+name: Social
+
+on:
+  push:
+    branches: [main]
+    paths: ["social/richieste/**"]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: social
+  cancel-in-progress: false
+
+jobs:
+  social:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      REPORT: ${{ github.workspace }}/esito-social.txt
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Esegui le richieste
+        env:
+          META_TOKEN: ${{ secrets.META_TOKEN }}
+          BEFORE: ${{ github.event.before }}
+        run: bash .github/scripts/social.sh
+
+      - name: Salva l'esito nel ramo esito-social
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+          JOB_STATUS: ${{ job.status }}
+        run: |
+          [ -f "$REPORT" ] || echo "Nessun esito registrato" > "$REPORT"
+          echo "Esito complessivo: $JOB_STATUS" >> "$REPORT"
+          dir=$(mktemp -d)
+          cp "$REPORT" "$dir/"
+          cd "$dir"
+          git init -q -b esito-social
+          git add .
+          git -c user.name="github-actions[bot]" -c user.email="41898282+github-actions[bot]@users.noreply.github.com" \
+            commit -qm "Esito social n. $GITHUB_RUN_NUMBER"
+          git push -qf "https://x-access-token:${GH_TOKEN}@github.com/${GITHUB_REPOSITORY}.git" HEAD:esito-social

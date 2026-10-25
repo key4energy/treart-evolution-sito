@@ -72,6 +72,14 @@ Per pubblicare su Facebook e Instagram si usa un'app Meta interna, «Treart Evol
 
 Si rigenerano con `python3 sorgente/pagine_app.py public`, che copia anche il carattere in `public/font/`.
 
+## Social (Pagina Facebook)
+
+Il workflow **Social** usa la chiave `META_TOKEN` (segreto del repository: token senza scadenza dell'utente di sistema «pubblicazioni» del portfolio Treart Evolution, app «Treart Evolution Social»). Si avvia aggiungendo sul ramo `main` un file JSON in `social/richieste/`:
+
+- `{"azione": "prova"}`: lettura di verifica della chiave, della Pagina e degli ultimi post, senza pubblicare nulla.
+
+L'esito si legge nel ramo `esito-social` (file `esito-social.txt`). Le chiavi non vengono mai stampate. Ogni pubblicazione avviene solo dopo l'ok esplicito di Fabio.
+
 ## Prima della pubblicazione definitiva
 
 La pagina contiene `<meta name="robots" content="noindex, nofollow">`, perché è un'anteprima con dati ancora da confermare. Va tolta in `build_hosting.py` quando il sito andrà su treart-evolution.com.
