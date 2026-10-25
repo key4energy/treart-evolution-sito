@@ -43,24 +43,55 @@ diagnosi() {
   else
     log "  Pagine assegnate (elenco diretto): non leggibile ($e)"
   fi
+  # app e portfolio a cui appartiene la chiave
+  local app bids=""
+  r=$(curl -sS -m 60 -G -H "Authorization: Bearer $META_TOKEN" --data-urlencode "input_token=$META_TOKEN" "$G/debug_token")
+  e=$(printf '%s' "$r" | errore)
+  if [ -z "$e" ]; then
+    app=$(jq -r '.data.app_id // empty' <<<"$r")
+    log "  chiave: tipo $(jq -r '.data.type // "?"' <<<"$r"), app $app, scadenza $(jq -r 'if (.data.expires_at // 0) == 0 then "mai" else (.data.expires_at | todate) end' <<<"$r")"
+    jq -r '.data.granular_scopes[]? | "    \(.scope): \(if .target_ids then (.target_ids | join(", ")) else "tutte le risorse assegnate" end)"' <<<"$r" | tee -a "$REPORT"
+  else
+    log "  chiave: dettagli non leggibili ($e)"
+  fi
+  if [ -n "${app:-}" ]; then
+    r=$(graph "$META_TOKEN" GET "$app?fields=name,owner_business")
+    e=$(printf '%s' "$r" | errore)
+    if [ -z "$e" ]; then
+      log "  app «$(jq -r '.name // "?"' <<<"$r")», portfolio proprietario: $(jq -r 'if .owner_business then "\(.owner_business.name // "?") (id \(.owner_business.id))" else "-" end' <<<"$r")"
+      bids=$(jq -r '.owner_business.id // empty' <<<"$r")
+    else
+      log "  app: non leggibile ($e)"
+    fi
+  fi
   r=$(graph "$META_TOKEN" GET "me/businesses?fields=id,name")
   e=$(printf '%s' "$r" | errore)
-  if [ -n "$e" ]; then
-    log "  portfolio dell'utente di sistema: non leggibile ($e)"
+  if [ -z "$e" ]; then
+    bids="$bids $(jq -r '.data[].id' <<<"$r")"
+  fi
+  bids=$(printf '%s\n' $bids | awk 'NF && !seen[$0]++')
+  if [ -z "$bids" ]; then
+    log "  portfolio: non individuato"
     return 0
   fi
-  if [ "$(jq '.data | length' <<<"$r")" -eq 0 ]; then
-    log "  portfolio dell'utente di sistema: nessuno"
-    return 0
-  fi
-  for bid in $(jq -r '.data[].id' <<<"$r"); do
-    nome=$(jq -r --arg id "$bid" '.data[] | select(.id == $id) | .name' <<<"$r")
+  for bid in $bids; do
+    nome=$(graph "$META_TOKEN" GET "$bid?fields=name" | jq -r '.name // "?"' 2>/dev/null)
     log "  portfolio «$nome» (id $bid)"
     local op cp
     op=$(graph "$META_TOKEN" GET "$bid/owned_pages?fields=id,name")
     e=$(printf '%s' "$op" | errore)
     if [ -z "$e" ]; then
       log "    Pagine di proprietà del portfolio: $(jq -r '[.data[] | "\(.name) (id \(.id))"] | if length == 0 then "nessuna" else join("; ") end' <<<"$op")"
+      local pid au
+      for pid in $(jq -r '.data[].id' <<<"$op"); do
+        au=$(graph "$META_TOKEN" GET "$pid/assigned_users?business=$bid&fields=id,name,tasks")
+        e=$(printf '%s' "$au" | errore)
+        if [ -z "$e" ]; then
+          log "    persone e utenti di sistema assegnati alla Pagina $pid: $(jq -r '[.data[] | "\(.name) [\((.tasks // []) | join(","))]"] | if length == 0 then "nessuno" else join("; ") end' <<<"$au")"
+        else
+          log "    assegnazioni della Pagina $pid: non leggibili ($e)"
+        fi
+      done
     else
       log "    Pagine di proprietà del portfolio: non leggibili ($e)"
     fi
