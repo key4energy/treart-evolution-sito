@@ -25,7 +25,9 @@ FONT = next(p for p in (
     os.path.join(HERE, '..', 'fontpkg', 'package', 'files', 'open-sans-latin-wdth-normal.woff2'),
 ) if os.path.exists(p))
 OUT = sys.argv[1] if len(sys.argv) > 1 else os.path.join(HERE, 'hosting')
-SITE = 'https://fabio.treart-evolution.com/'
+# TREART_PRODUZIONE=1: versione per treart-evolution.com, visibile ai motori di ricerca
+PROD = os.environ.get('TREART_PRODUZIONE') == '1'
+SITE = 'https://treart-evolution.com/' if PROD else 'https://fabio.treart-evolution.com/'
 os.makedirs(OUT, exist_ok=True)
 
 # ---------- build di anteprima ----------
@@ -59,6 +61,9 @@ with open(FONT, 'rb') as f:
 fav32 = png_b64(f'{KIT}/01-logo/png/favicon-32.png')
 fav180 = png_b64(f'{KIT}/01-logo/png/favicon-180.png')
 
+ROBOTS = (f'<link rel="canonical" href="{SITE}">' if PROD else
+          '<!-- Anteprima: esclusa dai motori di ricerca (la versione di produzione si genera con TREART_PRODUZIONE=1) -->\n<meta name="robots" content="noindex, nofollow">')
+
 page = f'''<!doctype html>
 <html lang="it">
 <head>
@@ -66,8 +71,7 @@ page = f'''<!doctype html>
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>{TITLE}</title>
 <meta name="description" content="{DESC}">
-<!-- Anteprima con dati da confermare: esclusa dai motori di ricerca. Togliere questa riga alla pubblicazione definitiva. -->
-<meta name="robots" content="noindex, nofollow">
+{ROBOTS}
 <meta name="theme-color" content="#FFFFFF">
 <link rel="icon" type="image/png" sizes="32x32" href="data:image/png;base64,{fav32}">
 <link rel="apple-touch-icon" sizes="180x180" href="data:image/png;base64,{fav180}">
@@ -129,5 +133,15 @@ def og_image(path):
 
 
 og_image(os.path.join(OUT, 'og-image.png'))
-for n in ('index.html', 'og-image.png'):
+files = ['index.html', 'og-image.png']
+if PROD:
+    with open(os.path.join(OUT, 'robots.txt'), 'w', encoding='utf-8') as f:
+        f.write(f'User-agent: *\nAllow: /\n\nSitemap: {SITE}sitemap.xml\n')
+    import datetime
+    oggi = datetime.date.today().isoformat()
+    with open(os.path.join(OUT, 'sitemap.xml'), 'w', encoding='utf-8') as f:
+        f.write('<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
+                f'  <url><loc>{SITE}</loc><lastmod>{oggi}</lastmod></url>\n</urlset>\n')
+    files += ['robots.txt', 'sitemap.xml']
+for n in files:
     print(n, f'{os.path.getsize(os.path.join(OUT, n)) / 1024:.0f} KB')

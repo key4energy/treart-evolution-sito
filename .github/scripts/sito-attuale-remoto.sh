@@ -100,6 +100,26 @@ case "$AZ" in
     curl -sS -m 30 -L "https://$DOM/" 2>/dev/null | grep -o -E 'https?://(www\.)?(instagram|linkedin|facebook)\.com/[^"'"'"' <>]*' | sort | uniq -c
     ;;
 
+  elenca-indirizzi)
+    # sola lettura: tutti gli indirizzi pubblici del sito WordPress, per preparare i reindirizzamenti
+    echo "== Contenuti pubblicati (tipo, indirizzo, titolo) =="
+    wp eval '
+      $tipi = array_diff(get_post_types(["public" => true]), ["attachment"]);
+      foreach (get_posts(["post_type" => array_values($tipi), "post_status" => "publish", "numberposts" => -1, "orderby" => "type"]) as $p) {
+        echo $p->post_type, "\t", get_permalink($p), "\t", $p->post_title, "\n";
+      }
+      foreach (get_taxonomies(["public" => true]) as $tx) {
+        foreach (get_terms(["taxonomy" => $tx, "hide_empty" => true]) as $t) { $l = get_term_link($t); if (is_wp_error($l)) { continue; } echo "tassonomia:$tx\t", $l, "\t", $t->name, "\n"; }
+      }
+    ' 2>&1 | head -n 300
+    echo
+    echo "== Mappa del sito (sitemap) =="
+    for sm in $(curl -sS -m 30 -L "https://$DOM/sitemap_index.xml" 2>/dev/null | grep -o '<loc>[^<]*</loc>' | sed 's/<[^>]*>//g'); do
+      echo "# $sm"
+      curl -sS -m 30 -L "$sm" 2>/dev/null | grep -o '<loc>[^<]*</loc>' | sed 's/<[^>]*>//g' | head -n 200
+    done
+    ;;
+
   backup)
     # backup completo: tutti i file della cartella del sito + database + istruzioni, in un unico archivio
     B="$HOME/backup-sito-attuale"

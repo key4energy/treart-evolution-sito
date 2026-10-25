@@ -5,6 +5,7 @@
 #   {"azione": "sostituisci", "approvata_da": "...", "sostituzioni": [["vecchio", "nuovo"], ...]}
 #   {"azione": "rimuovi-link", "approvata_da": "...", "link": "linkedin.com/company/..."}
 #   {"azione": "backup"}   backup completo (file e database), scaricabile dalla pagina dell'esecuzione su GitHub
+#   {"azione": "elenca-indirizzi"}   sola lettura: indirizzi pubblici del sito, per i reindirizzamenti
 # Le modifiche si fanno solo dopo l'ok esplicito di Fabio, riportato in approvata_da;
 # prima di ogni modifica viene salvata una copia del database sul server.
 set -uo pipefail
@@ -44,6 +45,11 @@ for f in "${RICHIESTE[@]}"; do
         args+=("$(printf '%q' "$riga")")
       done < <(jq -r '.sostituzioni[][]' "$f")
       ssh_sg "bash -s -- sostituisci '$DOM' ${args[*]}" < .github/scripts/sito-attuale-remoto.sh 2>&1 | tee -a "$REPORT"
+      [ "${PIPESTATUS[0]}" -eq 0 ] || stato=1
+      ;;
+    elenca-indirizzi)
+      log "== Indirizzi pubblici di $DOM (sola lettura) =="
+      ssh_sg "bash -s -- elenca-indirizzi '$DOM'" < .github/scripts/sito-attuale-remoto.sh 2>&1 | grep -v '^Warning: Permanently added' | tee -a "$REPORT"
       [ "${PIPESTATUS[0]}" -eq 0 ] || stato=1
       ;;
     backup)

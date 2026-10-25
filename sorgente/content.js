@@ -12,10 +12,14 @@ const C = {
   addr1: "Via Aurelia Nord 76/1", addr2: "58100 Grosseto (GR)",
   hours: "Lun–ven 8:30–13:00 e 14:00–17:30",
   maps: "https://www.google.com/maps/search/?api=1&query=Via+Aurelia+Nord+76%2F1+58100+Grosseto",
-  fabio: { name: "Fabio Di Cesare", tel: "+39 392 947 5027", telHref: "tel:+393929475027", email: "fabio@treart-evolution.com" },
+  founded: 2015,
   piva: "01575220536", rea: "136469", cap: "€ 10.000,00",
   reply: "8 ore lavorative",
   site: "treart-evolution.com",
+  // ID di misurazione di Google Analytics 4 (per esempio "G-ABC123XYZ"): finché è vuoto non si carica nulla e non compare il banner dei cookie
+  ga: "",
+  // scheda Google: voto e numero di recensioni (aggiornati al 25 ottobre 2026) e indirizzo per leggerle
+  google: { rating: "4,8", count: 5, quote: "", author: "", url: "https://www.google.com/maps/search/?api=1&query=Treart%20Evolution&query_place_id=ChIJGQCWuPawKRMR8biuNijPz9s" },
 };
 
 const AREAS = [
@@ -33,10 +37,23 @@ const AREAS = [
 const PARTNERS = [
   { id: "3cx", name: "3CX", level: "Bronze Partner", levelNote: "", badge: "", service: "centralini-voip", icon: "phone", area: "Centralini VoIP",
     line: "Progettiamo, installiamo e seguiamo centralini 3CX in cloud o in sede, come partner ufficiale del produttore.",
-    gives: ["Licenze originali e rinnovi gestiti da noi, senza scadenze dimenticate", "Centralino configurato secondo gli standard 3CX, su misura per la tua organizzazione", "Aggiornamenti, modifiche e assistenza da {{tecnici certificati 3CX|Certificazione 3CX dei tecnici da confermare}}"] },
-  { id: "watchguard", name: "WatchGuard", level: "Partner", levelNote: "Livello di partnership WatchGuard da confermare (es. Silver, Gold)", badge: "", service: "cybersecurity", icon: "shield", area: "Sicurezza della rete",
+    gives: ["Licenze originali e rinnovi gestiti da noi, senza scadenze dimenticate", "Centralino configurato secondo gli standard 3CX, su misura per la tua organizzazione", "Aggiornamenti, modifiche e assistenza da tecnici certificati 3CX"] },
+  { id: "watchguard", name: "WatchGuard", level: "Partner", levelNote: "", badge: "", service: "cybersecurity", icon: "shield", area: "Sicurezza della rete",
     line: "Proteggiamo la rete delle aziende con i firewall WatchGuard, configurati su misura e gestiti da noi ogni giorno.",
     gives: ["Firewall e licenze di sicurezza originali, rinnovate per tempo", "Configurazione cucita sulla tua rete, non lasciata alle impostazioni di fabbrica", "Aggiornamenti e controlli continui, con un referente che conosce i tuoi sistemi"] },
+];
+
+/* Le persone di Treart Evolution (ottobre 2026). Quando ci saranno le foto, si aggiungono con «foto» (slug di foto.json). */
+const TEAM = [
+  { name: "Fabio Di Cesare", role: "Amministratore" },
+  { name: "Melissa Pericci", role: "Responsabile amministrativa" },
+  { name: "Niccolò Maffei", role: "Responsabile reparto web" },
+  { name: "Emanuele Crolli", role: "Responsabile assistenza tecnica e networking" },
+];
+/* La storia, dalla lettera di presentazione di Treart Evolution e dalle indicazioni di Fabio Di Cesare (ottobre 2026). */
+const STORY = [
+  "Treart Evolution nasce a Grosseto nel 2015, fondata da Fabio Di Cesare insieme all’amico e socio Luca Guelfi. Porta con sé l’esperienza di Treart Srl, attiva dal 2006: le competenze tecnologiche, una parte dei clienti e l’abitudine a seguire progetti di medie e grandi dimensioni.",
+  "Negli anni abbiamo affiancato aziende, studi professionali, fondazioni e associazioni in tutta Italia, e collaboriamo con partner anche all’estero. I valori sono rimasti gli stessi: concretezza, creatività e attenzione alle novità, perché la tecnologia serve solo se fa lavorare meglio chi la usa.",
 ];
 
 const INCENTIVE_NOTE = {
@@ -68,7 +85,7 @@ const SERVICES = {
     pains: ["«Il PC nuovo è arrivato, ma serve una settimana per farlo funzionare come il vecchio.»", "«La stampante di rete sparisce ogni lunedì.»", "«Il server ha dieci anni e nessuno osa toccarlo.»"],
     does: ["PC e portatili già pronti: programmi, posta, stampanti e accessi", "Trasferimento dei dati dal vecchio computer, verificato prima di spegnerlo", "Server e NAS: cartelle condivise e permessi per reparto", "Stampanti e multifunzione di rete configurate per tutti", "Sostituzione dei sistemi che non ricevono più aggiornamenti di sicurezza", "Documentazione finale: cosa c’è, dove sta, chi può accedere"],
     steps: [["Elenco", "Cosa serve a ogni persona."], ["Preparazione in laboratorio", "Arriva tutto già configurato."], ["Installazione in sede", "Nel momento meno disturbante."], ["Verifica e consegna", "Controlliamo insieme e ti lasciamo la documentazione."]],
-    why: [["box", "Arriva tutto pronto", "Nessuna giornata persa a configurare."], ["clock", "Quando conviene a te", "Organizziamo il passaggio anche fuori orario [da confermare]."], ["file", "Documentazione chiara", "La tua azienda resta padrona dei suoi sistemi."]],
+    why: [["box", "Arriva tutto pronto", "Nessuna giornata persa a configurare."], ["clock", "Quando conviene a te", "Organizziamo il passaggio anche fuori orario, con condizioni da concordare insieme."], ["file", "Documentazione chiara", "La tua azienda resta padrona dei suoi sistemi."]],
     faq: [["Fornite anche l’hardware?", "Sì: ti consigliamo e forniamo il più adatto, oppure configuriamo quello che hai già comprato."], ["Si perdono i dati nel passaggio?", "No: li copiamo e li verifichiamo prima di spegnere il vecchio computer."], ["Quanto tempo serve?", "Per un PC poche ore. Per un ufficio intero organizziamo il passaggio in una giornata."]],
     cta: { label: "Richiedi un preventivo per il tuo ufficio", to: "preventivo" },
     wa: "Ciao, devo installare nuovi PC in azienda.",
@@ -167,7 +184,7 @@ const SERVICES = {
     title: "Internet veloce e stabile, anche dove la fibra non arriva.",
     sub: "Fibra, connessione radio o satellitare: scegliamo la tecnologia giusta per la tua sede e aggiungiamo una linea di riserva, così non resti mai fermo.",
     pains: ["«In campagna abbiamo una connessione lentissima.»", "«Quando cade Internet si ferma tutto: casse, telefoni, gestionale.»", "«Paghiamo una linea che non mantiene mai la velocità promessa.»"],
-    does: ["Analisi delle tecnologie disponibili all’indirizzo della tua sede", "Fibra, collegamenti radio e satellitari con operatori partner ({{Fastweb, Eolo, Starlink per le imprese|Partner da confermare}})", "Linea di riserva che entra in funzione da sola se la principale cade", "Router e firewall configurati e gestiti da noi", "Gestione dei rapporti con l’operatore: i guasti li segnaliamo e seguiamo noi"],
+    does: ["Analisi delle tecnologie disponibili all’indirizzo della tua sede", "Fibra, collegamenti radio e satellitari con operatori partner (Fastweb, Eolo, Starlink per le imprese)", "Linea di riserva che entra in funzione da sola se la principale cade", "Router e firewall configurati e gestiti da noi", "Gestione dei rapporti con l’operatore: i guasti li segnaliamo e seguiamo noi"],
     steps: [["Verifica della copertura", "All’indirizzo reale, non solo sulla mappa."], ["Proposta", "Con una o due tecnologie e i costi a confronto."], ["Attivazione", "Configurazione coordinata con l’operatore."], ["Monitoraggio", "Della linea, e assistenza."]],
     why: [["antenna", "Liberi dagli operatori", "Proponiamo la soluzione che funziona meglio da te."], ["phone", "Un solo referente", "Anche per i guasti di linea."], ["network", "Pensata con il resto", "Connessione progettata insieme a rete, telefoni e telecamere."]],
     faq: [["Il satellite è affidabile per un’azienda?", "Sì, nelle zone senza fibra è spesso la scelta migliore, anche come linea di riserva."], ["Cosa succede se la linea cade?", "Con la doppia linea il passaggio è automatico: telefoni e casse continuano a funzionare."], ["Posso tenere il mio operatore?", "Sì: valutiamo la linea attuale e interveniamo solo dove serve."]],
@@ -185,7 +202,7 @@ const SERVICES = {
     pains: ["«I clienti chiamano e il telefono squilla a vuoto.»", "«Quando sono fuori ufficio perdo le chiamate.»", "«Il vecchio centralino si guasta e nessuno lo ripara più.»", "«La bolletta del telefono è sempre troppo alta.»"],
     does: ["Analisi delle linee, dei numeri e di come arrivano le chiamate", "Centralino 3CX in cloud o in sede, su misura per la tua organizzazione", "Portabilità dei numeri che hai già: i clienti continuano a chiamarti come prima", "App per smartphone e computer: chiami e ricevi con il numero aziendale", "Risponditore automatico, code di attesa e orari di apertura", "Messaggi vocali via email e inoltro automatico sui cellulari", "Telefoni da scrivania configurati, formazione e assistenza", "Verifica di allarmi, POS e fax collegati alla vecchia linea"],
     steps: [["Sopralluogo", "Verifica della linea e degli apparati collegati."], ["Progetto", "Interni, smistamento e messaggi pensati sul tuo modo di lavorare."], ["Attivazione", "Con portabilità dei numeri, senza interrompere il servizio."], ["Assistenza e modifiche", "Quando servono: nuovi colleghi, orari, ferie."]],
-    why: [["users", "Un solo referente", "Centralino, linea Internet e rete: se qualcosa non va, sai chi chiamare."], ["wrench", "Su misura", "Configurazione pensata per te, non un pacchetto uguale per tutti."], ["phone", "Linee professionali", "Linee VoIP di operatori partner [nomi da confermare]."]],
+    why: [["users", "Un solo referente", "Centralino, linea Internet e rete: se qualcosa non va, sai chi chiamare."], ["wrench", "Su misura", "Configurazione pensata per te, non un pacchetto uguale per tutti."], ["phone", "Linee professionali", "Linee VoIP professionali di VoipVoice e Messagenet."]],
     faq: [["Posso tenere il mio numero?", "Sì, con la portabilità il numero passa sul nuovo centralino."], ["Serve la fibra?", "Serve una connessione stabile. La verifichiamo e, se non basta, proponiamo fibra, radio o satellite."], ["Cosa succede se manca Internet o la corrente?", "Le chiamate si deviano in automatico sui cellulari; per gli apparati in ufficio consigliamo un gruppo di continuità."], ["Quanto costa?", "Dipende da utenti, linee e funzioni. Dopo il sopralluogo ricevi canone e costi una tantum separati."]],
     cta: { label: "Verifica gratis linea e centralino", to: "check-up", type: "linea" },
     wa: "Ciao, vorrei informazioni su un centralino VoIP per la mia azienda.",
@@ -233,7 +250,7 @@ const SERVICES = {
     title: "Il tuo sito sempre online, veloce e al sicuro.",
     sub: "Ospitiamo e curiamo siti WordPress ed e-commerce: aggiornamenti, backup, certificato di sicurezza e controllo continuo, senza che tu debba pensarci.",
     pains: ["«Il sito ogni tanto non si apre e ce lo dicono i clienti.»", "«Nessuno aggiorna i plugin da anni.»", "«Non sappiamo dove sia il backup del sito.»"],
-    does: ["Hosting professionale per WordPress ed e-commerce", "Aggiornamenti di sicurezza di sito, tema e plugin", "Backup quotidiani e ripristino rapido", "Certificato HTTPS e protezione dagli attacchi", "Controllo che il sito sia online, con avviso immediato se si ferma", "Piccole modifiche di testi e immagini incluse [da definire]"],
+    does: ["Hosting professionale per WordPress ed e-commerce", "Aggiornamenti di sicurezza di sito, tema e plugin", "Backup quotidiani e ripristino rapido", "Certificato HTTPS e protezione dagli attacchi", "Controllo che il sito sia online, con avviso immediato se si ferma", "Piccole modifiche di testi e immagini incluse; quelle più impegnative si quotano a parte, prima di iniziare"],
     steps: [["Analisi", "Controlliamo il sito e dove si trova oggi."], ["Messa in sicurezza", "Aggiornamenti, certificato e protezioni."], ["Trasferimento", "Spostiamo il sito senza interruzioni."], ["Cura continua", "Backup, controlli e piccole modifiche."]],
     why: [["wrench", "Curato da chi lo conosce", "Il sito è seguito da chi lo ha costruito, o da chi lo conosce davvero."], ["shield", "Prevenzione", "Aggiorniamo prima che una falla diventi un problema."], ["euro", "Un canone chiaro", "Senza costi a sorpresa."]],
     faq: [["Posso portare da voi un sito fatto da altri?", "Sì: lo analizziamo, lo mettiamo in sicurezza e lo spostiamo senza interruzioni."], ["Cosa succede se il sito viene attaccato?", "Lo ripristiniamo dal backup e chiudiamo la falla."]],
@@ -401,11 +418,10 @@ const MATRIX = [
   ["Centralino VoIP gestito", 0, 0, 1], ["Rete, Wi-Fi e telecamere in assistenza", 0, 0, 1], ["Supporto per la NIS2", 0, 0, 1],
 ];
 const PLAN_FAQ = [
-  ["Cosa non è compreso nel canone?", "L’hardware nuovo, le licenze e i progetti, per esempio un nuovo impianto Wi-Fi, si quotano a parte e sempre prima di iniziare. [Elenco delle esclusioni da definire]"],
+  ["Cosa non è compreso nel canone?", "L’hardware nuovo, le licenze e i progetti, per esempio un nuovo impianto Wi-Fi, si quotano a parte e sempre prima di iniziare. Non sono compresi i danni all’hardware causati da un uso negligente né i ripristini dovuti a virus presi ripetutamente per negligenza."],
   ["I prezzi comprendono l’IVA?", "No: tutti i prezzi indicati sul sito sono IVA esclusa."],
-  ["Quanto dura il contratto?", "Durata minima e preavviso: [da definire]."],
-  ["Posso cambiare formula?", "Sì: se l’azienda cresce, passi alla formula successiva. [Condizioni da definire]"],
-  ["E se non voglio un canone?", "Facciamo anche interventi singoli su preventivo. [Tariffa oraria da definire]"],
+  ["Posso cambiare formula?", "Sì: se l’azienda cresce, passi alla formula successiva."],
+  ["E se non voglio un canone?", "Sì, facciamo anche interventi singoli: 50 € l’ora presso la tua sede e 36 € l’ora nella nostra sede, IVA esclusa."],
 ];
 
 const STEPS4 = [

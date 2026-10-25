@@ -29,10 +29,14 @@ function render() {
     if (h1) { h1.setAttribute("tabindex", "-1"); h1.focus({ preventScroll: true }); }
   }
   S.first = false;
+  trackPage(tok);
 }
 
 function onClick(e) {
   const el0 = e.target;
+  const ck = el0.closest("[data-cookie]");
+  if (ck) { setConsent(ck.dataset.cookie); return; }
+  if (el0.closest("[data-cookie-prefs]")) { cookieBanner(true); return; }
   const mega = $("#mega");
   if (mega && !mega.hidden && !el0.closest("#hdr")) { mega.hidden = true; $("#nav-servizi").setAttribute("aria-expanded", "false"); }
   const fp = $("#fab-panel");
@@ -102,5 +106,6 @@ function onKey(e) {
     const d = $(s);
     d.addEventListener("click", (e) => { if (e.target === d) d.close(); });
   });
+  initConsent();
   render();
 })();

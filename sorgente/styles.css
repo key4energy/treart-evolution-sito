@@ -442,7 +442,10 @@ main > *{animation:enter .35s ease-out both}
 .card-form > p{color:var(--grey); font-size:15px; margin-bottom:18px}
 @media (max-width:900px){.contact{grid-template-columns:1fr}}
 
-.ch-grid{display:grid; grid-template-columns:repeat(auto-fill, minmax(260px, 1fr)); gap:16px}
+.ch-grid{display:grid; grid-template-columns:repeat(3, minmax(0,1fr)); gap:16px}
+.ch--tall{grid-row:span 2}
+@media (max-width:900px){.ch-grid{grid-template-columns:1fr 1fr}}
+@media (max-width:560px){.ch-grid{grid-template-columns:1fr} .ch--tall{grid-row:auto}}
 .ch{display:flex; flex-direction:column; gap:10px; padding:22px; border:1px solid var(--line); border-radius:var(--r-m); background:var(--white)}
 .ch h3{font-size:17px}
 .ch__val{font-size:19px; font-weight:800; letter-spacing:-.01em; word-break:break-word}
@@ -806,3 +809,31 @@ dialog.search{margin-top:8vh; margin-bottom:auto}
   html{scroll-behavior:auto}
   *, *::before, *::after{animation:none!important; transition:none!important}
 }
+
+/* ---------- voto Google ---------- */
+.rating{display:flex; align-items:center; gap:16px; flex-wrap:wrap}
+.rating__num{font-size:clamp(44px, 5vw, 60px); font-weight:800; letter-spacing:-.03em; line-height:1}
+.rating__side{display:grid; gap:6px}
+.rating__stars{position:relative; display:block; width:120px; height:24px}
+.rating__stars svg{display:block; width:120px; max-width:none; height:24px}
+.rating__stars path{fill:var(--line-2); stroke:none}
+.rating__fg{position:absolute; top:0; bottom:0; left:0; width:var(--r); overflow:hidden}
+.rating__fg path{fill:var(--amber)}
+.review figcaption a{font-weight:700}
+
+/* ---------- le persone ---------- */
+.team{display:grid; grid-template-columns:repeat(4, minmax(0,1fr)); gap:16px}
+.person{background:var(--white); border:1px solid var(--line); border-radius:var(--r-m); padding:22px; display:grid; gap:14px; align-content:start}
+.person__avatar{width:64px; height:64px; border-radius:50%; background:var(--green); color:var(--anth); display:grid; place-items:center; font-weight:800; font-size:21px; letter-spacing:.03em}
+.person h3{font-size:18px}
+.person p{margin-top:4px; font-size:15px; line-height:1.45}
+@media (max-width:980px){.team{grid-template-columns:1fr 1fr}}
+@media (max-width:520px){.team{grid-template-columns:1fr} .person{grid-template-columns:auto minmax(0,1fr); align-items:center}}
+
+/* ---------- banner dei cookie (solo con Google Analytics attivo) ---------- */
+.cookie-bar{position:fixed; left:0; right:0; bottom:0; z-index:90; padding:12px max(16px, env(safe-area-inset-right, 0px)) calc(12px + env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-left, 0px))}
+.cookie-bar__in{max-width:1080px; margin-inline:auto; background:var(--anth); color:var(--on-dark); border-radius:var(--r-m); box-shadow:var(--shadow); padding:16px 20px; display:flex; gap:14px 24px; align-items:center; flex-wrap:wrap}
+.cookie-bar__in p{flex:1 1 420px; min-width:0; font-size:15px; line-height:1.5}
+.cookie-bar__in a{color:var(--green)}
+.cookie-bar__btns{display:flex; gap:10px; flex-wrap:wrap}
+.ftr__link{background:none; border:0; padding:0; color:inherit; font:inherit; cursor:pointer; text-decoration:underline; text-underline-offset:3px}

@@ -174,7 +174,9 @@ foto_js = 'const FOTO = %s;\n' % json.dumps(
     {k: {'alt': v['alt'], 'by': v['fotografo'], 'urls': foto_urls(v), 'v': foto_ver(k)}
      for k, v in foto.items()},
     ensure_ascii=False)
-js = asset_js + foto_js + qr_js + read('content.js') + '\n' + read('app.js') + '\n' + read('tools.js') + '\n' + read('pages.js') + '\n' + read('boot.js')
+# versione di produzione (TREART_PRODUZIONE=1): niente strumenti di anteprima
+prod_js = 'const PROD = %s;\n' % ('true' if os.environ.get('TREART_PRODUZIONE') == '1' else 'false')
+js = prod_js + asset_js + foto_js + qr_js + read('content.js') + '\n' + read('app.js') + '\n' + read('tools.js') + '\n' + read('pages.js') + '\n' + read('boot.js')
 
 out = (head + '<style>\n' + css + '\n</style>\n' + sprite + '\n' + shell
        + '\n<script>\n"use strict";\n' + js + '\n</script>\n')

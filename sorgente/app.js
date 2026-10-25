@@ -103,6 +103,65 @@ const store = {
   set(k, v) { try { localStorage.setItem("treart:" + k, JSON.stringify(v)); } catch (e) { /* memoria del browser non disponibile */ } },
 };
 
+/* ---------- statistiche (Google Analytics 4), caricate solo con il consenso ---------- */
+const cookieConsent = {
+  get() { return store.get("consenso-statistiche"); }, // "si", "no" oppure null (non ancora scelto)
+  set(v) { store.set("consenso-statistiche", v); },
+};
+let gaLoaded = false;
+function loadGA() {
+  if (!C.ga || gaLoaded) return;
+  gaLoaded = true;
+  window.dataLayer = window.dataLayer || [];
+  window.gtag = function () { window.dataLayer.push(arguments); };
+  window.gtag("js", new Date());
+  window.gtag("config", C.ga, { send_page_view: false });
+  const sc = document.createElement("script");
+  sc.async = true;
+  sc.src = "https://www.googletagmanager.com/gtag/js?id=" + encodeURIComponent(C.ga);
+  document.head.appendChild(sc);
+}
+function trackPage(tok) {
+  if (!gaLoaded || !window.gtag) return;
+  window.gtag("event", "page_view", { page_title: document.title, page_location: location.href, page_path: "/" + (tok === "home" ? "" : tok) });
+}
+function clearGaCookies() {
+  const host = location.hostname.split(".");
+  const domains = ["", location.hostname];
+  for (let i = 1; i < host.length - 1; i++) domains.push("." + host.slice(i).join("."));
+  document.cookie.split(";").map((c) => c.split("=")[0].trim()).filter((n) => n.startsWith("_ga")).forEach((n) => {
+    domains.forEach((d) => { document.cookie = `${n}=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/${d ? "; domain=" + d : ""}`; });
+  });
+}
+function cookieBanner(show) {
+  let b = $("#cookie-bar");
+  if (!show) { if (b) b.hidden = true; return; }
+  if (!b) {
+    b = document.createElement("div");
+    b.id = "cookie-bar";
+    b.className = "cookie-bar";
+    b.setAttribute("role", "region");
+    b.setAttribute("aria-label", "Preferenze sui cookie");
+    b.innerHTML = `<div class="cookie-bar__in"><p><b>Statistiche del sito.</b> Con il tuo consenso usiamo Google Analytics per contare le visite in forma aggregata e capire quali pagine sono più utili. Niente pubblicità né profilazione. <a href="#cookie">Dettagli</a></p>
+      <div class="cookie-bar__btns"><button class="btn btn--light btn--sm" type="button" data-cookie="no">Rifiuta</button><button class="btn btn--primary btn--sm" type="button" data-cookie="si">Accetta</button></div></div>`;
+    document.body.appendChild(b);
+  }
+  b.hidden = false;
+}
+function setConsent(v) {
+  cookieConsent.set(v);
+  cookieBanner(false);
+  if (v === "si") { loadGA(); trackPage(current()); return; }
+  clearGaCookies();
+  if (gaLoaded) location.reload();
+}
+function initConsent() {
+  if (!C.ga) return;
+  const c = cookieConsent.get();
+  if (c === "si") loadGA();
+  else if (c !== "no") cookieBanner(true);
+}
+
 /* ---------- link standard ---------- */
 const waBtn = (text, label = "Scrivici su WhatsApp", cls = "btn btn--wa") => `<a class="${cls}" href="${waHref(text)}" target="_blank" rel="noopener">${ic("chat")}${label}</a>`;
 const telLink = (cls = "") => `<a class="${cls}" href="${C.telHref}">${C.tel}</a>`;
@@ -280,13 +339,13 @@ function renderFooter() {
         <a href="${C.telHref}">${C.tel}</a>
         <a href="${waHref(WA_GENERIC)}" target="_blank" rel="noopener">WhatsApp ${C.tel}</a>
         <a href="mailto:${C.email}">${C.email}</a>
-        <span>PEC ${soft(C.pec, "PEC dal biglietto 2015: da confermare")}</span>
+        <span>PEC ${C.pec}</span>
         <span>${C.hours}</span></address></div>
     </div>
     <div class="ftr__bottom">
       <span>© ${y} Treart Evolution Srl · P.IVA ${C.piva} · REA ${C.rea} · Cap. soc. ${C.cap}<br>Tutti i prezzi indicati sono IVA esclusa.</span>
-      <nav aria-label="Note legali"><a href="#privacy">Privacy</a><a href="#cookie">Cookie</a><a href="#crediti">Crediti foto</a>
-        <button class="tbc-toggle" type="button" aria-pressed="false" data-tbc-toggle>${ic("eye")}Anteprima: evidenzia i dati da confermare</button></nav>
+      <nav aria-label="Note legali"><a href="#privacy">Privacy</a><a href="#cookie">Cookie</a>${C.ga ? `<button class="ftr__link" type="button" data-cookie-prefs>Preferenze cookie</button>` : ""}<a href="#crediti">Crediti foto</a>
+        ${PROD ? "" : `<button class="tbc-toggle" type="button" aria-pressed="false" data-tbc-toggle>${ic("eye")}Anteprima: evidenzia i dati da confermare</button>`}</nav>
     </div>
   </div>`;
 }

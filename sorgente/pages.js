@@ -115,7 +115,7 @@ function casesHtml() {
     <div class="case__body"><span class="pill">${c.area} · ${c.who}</span><h3>${c.title}</h3>
     <dl><dt>Problema</dt><dd>${c.problem}</dd><dt>Soluzione</dt><dd>${c.solution}</dd><dt>Risultato</dt><dd>${c.result}</dd></dl></div></article>`).join("")}</div>`;
 }
-const partnersHtml = () => `<div class="partners" aria-label="Tecnologie e partner">${PARTNERS.map((p) => `<span class="is-ok">${ic("check")}<span>${esc(p.name)} ${p.levelNote ? soft(p.level, p.levelNote) : esc(p.level)}</span></span>`).join("")}${["Fastweb", "Eolo", "Starlink"].map((p) => `<span>${soft(p, "Partner da confermare")}</span>`).join("")}<span>${t("[altri partner]")}</span></div>`;
+const partnersHtml = () => `<div class="partners" aria-label="Tecnologie e partner">${PARTNERS.map((p) => `<span class="is-ok">${ic("check")}<span>${esc(p.name)} ${p.levelNote ? soft(p.level, p.levelNote) : esc(p.level)}</span></span>`).join("")}${["Fastweb", "Eolo", "Starlink", "VoipVoice", "Messagenet"].map((p) => `<span>${esc(p)}</span>`).join("")}</div>`;
 
 /* ---------- partner ufficiali e sicurezza gestita ---------- */
 // badge del partner: l'immagine ufficiale se c'è (PARTNERS[].badge), altrimenti nome e livello in testo
@@ -152,7 +152,17 @@ function secureSection() {
       <a class="btn btn--primary btn--lg" href="#check-up" data-checkup="sicurezza" data-prefill="cybersecurity">Prenota il check-up di sicurezza gratuito</a></div>
   </div></section>`;
 }
-const numsHtml = () => `<div class="nums"><div class="num"><b>${t("[N]")}</b><span>anni di attività</span></div><div class="num"><b>${t("[N]")}</b><span>aziende seguite</span></div><div class="num"><b>${t("[N]")}</b><span>impianti realizzati</span></div></div>`;
+const numsHtml = () => `<div class="nums"><div class="num"><b>${new Date().getFullYear() - 2006}</b><span>anni di esperienza nell’informatica, dal 2006</span></div><div class="num"><b>${C.founded}</b><span>nasce Treart Evolution</span></div><div class="num"><b>${C.google.rating}</b><span>su 5 nelle recensioni Google</span></div></div>`;
+/* stelle del voto Google, riempite in proporzione (4,8 su 5 = 96%) */
+function ratingStars(r) {
+  const pct = Math.max(0, Math.min(100, parseFloat(String(r).replace(",", ".")) / 5 * 100));
+  const row = `<svg viewBox="0 0 120 24" aria-hidden="true" focusable="false">${[0, 1, 2, 3, 4].map((i) => `<path transform="translate(${i * 24} 0)" d="${ICONS.star}"/>`).join("")}</svg>`;
+  return `<span class="rating__stars" style="--r:${pct.toFixed(0)}%">${row}<span class="rating__fg">${row}</span></span>`;
+}
+const reviewCard = () => `<figure class="review"><span class="eyebrow">Recensioni Google</span>
+  <div class="rating"><b class="rating__num">${C.google.rating}</b><div class="rating__side">${ratingStars(C.google.rating)}<span class="small muted">su 5, media di ${C.google.count} recensioni</span></div></div>
+  ${C.google.quote ? `<blockquote>«${esc(C.google.quote)}»</blockquote>` : ""}
+  <figcaption class="small">${C.google.quote && C.google.author ? `${esc(C.google.author)} · ` : ""}<a href="${C.google.url}" target="_blank" rel="noopener">Leggi le recensioni su Google</a></figcaption></figure>`;
 
 function stage() {
   const pos = [-90, -18, 54, 126, 198], R = 232;
@@ -240,8 +250,7 @@ route("home", {
 
   <section class="sec"><div class="wrap trust-grid">
     <div class="review-photo">
-    <figure class="review"><span class="eyebrow">Recensioni Google</span><blockquote>${t("«[Testo di una recensione Google di un cliente soddisfatto.]»")}</blockquote>
-      <figcaption class="muted small">${t("[Nome e cognome], [Azienda]. Valutazione [media] su [N] recensioni")}</figcaption></figure>
+    ${reviewCard()}
     ${fotoFig("maremma-pascolo", "(max-width: 860px) 92vw, 600px", "photo--wide")}</div>
     <div><span class="eyebrow">Chi siamo</span><h2 class="mt-s" style="font-size:clamp(26px,3vw,38px)">Sede a Grosseto, clienti in tutta Italia.</h2>
       <div class="mt-m">${numsHtml()}</div><p class="small muted mt-m">Tecnologie e partner</p>${partnersHtml()}</div>
@@ -422,13 +431,13 @@ route("chi-siamo", {
         </div></div></section>`
     + `<section class="sec sec--paper" id="partner" style="scroll-margin-top:calc(var(--hdr-h) + 8px)"><div class="wrap">${secHead("Partner ufficiali", "Tecnologie di produttori leader, installate da chi le conosce.", "Siamo partner ufficiali dei produttori con cui lavoriamo: per te significa prodotti e licenze originali, configurazioni secondo i loro standard e un solo referente per installazione, aggiornamenti e assistenza.")}${partnerCards()}</div></section>`
     + `<section class="sec"><div class="wrap split"><div class="split__head"><span class="eyebrow">La nostra storia</span><h2>Da dove veniamo.</h2></div>
-        <div style="display:grid;gap:24px"><p class="lead">${t("[Breve storia dell’azienda: anno di fondazione, persone, primi clienti, come è cresciuta]")}</p>${numsHtml()}<div><p class="small muted">Tecnologie e partner</p>${partnersHtml()}</div></div></div></section>`
+        <div style="display:grid;gap:24px"><div style="display:grid;gap:14px"><p class="lead">${esc(STORY[0])}</p><p>${esc(STORY[1])}</p></div>${numsHtml()}<div><p class="small muted">Tecnologie e partner</p>${partnersHtml()}</div></div></div></section>`
     + `<section class="sec sec--paper"><div class="wrap">${secHead("Le persone", "Chi trovi dall’altra parte del telefono.")}
-        <div class="cases">${[1, 2, 3].map(() => `<article class="case"><div class="case__img">${t("[Foto]")}</div><div class="case__body"><h3>${t("[Nome e cognome]")}</h3><p class="muted">${t("[Ruolo]")}</p></div></article>`).join("")}</div></div></section>`
+        <div class="team">${TEAM.map((p) => `<article class="person"><span class="person__avatar" aria-hidden="true">${esc(p.name.split(" ").map((w) => w[0]).slice(0, 2).join(""))}</span><div><h3>${esc(p.name)}</h3><p class="muted">${esc(p.role)}</p></div></article>`).join("")}</div></div></section>`
     + `<section class="sec sec--tight"><div class="wrap"><div class="facts">
         <div><span>Ragione sociale</span><b>Treart Evolution Srl</b></div><div><span>Sede</span><b>${C.addr1}, ${C.addr2}</b></div>
         <div><span>Partita IVA</span><b>${C.piva}</b></div><div><span>REA</span><b>${C.rea}</b></div><div><span>Capitale sociale</span><b>${C.cap}</b></div>
-        <div><span>PEC</span><b>${soft(C.pec, "PEC dal biglietto 2015: da confermare")}</b></div></div></div></section>`
+        <div><span>PEC</span><b>${C.pec}</b></div></div></div></section>`
     + defaultBand() + contactSection({ p: "cs2" }),
 });
 route("progetti", {
@@ -442,7 +451,7 @@ route("progetti", {
 
 /* ---------- contatti ---------- */
 function chCard(icon, title, value, text, actions, extra = "") {
-  return `<article class="ch">${icDot(icon)}<h3>${title}</h3><div class="ch__val">${value}</div><p>${text}</p>${extra}<div class="row">${actions}</div></article>`;
+  return `<article class="ch${extra ? " ch--tall" : ""}">${icDot(icon)}<h3>${title}</h3><div class="ch__val">${value}</div><p>${text}</p>${extra}<div class="row">${actions}</div></article>`;
 }
 const VCARD_TEXT = `Treart Evolution Srl\n${C.addr1}, ${C.addr2}\nTel. ${C.telIntl}\n${C.email}\n${C.site}`;
 route("contatti", {
@@ -461,9 +470,8 @@ route("contatti", {
         ${chCard("phone", "Telefono", C.tel, C.hours + ".", `<a class="btn btn--primary btn--sm" href="${C.telHref}">Chiama</a><button class="btn btn--ghost btn--sm" type="button" data-copy="${C.telIntl}"><span data-label>Copia il numero</span></button>`)}
         ${chCard("chat", "WhatsApp", C.tel, "Scrivici quando vuoi: rispondiamo in orario d’ufficio. Puoi mandarci foto e documenti.", `<a class="btn btn--primary btn--sm" href="${waHref(WA_GENERIC)}" target="_blank" rel="noopener">Apri WhatsApp</a>`, QR.wa)}
         ${chCard("mail", "Email", C.email, "Per capitolati, documenti e richieste dettagliate.", `<a class="btn btn--primary btn--sm" href="mailto:${C.email}">Scrivi un’email</a><button class="btn btn--ghost btn--sm" type="button" data-copy="${C.email}"><span data-label>Copia l’indirizzo</span></button>`)}
-        ${chCard("stamp", "PEC", soft(C.pec, "PEC dal biglietto 2015: da confermare"), "Per le comunicazioni ufficiali.", `<button class="btn btn--ghost btn--sm" type="button" data-copy="${C.pec}"><span data-label>Copia l’indirizzo</span></button>`)}
+        ${chCard("stamp", "PEC", C.pec, "Per le comunicazioni ufficiali.", `<button class="btn btn--ghost btn--sm" type="button" data-copy="${C.pec}"><span data-label>Copia l’indirizzo</span></button>`)}
         ${chCard("pin", "Sede", `${C.addr1}<br>${C.addr2}`, C.hours + ".", `<a class="btn btn--primary btn--sm" href="${C.maps}" target="_blank" rel="noopener">Indicazioni stradali</a><button class="btn btn--ghost btn--sm" type="button" data-copy="${C.addr1}, ${C.addr2}"><span data-label>Copia l’indirizzo</span></button>`)}
-        ${chCard("user", "Commerciale", C.fabio.name, `${soft(C.fabio.tel, "Cellulare dal biglietto 2015: da confermare")} · ${C.fabio.email}`, `<a class="btn btn--primary btn--sm" href="${C.fabio.telHref}">Chiama</a><a class="btn btn--ghost btn--sm" href="mailto:${C.fabio.email}">Scrivi</a>`)}
       </div><p class="small muted mt-m">Seguici anche su <a href="${C.facebook}" target="_blank" rel="noopener">Facebook</a> e <a href="${C.instagram}" target="_blank" rel="noopener">Instagram</a>.</p></div></section>`
     + `<section class="sec sec--tight"><div class="wrap"><div class="note note--qr">${QR.vcard}<p><b>Salva il nostro contatto.</b> Inquadra il codice con la fotocamera del telefono: numero, email e indirizzo vanno in rubrica in un attimo.</p>
         <button class="btn btn--ghost btn--sm" type="button" data-copy="${esc(VCARD_TEXT)}">${ic("copy")}<span data-label>Copia tutti i contatti</span></button></div></div></section>`
@@ -621,10 +629,10 @@ route("assistenza", {
     + `<section class="sec sec--tight"><div class="wrap"><div class="why">
         <div>${icDot("alert")}<h3>Siamo fermi</h3><p>Computer, rete o telefoni bloccati per tutti: chiama subito lo <a href="${C.telHref}"><b>${C.tel}</b></a>.</p></div>
         <div>${icDot("wrench")}<h3>Problema da risolvere</h3><p>Qualcosa non funziona ma si lavora: apri una richiesta qui sotto, ti richiamiamo noi.</p></div>
-        <div>${icDot("monitor")}<h3>Assistenza remota</h3><p>Durante la telefonata ti diciamo come avviare il collegamento con ${t("[programma di assistenza remota da confermare]")}, solo con il tuo consenso.</p></div>
+        <div>${icDot("monitor")}<h3>Assistenza remota</h3><p>Durante la telefonata ti diciamo come avviare il collegamento con TeamViewer o Iperius Remote, solo con il tuo consenso.</p></div>
       </div></div></section>`
     + `<section class="sec sec--paper sec--tight"><div class="wrap art"><div class="panel"><h2 style="font-size:clamp(22px,2.4vw,28px)">Apri una richiesta di assistenza</h2>${supportForm()}</div>
-        <aside class="aside"><div class="aside-card"><h3>Orari dell’assistenza</h3><p>${C.hours}.</p><p><b>Intervento entro ${C.reply}</b> dalla richiesta.</p><p>Fuori orario: ${t("[reperibilità da definire]")}</p></div>
+        <aside class="aside"><div class="aside-card"><h3>Orari dell’assistenza</h3><p>${C.hours}.</p><p><b>Intervento entro ${C.reply}</b> dalla richiesta.</p><p>Fuori orario: reperibilità secondo i servizi previsti dal tuo contratto di assistenza.</p></div>
         <div class="aside-card aside-card--light"><h3>Per fare prima</h3><ul class="does does--one">${["Annota il messaggio di errore, o fai una foto dello schermo", "Indica quale computer o apparato ha il problema", "Se puoi, tieni a portata di mano il telefono vicino al PC"].map((x) => `<li>${ic("check")}<span>${x}</span></li>`).join("")}</ul></div></aside></div></section>`,
   after: (m) => {
     const f = $("#f-as", m), al = $("#as-alert", m);
@@ -636,26 +644,37 @@ route("assistenza", {
 
 /* ---------- note legali e pagina non trovata ---------- */
 route("privacy", {
-  title: () => "Informativa privacy | Treart Evolution", desc: () => "Come Treart Evolution tratta i dati raccolti con moduli, telefono, WhatsApp ed email.", nav: () => "",
-  render: () => ph({ cr: [["Privacy"]], eyebrow: "Note legali", title: "Informativa privacy", lead: "Come trattiamo i dati che ci lasci con i moduli, il telefono, WhatsApp e l’email.", light: true })
+  title: () => "Informativa privacy | Treart Evolution", desc: () => "Come Treart Evolution tratta i dati raccolti con moduli, telefono, WhatsApp, email e, con il tuo consenso, con le statistiche del sito.", nav: () => "",
+  render: () => ph({ cr: [["Privacy"]], eyebrow: "Note legali", title: "Informativa privacy", lead: "Come trattiamo i dati che ci lasci con i moduli, il telefono, WhatsApp e l’email, e quelli raccolti dal sito.", light: true })
     + `<section class="sec sec--tight"><div class="wrap"><div class="art__body">
-      <p class="brief"><b>Bozza</b>${t("[Testo da far verificare al consulente privacy prima della pubblicazione]")}</p>
-      <h2>Titolare del trattamento</h2><p>Treart Evolution Srl, ${C.addr1}, ${C.addr2}. Email ${C.email}, PEC ${soft(C.pec, "PEC dal biglietto 2015: da confermare")}.</p>
-      <h2>Quali dati raccogliamo</h2><p>I dati che ci lasci quando chiedi un preventivo, un check-up, una richiamata o assistenza: nome, azienda, comune, telefono, email e il testo della richiesta.</p>
-      <h2>Perché li usiamo</h2><p>Per rispondere alla tua richiesta e, se diventi cliente, per fornirti il servizio. La base giuridica è la tua richiesta, cioè l’esecuzione di misure precontrattuali, e quando serve il tuo consenso.</p>
-      <h2>Per quanto tempo</h2><p>${t("[Tempi di conservazione da definire]")}</p>
-      <h2>Con chi li condividiamo</h2><p>Solo con i fornitori che ci aiutano a erogare il servizio, nominati responsabili del trattamento. ${t("[Elenco dei responsabili da definire]")}</p>
-      <h2>I tuoi diritti</h2><p>Puoi chiedere accesso, rettifica, cancellazione, limitazione e portabilità dei tuoi dati, e opporti al trattamento, scrivendo a ${C.email}. Puoi anche presentare reclamo al Garante per la protezione dei dati personali.</p>
+      <h2>Titolare del trattamento</h2><p>Treart Evolution Srl, ${C.addr1}, ${C.addr2}, partita IVA ${C.piva}. Email <a href="mailto:${C.email}">${C.email}</a>, PEC ${C.pec}.</p>
+      <h2>Quali dati trattiamo</h2>
+      <p><b>Dati che ci lasci tu.</b> Quando chiedi un preventivo, un check-up, una richiamata o assistenza: nome, azienda, comune, telefono, email e il testo della richiesta. I moduli del sito non salvano nulla: preparano un messaggio che invii tu, con WhatsApp o con la tua email. Trattiamo allo stesso modo i dati che ci comunichi per telefono, su WhatsApp, per email o di persona.</p>
+      <p><b>Dati di navigazione.</b> Come ogni sito, il server registra per motivi tecnici e di sicurezza l’indirizzo IP e le pagine richieste.</p>
+      ${C.ga ? `<p><b>Statistiche.</b> Solo se lo accetti nel banner dei cookie, usiamo Google Analytics per contare in forma aggregata le visite e le pagine più lette.</p>` : ""}
+      <h2>Perché li usiamo e su quale base</h2>
+      <p>Per rispondere alle tue richieste e preparare preventivi (misure precontrattuali, articolo 6.1.b del Regolamento UE 2016/679); per fornirti i servizi, se diventi cliente (contratto, articolo 6.1.b); per gli obblighi fiscali e contabili (obbligo di legge, articolo 6.1.c); per la sicurezza del sito (legittimo interesse, articolo 6.1.f)${C.ga ? "; per le statistiche delle visite, solo con il tuo consenso (articolo 6.1.a), che puoi revocare in ogni momento" : ""}.</p>
+      <h2>Per quanto tempo</h2>
+      <p>Richieste di contatto e preventivi non accettati: 24 mesi. Dati dei clienti: per tutta la durata del rapporto e poi 10 anni, come richiesto dalle norme fiscali. Registri tecnici del server: per il tempo previsto dal fornitore che ospita il sito.${C.ga ? " Dati delle statistiche: 14 mesi." : ""}</p>
+      <h2>Con chi li condividiamo</h2>
+      <p>Solo con i fornitori che ci aiutano a erogare il servizio, nominati responsabili del trattamento: SiteGround, che ospita il sito${C.ga ? "; Google, per le statistiche, solo con il tuo consenso" : ""}; WhatsApp di Meta, se scegli di scriverci lì; TeamViewer e Iperius, solo durante le sessioni di assistenza remota che avvii tu. La posta elettronica è gestita direttamente da Treart Evolution. Non vendiamo né cediamo i tuoi dati a nessuno.</p>
+      <h2>Trasferimenti fuori dall’Unione europea</h2>
+      <p>Alcuni fornitori, come Meta${C.ga ? " e Google" : ""}, possono trattare dati negli Stati Uniti. Avviene con le garanzie previste dal Regolamento, come l’adesione all’EU-US Data Privacy Framework o le clausole contrattuali standard approvate dalla Commissione europea.</p>
+      <h2>Devi darci i tuoi dati?</h2><p>No, è facoltativo. Senza i dati necessari, però, non possiamo rispondere alla tua richiesta.</p>
+      <h2>I tuoi diritti</h2><p>Puoi chiedere accesso, rettifica, cancellazione, limitazione e portabilità dei tuoi dati, e opporti al trattamento, scrivendo a <a href="mailto:${C.email}">${C.email}</a>. Puoi anche presentare reclamo al <a href="https://www.garanteprivacy.it/" target="_blank" rel="noopener">Garante per la protezione dei dati personali</a>.</p>
       <h2>Strumenti del sito</h2><p>Test, calcoli e liste di controllo funzionano nel tuo browser: le risposte non vengono inviate a nessuno.</p>
+      <p class="small muted">Ultimo aggiornamento: 25 ottobre 2026.</p>
     </div></div></section>`,
 });
 route("cookie", {
   title: () => "Cookie | Treart Evolution", desc: () => "Quali cookie e quale memoria del browser usa il sito di Treart Evolution.", nav: () => "",
   render: () => ph({ cr: [["Cookie"]], eyebrow: "Note legali", title: "Cookie e memoria del browser", lead: "Cosa salva il sito sul tuo dispositivo, e perché.", light: true })
     + `<section class="sec sec--tight"><div class="wrap"><div class="art__body">
-      <p class="brief"><b>Bozza</b>${t("[Testo da aggiornare se si aggiungono strumenti di statistica o pubblicità]")}</p>
-      <h2>Memoria del browser</h2><p>Il sito ricorda solo le tue spunte nelle liste «Cosa fare subito», sul tuo dispositivo. Non usa cookie di profilazione.</p>
-      <h2>Servizi esterni</h2><p>Caratteri tipografici e fotografie sono ospitati insieme al sito: mentre navighi non contatti servizi di altre aziende. I link a WhatsApp e a Google Maps aprono quei servizi solo se li scegli tu.</p>
+      <h2>Cookie tecnici e memoria del browser</h2><p>Il sito ricorda le tue spunte nelle liste «Cosa fare subito»${C.ga ? " e la tua scelta sui cookie" : ""}, solo sul tuo dispositivo. Non usiamo cookie di profilazione né pubblicità.</p>
+      ${C.ga ? `<h2>Cookie di statistica (Google Analytics)</h2><p>Solo se li accetti, usiamo Google Analytics 4 di Google Ireland Limited per sapere in forma aggregata quante persone visitano il sito e quali pagine leggono. I cookie <code>_ga</code> e <code>_ga_*</code> durano fino a 2 anni. Senza il tuo consenso Google Analytics non viene caricato.</p>
+      <p><button class="btn btn--ghost btn--sm" type="button" data-cookie-prefs>Cambia le tue preferenze sui cookie</button></p>` : `<h2>Statistiche</h2><p>Il sito non usa strumenti di statistica né cookie di altre aziende.</p>`}
+      <h2>Servizi esterni</h2><p>Caratteri tipografici e fotografie sono ospitati insieme al sito: mentre navighi non contatti servizi di altre aziende${C.ga ? ", salvo Google Analytics se lo accetti" : ""}. I link a WhatsApp e a Google Maps aprono quei servizi solo se li scegli tu.</p>
+      <p class="small muted">Ultimo aggiornamento: 25 ottobre 2026.</p>
     </div></div></section>`,
 });
 route("crediti", {
