@@ -18,7 +18,7 @@ concurrency:
 jobs:
   manutenzione:
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 45
     env:
       REPORT: ${{ github.workspace }}/esito-sito-attuale.txt
     steps:
@@ -35,6 +35,16 @@ jobs:
           SG_PORT: ${{ secrets.SITEGROUND_PORT }}
           BEFORE: ${{ github.event.before }}
         run: bash .github/scripts/sito-attuale.sh
+
+      - name: Rendi scaricabile il backup (solo per chi ha accesso al repository)
+        if: always() && env.BACKUP_NOME != ''
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ env.BACKUP_NOME }}
+          path: backup/
+          retention-days: 7
+          compression-level: 0
+          if-no-files-found: ignore
 
       - name: Salva l'esito nel ramo esito-sito-attuale
         if: always()

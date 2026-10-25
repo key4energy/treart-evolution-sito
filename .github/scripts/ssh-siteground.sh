@@ -22,5 +22,5 @@ if [ -n "${SG_PASS:-}" ]; then
   fi
 fi
 
-OPTS=(-i ~/.ssh/siteground -o IdentitiesOnly=yes -o BatchMode=yes -o StrictHostKeyChecking=accept-new -o ConnectTimeout=25)
+OPTS=(-i ~/.ssh/siteground -o IdentitiesOnly=yes -o BatchMode=yes -o StrictHostKeyChecking=accept-new -o ConnectTimeout=25 -o ServerAliveInterval=30)
 ssh_sg() { ssh "${OPTS[@]}" -p "$PORT" "$SG_USER@$SG_HOST" "$@"; }

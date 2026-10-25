@@ -100,6 +100,56 @@ case "$AZ" in
     curl -sS -m 30 -L "https://$DOM/" 2>/dev/null | grep -o -E 'https?://(www\.)?(instagram|linkedin|facebook)\.com/[^"'"'"' <>]*' | sort | uniq -c
     ;;
 
+  backup)
+    # backup completo: tutti i file della cartella del sito + database + istruzioni, in un unico archivio
+    B="$HOME/backup-sito-attuale"
+    mkdir -p "$B" && chmod 700 "$B"
+    T=$(TZ=Europe/Rome date +%Y%m%d-%H%M)
+    NOME="backup-completo-$DOM-$T"
+    W=$(mktemp -d "$HOME/tmp-backup-XXXXXX")
+    mkdir -p "$W/$NOME/database"
+    echo "Cartella del sito: $HOME/www/$DOM ($(du -sh "$HOME/www/$DOM" 2>/dev/null | cut -f1), $(find "$HOME/www/$DOM" -type f 2>/dev/null | wc -l) file)"
+    if ! wp db export "$W/$NOME/database/$DOM.sql" --quiet 2>/dev/null; then
+      echo "ERRORE: esportazione del database non riuscita"
+      rm -rf "$W"
+      exit 2
+    fi
+    echo "Database esportato: $(du -h "$W/$NOME/database/$DOM.sql" | cut -f1), $(grep -c '^CREATE TABLE' "$W/$NOME/database/$DOM.sql") tabelle"
+    cat > "$W/$NOME/LEGGIMI.txt" <<EOF
+Backup completo del sito $DOM
+Creato il $(TZ=Europe/Rome date '+%d/%m/%Y alle %H:%M') dal server SiteGround.
+
+Contenuto
+- sito/            tutti i file della cartella $HOME/www/$DOM (public_html compresa):
+                   WordPress $(wp core version 2>/dev/null), tema $(wp theme list --status=active --field=name 2>/dev/null), plugin, immagini caricate, wp-config.php, .htaccess
+- database/$DOM.sql   copia completa del database di WordPress (tutte le tabelle)
+
+Attenzione: wp-config.php contiene le credenziali del database e il database contiene
+gli utenti del sito. Conserva questo archivio in un posto sicuro.
+
+Come ripristinare
+1. Carica il contenuto di sito/public_html nella cartella pubblica del sito.
+2. Crea un database vuoto e importa database/$DOM.sql (per esempio con phpMyAdmin).
+3. Se nome, utente o password del database cambiano, aggiornali in wp-config.php.
+EOF
+    if ! tar -czf "$B/$NOME.tar.gz" -C "$HOME/www" --transform "s|^$DOM|$NOME/sito|" "$DOM" -C "$W" "$NOME" 2>"$W/tar.err"; then
+      echo "ERRORE: creazione dell'archivio non riuscita: $(head -c 300 "$W/tar.err")"
+      rm -rf "$W" "$B/$NOME.tar.gz"
+      exit 2
+    fi
+    rm -rf "$W"
+    chmod 600 "$B/$NOME.tar.gz"
+    if tar -tzf "$B/$NOME.tar.gz" > /dev/null 2>&1; then
+      echo "Archivio verificato: $(tar -tzf "$B/$NOME.tar.gz" | wc -l) elementi"
+    else
+      echo "ERRORE: l'archivio creato non si legge correttamente"
+      exit 2
+    fi
+    echo "Dimensione: $(du -h "$B/$NOME.tar.gz" | cut -f1)"
+    echo "SHA256=$(sha256sum "$B/$NOME.tar.gz" | cut -d' ' -f1)"
+    echo "ARCHIVIO=$B/$NOME.tar.gz"
+    ;;
+
   rimuovi-link)
     # toglie dai modelli di Bricks (e da ogni altro dato salvato negli articoli) le voci con un link che contiene il testo indicato
     AGO=${1:-}

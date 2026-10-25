@@ -4,6 +4,7 @@
 #   {"azione": "ispeziona"}
 #   {"azione": "sostituisci", "approvata_da": "...", "sostituzioni": [["vecchio", "nuovo"], ...]}
 #   {"azione": "rimuovi-link", "approvata_da": "...", "link": "linkedin.com/company/..."}
+#   {"azione": "backup"}   backup completo (file e database), scaricabile dalla pagina dell'esecuzione su GitHub
 # Le modifiche si fanno solo dopo l'ok esplicito di Fabio, riportato in approvata_da;
 # prima di ogni modifica viene salvata una copia del database sul server.
 set -uo pipefail
@@ -44,6 +45,35 @@ for f in "${RICHIESTE[@]}"; do
       done < <(jq -r '.sostituzioni[][]' "$f")
       ssh_sg "bash -s -- sostituisci '$DOM' ${args[*]}" < .github/scripts/sito-attuale-remoto.sh 2>&1 | tee -a "$REPORT"
       [ "${PIPESTATUS[0]}" -eq 0 ] || stato=1
+      ;;
+    backup)
+      log "== Backup completo di $DOM (file e database) =="
+      out=$(ssh_sg "bash -s -- backup '$DOM'" < .github/scripts/sito-attuale-remoto.sh 2>&1)
+      rc=$?
+      printf '%s\n' "$out" | grep -v -E '^(Warning: Permanently added)' | tee -a "$REPORT"
+      arch=$(printf '%s\n' "$out" | sed -n 's/^ARCHIVIO=//p' | tail -n 1)
+      sha=$(printf '%s\n' "$out" | sed -n 's/^SHA256=//p' | tail -n 1)
+      if [ $rc -ne 0 ] || [ -z "$arch" ]; then
+        log "ERRORE: backup non riuscito"
+        stato=1
+        continue
+      fi
+      mkdir -p backup
+      if scp "${OPTS[@]}" -P "$PORT" "$SG_USER@$SG_HOST:$arch" backup/ 2>/dev/null || scp -O "${OPTS[@]}" -P "$PORT" "$SG_USER@$SG_HOST:$arch" backup/; then
+        locale="backup/$(basename "$arch")"
+        if [ "$(sha256sum "$locale" | cut -d' ' -f1)" = "$sha" ]; then
+          log "Copia scaricata da SiteGround e verificata (identica a quella sul server): $(basename "$arch")"
+          echo "BACKUP_NOME=$(basename "$arch" .tar.gz)" >> "$GITHUB_ENV"
+        else
+          log "ERRORE: la copia scaricata non corrisponde a quella sul server"
+          rm -f "$locale"
+          stato=1
+        fi
+      else
+        log "ATTENZIONE: copia non scaricata da SiteGround; il backup resta comunque sul server in $arch"
+        stato=1
+      fi
+      log "Download da GitHub: https://github.com/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID} (sezione Artifacts)"
       ;;
     rimuovi-link)
       log "== Rimozione di link da $DOM =="
