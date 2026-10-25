@@ -3,6 +3,7 @@
 # Una richiesta è un file JSON in manutenzione/richieste/, aggiunto con un commit sul ramo main:
 #   {"azione": "ispeziona"}
 #   {"azione": "sostituisci", "approvata_da": "...", "sostituzioni": [["vecchio", "nuovo"], ...]}
+#   {"azione": "rimuovi-link", "approvata_da": "...", "link": "linkedin.com/company/..."}
 # Le modifiche si fanno solo dopo l'ok esplicito di Fabio, riportato in approvata_da;
 # prima di ogni modifica viene salvata una copia del database sul server.
 set -uo pipefail
@@ -42,6 +43,13 @@ for f in "${RICHIESTE[@]}"; do
         args+=("$(printf '%q' "$riga")")
       done < <(jq -r '.sostituzioni[][]' "$f")
       ssh_sg "bash -s -- sostituisci '$DOM' ${args[*]}" < .github/scripts/sito-attuale-remoto.sh 2>&1 | tee -a "$REPORT"
+      [ "${PIPESTATUS[0]}" -eq 0 ] || stato=1
+      ;;
+    rimuovi-link)
+      log "== Rimozione di link da $DOM =="
+      log "Approvazione: $(jq -r '.approvata_da // "non indicata"' "$f")"
+      ago=$(jq -r '.link // empty' "$f")
+      ssh_sg "bash -s -- rimuovi-link '$DOM' $(printf '%q' "$ago")" < .github/scripts/sito-attuale-remoto.sh 2>&1 | tee -a "$REPORT"
       [ "${PIPESTATUS[0]}" -eq 0 ] || stato=1
       ;;
     *)

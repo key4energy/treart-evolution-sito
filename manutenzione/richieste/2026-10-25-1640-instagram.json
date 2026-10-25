@@ -1,0 +1,11 @@
+{
+  "azione": "sostituisci",
+  "approvata_da": "Fabio, in chat, domenica 25 ottobre 2026 alle 16:26 («Cambia gli orari, la copertina, le categorie, togli sul sito attuale i link a Key 4 Energy. Collega whatapp alla pagina. Cambia area di servizio. Inserisci dati societari.»)",
+  "nota": "Il link Instagram del sito puntava al profilo di Key 4 Energy: ora punta a quello di Treart Evolution",
+  "sostituzioni": [
+    [
+      "https://www.instagram.com/key4energy/",
+      "https://www.instagram.com/treart_evolution/"
+    ]
+  ]
+}

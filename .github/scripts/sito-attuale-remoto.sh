@@ -2,6 +2,8 @@
 # Eseguito su SiteGround via SSH, sul sito attuale (WordPress) di treart-evolution.com.
 #   ispeziona DOMINIO
 #       sola lettura: cartelle, WordPress, tema, plugin e dove compare «key4energy»
+#   rimuovi-link DOMINIO TESTO
+#       copia del database, poi toglie dai dati degli articoli (modelli Bricks) le voci con un link che contiene TESTO
 #   sostituisci DOMINIO VECCHIO1 NUOVO1 [VECCHIO2 NUOVO2 ...]
 #       copia del database in ~/backup-sito-attuale, poi sostituzione dei testi
 #       (anche nella forma con le barre protette, come le salva Elementor) e svuotamento delle cache
@@ -93,6 +95,63 @@ case "$AZ" in
     echo
     echo "== Verifica: key4energy ancora presente nel database =="
     wp db search 'key4energy' --all-tables-with-prefix --stats 2>&1 | tail -n 20
+    echo
+    echo "== Pagina iniziale: link ai social =="
+    curl -sS -m 30 -L "https://$DOM/" 2>/dev/null | grep -o -E 'https?://(www\.)?(instagram|linkedin|facebook)\.com/[^"'"'"' <>]*' | sort | uniq -c
+    ;;
+
+  rimuovi-link)
+    # toglie dai modelli di Bricks (e da ogni altro dato salvato negli articoli) le voci con un link che contiene il testo indicato
+    AGO=${1:-}
+    if [ -z "$AGO" ]; then
+      echo "ERRORE: manca il testo del link da togliere"
+      exit 2
+    fi
+    B=~/backup-sito-attuale
+    mkdir -p "$B" && chmod 700 "$B"
+    F="$B/db-$(date +%Y%m%d-%H%M%S).sql"
+    if ! wp db export "$F" --quiet 2>/dev/null; then
+      echo "ERRORE: copia del database non riuscita: nessuna modifica fatta"
+      exit 2
+    fi
+    chmod 600 "$F"
+    echo "Copia del database salvata in $F ($(du -h "$F" | cut -f1))"
+    AGO="$AGO" wp eval '
+      global $wpdb;
+      $ago = getenv("AGO");
+      $righe = $wpdb->get_results($wpdb->prepare("SELECT meta_id, post_id, meta_key FROM {$wpdb->postmeta} WHERE meta_value LIKE %s", "%" . $wpdb->esc_like($ago) . "%"));
+      $tolte = 0;
+      foreach ($righe as $r) {
+        $m = get_metadata_by_mid("post", $r->meta_id);
+        if (!$m) { continue; }
+        $cambiato = false;
+        $pulisci = function ($a) use (&$pulisci, $ago, &$cambiato, &$tolte) {
+          if (!is_array($a)) { return $a; }
+          $lista = $a === [] || array_keys($a) === range(0, count($a) - 1);
+          $out = [];
+          foreach ($a as $k => $v) {
+            if (is_array($v) && isset($v["link"]["url"]) && is_string($v["link"]["url"]) && stripos($v["link"]["url"], $ago) !== false) {
+              $cambiato = true; $tolte++; continue;
+            }
+            $out[$k] = $pulisci($v);
+          }
+          return $lista ? array_values($out) : $out;
+        };
+        $nuovo = $pulisci($m->meta_value);
+        if ($cambiato) {
+          $wpdb->update($wpdb->postmeta, ["meta_value" => maybe_serialize($nuovo)], ["meta_id" => (int) $r->meta_id], ["%s"], ["%d"]);
+          wp_cache_delete((int) $r->post_id, "post_meta");
+          echo "Tolto da meta_id {$r->meta_id} (articolo {$r->post_id}, {$r->meta_key})\n";
+        } else {
+          echo "Nessuna voce con link da togliere in meta_id {$r->meta_id} (articolo {$r->post_id}, {$r->meta_key})\n";
+        }
+      }
+      echo "Voci tolte: $tolte\n";
+    ' 2>&1 | tail -n 30
+    wp cache flush 2>/dev/null && echo "Cache di WordPress svuotata"
+    echo
+    echo "== Verifica: «$AGO» ancora presente negli articoli =="
+    wp db search "$AGO" --all-tables-with-prefix --stats 2>&1 | tail -n 10
     echo
     echo "== Pagina iniziale: link ai social =="
     curl -sS -m 30 -L "https://$DOM/" 2>/dev/null | grep -o -E 'https?://(www\.)?(instagram|linkedin|facebook)\.com/[^"'"'"' <>]*' | sort | uniq -c

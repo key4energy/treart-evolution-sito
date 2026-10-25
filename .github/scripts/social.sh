@@ -367,6 +367,8 @@ copertina() {
   pagina "$(jq -r '.pagina // empty' "$f")" || return 1
   log "== Copertina della Pagina «$PAGE_NAME» (id $PAGE_ID) =="
   log "Approvazione: $(jq -r '.approvata_da // "non indicata"' "$f")"
+  local prima
+  prima=$(graph "$PAGE_TOKEN" GET "$PAGE_ID?fields=cover{id}" | jq -r '.cover.id // ""' 2>/dev/null)
   r=$(curl -sS -m 180 -X POST -H "Authorization: Bearer $PAGE_TOKEN" -F "source=@$file" -F "published=false" "$G/$PAGE_ID/photos")
   e=$(printf '%s' "$r" | errore)
   foto=$(jq -r '.id // empty' <<<"$r" 2>/dev/null)
@@ -389,10 +391,13 @@ copertina() {
     mkdir -p "$out"
     curl -sSL -m 60 -o "$out/copertina-attuale.jpg" "$u" && log "  copertina attuale salvata per il controllo"
   fi
-  if [ "$(jq -r '.cover.id // ""' <<<"$r")" = "$foto" ]; then
+  # Meta salva la copertina come una nuova foto: basta che l'id sia cambiato rispetto a prima
+  local ora
+  ora=$(jq -r '.cover.id // ""' <<<"$r")
+  if [ -n "$ora" ] && [ "$ora" != "$prima" ]; then
     log "  copertina: aggiornata"
   else
-    log "  ATTENZIONE: Meta non mostra ancora la nuova foto come copertina"
+    log "  ATTENZIONE: Meta mostra ancora la copertina di prima"
     return 1
   fi
 }
