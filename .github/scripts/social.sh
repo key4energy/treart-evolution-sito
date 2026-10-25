@@ -292,7 +292,8 @@ controlla_pagina() {
   local campi=(name username link category category_list about description company_overview mission products
     general_info founded impressum website phone emails single_line_address location hours price_range
     is_published verification_status fan_count followers_count rating_count overall_star_rating checkins
-    whatsapp_number instagram_business_account connected_instagram_account
+    whatsapp_number has_whatsapp_number has_whatsapp_business_number service_area temporary_status
+    instagram_business_account connected_instagram_account
     "picture.width(720).height(720){url,is_silhouette,width,height}" "cover{source,offset_x,offset_y}")
   echo '{}' > "$out/pagina.json"
   for campo in "${campi[@]}"; do
