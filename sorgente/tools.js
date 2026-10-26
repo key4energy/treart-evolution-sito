@@ -276,8 +276,9 @@ function initConfig(root) {
     const id = toFull.length ? "completa" : toBiz.length ? "business" : "essenziale";
     const why = toFull.length ? toFull : toBiz.length ? toBiz : ["un ufficio piccolo, senza server"];
     const plan = PLANS.find((p) => p.id === id);
-    // prezzi fino a PLAN_LIMITS.prezzo postazioni; oltre, canone su preventivo; oltre PLAN_LIMITS.max, progetto su misura
-    const fuori = n > PLAN_LIMITS.max, suPreventivo = n > PLAN_LIMITS.prezzo;
+    // ogni formula vale fino a plan.max postazioni (oltre, canone su preventivo); oltre PLAN_LIMITS.max, progetto su misura
+    const fuori = n > PLAN_LIMITS.max, suPreventivo = n > plan.max;
+    const completa = PLANS.find((p) => p.id === "completa");
     const dettagli = `${n} postazioni${server ? ", server o NAS" : ""}${sedi === "2" ? ", più sedi" : ""}${needs.length ? ", " + needs.map((x) => CFG_NEEDS.find((y) => y[0] === x)[1].toLowerCase()).join(", ") : ""}`;
     if (fuori) {
       summary = `Configuratore: più di ${PLAN_LIMITS.max} postazioni, richiesta di un progetto su misura (${dettagli}).`;
@@ -286,12 +287,12 @@ function initConfig(root) {
         <div class="kv"><span>Canone</span><b>Su preventivo</b></div>
         <div class="row"><a class="btn btn--primary" href="#preventivo" data-go-notes>Richiedi un preventivo</a></div>`;
     } else {
-      summary = `Configuratore: formula ${plan.name} consigliata (${dettagli})${suPreventivo ? `; da ${PLAN_LIMITS.prezzo + 1} postazioni il canone è su preventivo` : ""}.`;
+      summary = `Configuratore: formula ${plan.name} consigliata (${dettagli})${suPreventivo ? `; oltre ${plan.max} postazioni il canone è su preventivo` : ""}.`;
       out.innerHTML = `<span class="eyebrow">La formula giusta per te</span>
         <div><div class="big">${plan.name}</div><p>Perché hai ${why.join(", ")}.</p></div>
         <ul class="prio prio--ok">${plan.inc.map((x) => `<li>${ic(x.startsWith("+") ? "plus" : "check")}<span>${esc(x.replace(/^\+/, ""))}</span></li>`).join("")}</ul>
         <div class="kv"><span>Canone</span><b>${suPreventivo ? "Su preventivo" : `${plan.price} € al mese`}</b></div>
-        ${suPreventivo ? `<p>Da ${PLAN_LIMITS.prezzo + 1} a ${PLAN_LIMITS.max} postazioni il canone diventa un preventivo, che ricevi dopo il check-up gratuito.</p>` : ""}
+        ${suPreventivo ? `<p>${plan.name} vale fino a ${plan.max} postazioni: con ${n} il canone diventa un preventivo, che ricevi dopo il check-up gratuito. In alternativa la formula ${completa.name} vale fino a ${completa.max} postazioni, a ${completa.price} € al mese.</p>` : ""}
         <div class="row"><a class="btn btn--primary" href="#preventivo" data-go-notes>${suPreventivo ? "Richiedi il preventivo" : `Richiedi la formula ${plan.name}`}</a></div>`;
     }
     $$(".plan").forEach((p) => p.classList.toggle("plan--rec", !fuori && p.dataset.plan === id));
