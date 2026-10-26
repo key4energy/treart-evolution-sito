@@ -87,6 +87,11 @@ Il workflow **Social** usa la chiave `META_TOKEN` (segreto del repository: token
 - `{"azione": "cerca-categorie", "parole": ["informatic"]}` e `{"azione": "categorie", "approvata_da": "...", "categorie": ["id", ...]}`: ricerca e scelta delle categorie (massimo 3).
 - `{"azione": "diagnosi-instagram"}`: sola lettura, perché il collegamento di Instagram alla Pagina non riesce (portfolio della Pagina, account Instagram già collegati).
 
+Instagram, con accesso diretto all'account (senza passare dalla Pagina), con la chiave `IG_TOKEN` (segreto del repository, generata in developers.facebook.com › app Treart Evolution Social › Casi d'uso › «Gestisci i messaggi e i contenuti su Instagram» › Configurazione dell'API con Instagram Login › Genera token; dura 60 giorni):
+
+- `{"azione": "prova-instagram"}`: lettura di verifica (account, ultimi post, limite di pubblicazione);
+- `{"azione": "pubblica-instagram", "approvata_da": "...", "file": "public/social/....jpg", "testo": "..."}`: pubblica una foto. L'immagine deve essere un JPEG raggiungibile online: un file in `public/` (pubblicato sull'anteprima) oppure `"immagine": "https://..."`.
+
 L'esito si legge nel ramo `esito-social` (file `esito-social.txt`). Le chiavi non vengono mai stampate. Ogni pubblicazione avviene solo dopo l'ok esplicito di Fabio.
 
 ## Sito attuale (treart-evolution.com)

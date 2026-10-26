@@ -31,6 +31,7 @@ jobs:
       - name: Esegui le richieste
         env:
           META_TOKEN: ${{ secrets.META_TOKEN }}
+          IG_TOKEN: ${{ secrets.IG_TOKEN }}
           BEFORE: ${{ github.event.before }}
         run: bash .github/scripts/social.sh
 

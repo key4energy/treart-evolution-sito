@@ -5,7 +5,11 @@
 #   {"azione": "prova"}   lettura di verifica: non pubblica nulla
 #   {"azione": "aggiorna-pagina", "approvata_da": "...", "campi": {"about": "..."}}
 #                         aggiorna le informazioni della Pagina (about, description, website, phone, hours, impressum)
-# Le azioni che modificano la Pagina si usano solo dopo l'ok esplicito di Fabio, riportato in approvata_da.
+# Instagram, con accesso diretto all'account (chiave IG_TOKEN, senza passare dalla Pagina):
+#   {"azione": "prova-instagram"}   lettura di verifica: account, ultimi post, limite di pubblicazione
+#   {"azione": "pubblica-instagram", "approvata_da": "...", "file": "public/social/....jpg", "testo": "..."}
+#                         pubblica una foto (JPEG raggiungibile online: "file" in public/ oppure "immagine": "https://...")
+# Le azioni che modificano la Pagina o pubblicano si usano solo dopo l'ok esplicito di Fabio, riportato in approvata_da.
 #
 # L'esito va nel ramo esito-social (file esito-social.txt). Le chiavi non vengono mai stampate:
 # quella dell'utente di sistema è un segreto di GitHub, quella della Pagina viene mascherata.
@@ -447,6 +451,119 @@ categorie() {
   fi
 }
 
+# ---------- Instagram con accesso diretto (API di Instagram con accesso Instagram) ----------
+IGG="https://graph.instagram.com"
+ig() { # ig METODO PERCORSO [altri argomenti di curl]: la chiave va nell'intestazione, mai nell'indirizzo
+  local met=$1 path=$2
+  shift 2
+  curl -sS -g -m 60 -X "$met" -H "Authorization: Bearer $IG_TOKEN" "$IGG/$path" "$@"
+}
+serve_ig() {
+  if [ -z "${IG_TOKEN:-}" ]; then
+    log "ERRORE: manca il segreto IG_TOKEN (chiave generata in developers.facebook.com › app Treart Evolution Social › Casi d'uso › Instagram › Genera token)"
+    return 1
+  fi
+  echo "::add-mask::$IG_TOKEN"
+}
+account_ig() { # imposta IG_ID e IG_USER
+  local r e
+  r=$(ig GET "me?fields=user_id,username")
+  e=$(printf '%s' "$r" | errore)
+  if [ -n "$e" ]; then
+    log "ERRORE: la chiave di Instagram non funziona: $e"
+    return 1
+  fi
+  IG_ID=$(jq -r '.user_id // .id' <<<"$r")
+  IG_USER=$(jq -r '.username // "?"' <<<"$r")
+}
+
+prova_instagram() {
+  log ""
+  log "== Prova Instagram in sola lettura =="
+  serve_ig || return 1
+  account_ig || return 1
+  local r e
+  r=$(ig GET "me?fields=user_id,username,name,account_type,followers_count,follows_count,media_count")
+  log "Account: @$IG_USER (id $IG_ID), nome «$(jq -r '.name // "-"' <<<"$r")», tipo $(jq -r '.account_type // "?"' <<<"$r")"
+  log "  follower: $(jq -r '.followers_count // "-"' <<<"$r") · seguiti: $(jq -r '.follows_count // "-"' <<<"$r") · post: $(jq -r '.media_count // "-"' <<<"$r")"
+  r=$(ig GET "me/media?fields=id,caption,media_type,timestamp,permalink&limit=5")
+  e=$(printf '%s' "$r" | errore)
+  if [ -z "$e" ]; then
+    log "  ultimi post letti: $(jq '.data | length' <<<"$r")"
+    jq -r '.data[] | "   - \(.timestamp[0:10])  \(.media_type)  \((.caption // "(senza testo)") | gsub("\n"; " ") | .[0:70])  \(.permalink // "")"' <<<"$r" | tee -a "$REPORT"
+  else
+    log "  ultimi post: non leggibili ($e)"
+  fi
+  r=$(ig GET "$IG_ID/content_publishing_limit?fields=config,quota_usage")
+  e=$(printf '%s' "$r" | errore)
+  if [ -z "$e" ]; then
+    log "  pubblicazioni nelle ultime 24 ore: $(jq -r '.data[0].quota_usage // "-"' <<<"$r") su $(jq -r '.data[0].config.quota_total // "-"' <<<"$r")"
+  else
+    log "  limite di pubblicazione: non leggibile ($e)"
+  fi
+  log ""
+  log "Prova completata: nessuna pubblicazione effettuata."
+}
+
+# pubblica una foto su Instagram: {"azione": "pubblica-instagram", "approvata_da": "...", "file": "public/social/x.jpg", "testo": "..."}
+pubblica_instagram() {
+  local f=$1 appr url file testo ct r e cid st mid i
+  log ""
+  log "== Pubblicazione su Instagram =="
+  appr=$(jq -r '.approvata_da // empty' "$f")
+  if [ -z "$appr" ]; then
+    log "ERRORE: manca approvata_da: su Instagram si pubblica solo con l'ok esplicito di Fabio"
+    return 1
+  fi
+  log "Approvazione: $appr"
+  serve_ig || return 1
+  url=$(jq -r '.immagine // empty' "$f")
+  file=$(jq -r '.file // empty' "$f")
+  if [ -z "$url" ] && [ -n "$file" ]; then
+    case "$file" in
+      public/*) url="https://fabio.treart-evolution.com/${file#public/}" ;;
+      *) log "ERRORE: «file» deve stare in public/ (viene pubblicato sull'anteprima)"; return 1 ;;
+    esac
+  fi
+  if [ -z "$url" ]; then
+    log "ERRORE: manca l'immagine («file» oppure «immagine»)"
+    return 1
+  fi
+  testo=$(jq -r '.testo // ""' "$f")
+  ct=$(curl -sSIL -m 30 "$url" 2>/dev/null | tr -d '\r' | grep -i '^content-type:' | tail -n 1 | cut -d' ' -f2)
+  case "$ct" in
+    image/jpeg*) ;;
+    *) log "ERRORE: l'immagine deve essere un JPEG raggiungibile online ($url: ${ct:-non raggiungibile})"; return 1 ;;
+  esac
+  account_ig || return 1
+  log "Account: @$IG_USER · immagine: $url"
+  r=$(ig POST "$IG_ID/media" --data-urlencode "image_url=$url" --data-urlencode "caption=$testo")
+  e=$(printf '%s' "$r" | errore)
+  cid=$(jq -r '.id // empty' <<<"$r" 2>/dev/null)
+  if [ -n "$e" ] || [ -z "$cid" ]; then
+    log "ERRORE: preparazione del post non riuscita: ${e:-risposta senza id}"
+    return 1
+  fi
+  for i in $(seq 1 24); do
+    st=$(ig GET "$cid?fields=status_code" | jq -r '.status_code // empty' 2>/dev/null)
+    [ "$st" = FINISHED ] && break
+    if [ "$st" = ERROR ] || [ "$st" = EXPIRED ]; then
+      log "ERRORE: Instagram non ha accettato l'immagine (stato $st)"
+      return 1
+    fi
+    sleep 5
+  done
+  r=$(ig POST "$IG_ID/media_publish" --data-urlencode "creation_id=$cid")
+  e=$(printf '%s' "$r" | errore)
+  mid=$(jq -r '.id // empty' <<<"$r" 2>/dev/null)
+  if [ -n "$e" ] || [ -z "$mid" ]; then
+    log "ERRORE: pubblicazione non riuscita: ${e:-risposta senza id}"
+    return 1
+  fi
+  r=$(ig GET "$mid?fields=permalink,timestamp")
+  log "Pubblicato su Instagram: $(jq -r '.permalink // "(indirizzo non disponibile)"' <<<"$r")"
+}
+
 # sola lettura: perché il collegamento di Instagram alla Pagina non riesce
 # (portfolio della Pagina e dell'app, Instagram già collegati, account Instagram dei portfolio)
 diagnosi_instagram() {
@@ -506,6 +623,8 @@ for f in "${RICHIESTE[@]}"; do
     cerca-categorie) cerca_categorie "$f" || stato=1 ;;
     categorie) categorie "$f" || stato=1 ;;
     diagnosi-instagram) diagnosi_instagram || stato=1 ;;
+    prova-instagram) prova_instagram || stato=1 ;;
+    pubblica-instagram) pubblica_instagram "$f" || stato=1 ;;
     *) log "ERRORE: azione «$az» non riconosciuta"; stato=1 ;;
   esac
 done
