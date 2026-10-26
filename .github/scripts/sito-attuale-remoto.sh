@@ -13,6 +13,37 @@ DOM=${2:-treart-evolution.com}
 shift 2 2>/dev/null || true
 
 D=~/www/$DOM/public_html
+
+if [ "$AZ" = copia-backup ]; then
+  # copia l'ultimo backup completo accanto a public_html, così si vede dal File Manager di SiteGround
+  # (fuori da public_html: non è raggiungibile dal web)
+  B="$HOME/backup-sito-attuale"
+  echo "== Backup presenti in $B =="
+  ls -lgo "$B" 2>/dev/null | tail -n +2
+  ultimo=$(ls -t "$B"/backup-completo-"$DOM"-*.tar.gz 2>/dev/null | head -n 1)
+  if [ -z "$ultimo" ]; then
+    echo "ERRORE: nessun backup completo di $DOM in $B"
+    exit 2
+  fi
+  V="$HOME/www/$DOM/backup-sito-attuale"
+  mkdir -p "$V" && chmod 700 "$V"
+  nome=$(basename "$ultimo")
+  if [ ! -f "$V/$nome" ]; then
+    cp -p "$ultimo" "$V/" || { echo "ERRORE: copia non riuscita"; exit 2; }
+  fi
+  chmod 600 "$V/$nome"
+  if [ "$(sha256sum < "$ultimo")" = "$(sha256sum < "$V/$nome")" ]; then
+    echo
+    echo "Copia verificata (identica all'originale): $V/$nome ($(du -h "$V/$nome" | cut -f1))"
+    echo "Nel File Manager di SiteGround: cartella $DOM › backup-sito-attuale (accanto a public_html), oppure www › $DOM › backup-sito-attuale"
+    echo "Contenuto della cartella $HOME/www/$DOM: $(ls -A "$HOME/www/$DOM" | tr '\n' ' ')"
+  else
+    echo "ERRORE: la copia non corrisponde all'originale"
+    exit 2
+  fi
+  exit 0
+fi
+
 echo "Siti presenti in ~/www: $(ls -1 ~/www 2>/dev/null | tr '\n' ' ')"
 if [ ! -d "$D" ]; then
   echo "ERRORE: cartella $D non trovata"

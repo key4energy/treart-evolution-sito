@@ -6,6 +6,7 @@
 #   {"azione": "rimuovi-link", "approvata_da": "...", "link": "linkedin.com/company/..."}
 #   {"azione": "backup"}   backup completo (file e database), scaricabile dalla pagina dell'esecuzione su GitHub
 #   {"azione": "elenca-indirizzi"}   sola lettura: indirizzi pubblici del sito, per i reindirizzamenti
+#   {"azione": "copia-backup"}   copia l'ultimo backup completo in ~/www/DOMINIO/backup-sito-attuale (visibile dal File Manager)
 # Passaggio al nuovo sito (cartella produzione/, generata da sorgente/build_produzione.py):
 #   {"azione": "prova-pubblicazione"}   sola lettura: controlli sulla versione di produzione e sul server
 #   {"azione": "pubblica-produzione", "approvata_da": "..."}   mette online il nuovo sito su treart-evolution.com;
@@ -162,6 +163,11 @@ for f in "${RICHIESTE[@]}"; do
       log "Approvazione: $(jq -r '.approvata_da // "non indicata"' "$f")"
       ago=$(jq -r '.link // empty' "$f")
       ssh_sg "bash -s -- rimuovi-link '$DOM' $(printf '%q' "$ago")" < .github/scripts/sito-attuale-remoto.sh 2>&1 | tee -a "$REPORT"
+      [ "${PIPESTATUS[0]}" -eq 0 ] || stato=1
+      ;;
+    copia-backup)
+      log "== Copia dell'ultimo backup completo dove si vede dal File Manager di SiteGround =="
+      ssh_sg "bash -s -- copia-backup '$DOM'" < .github/scripts/sito-attuale-remoto.sh 2>&1 | grep -v '^Warning: Permanently added' | tee -a "$REPORT"
       [ "${PIPESTATUS[0]}" -eq 0 ] || stato=1
       ;;
     prova-pubblicazione)

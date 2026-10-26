@@ -102,7 +102,8 @@ Il sito attuale è un WordPress (tema Bricks) sullo stesso account SiteGround. I
 - `{"azione": "sostituisci", "approvata_da": "...", "sostituzioni": [["vecchio", "nuovo"]]}`: sostituzione con `wp search-replace`;
 - `{"azione": "rimuovi-link", "approvata_da": "...", "link": "..."}`: toglie dai modelli Bricks le voci con quel link;
 - `{"azione": "backup"}`: backup completo (tutti i file e il database) in `~/backup-sito-attuale/` sul server, scaricabile per 7 giorni dalla pagina dell'esecuzione su GitHub (sezione Artifacts);
-- `{"azione": "elenca-indirizzi"}`: sola lettura, tutti gli indirizzi pubblici del sito (servono per i reindirizzamenti).
+- `{"azione": "elenca-indirizzi"}`: sola lettura, tutti gli indirizzi pubblici del sito (servono per i reindirizzamenti);
+- `{"azione": "copia-backup"}`: copia l'ultimo backup completo in `~/www/treart-evolution.com/backup-sito-attuale/`, accanto a `public_html`, così si vede e si scarica dal File Manager di SiteGround (non è raggiungibile dal web).
 
 Prima di ogni modifica viene salvata una copia del database in `~/backup-sito-attuale/` sul server. L'esito si legge nel ramo `esito-sito-attuale`.
 
