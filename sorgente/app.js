@@ -408,7 +408,7 @@ function buildIndex() {
     ["assistenza", "Assistenza clienti", "Apri una richiesta, urgenze al telefono", "headset", "guasto problema ticket assistenza remota urgenza"],
     ["formule", "Formule a canone", "Essenziale, Business, Completa", "calc", "canone prezzi abbonamento contratto"],
     ["chi-siamo", "Chi siamo", "Sede a Grosseto, clienti in tutta Italia", "users", "azienda storia team partner italia"],
-    ["progetti", "Progetti", "Alcuni lavori realizzati", "folder", "casi studio lavori clienti hotel firewall centralino"],
+    ["progetti", "Progetti", "Alcuni lavori realizzati", "folder", "casi studio lavori clienti referenze hotel firewall centralino fippa panificatori arte bianca legambiente festambiente"],
     ["privacy", "Informativa privacy", "Come trattiamo i tuoi dati", "lock", "privacy dati gdpr"]].forEach(([r, tt, s, i, k]) => it.push({ g: "Pagine", t: tt, s, r, i, k }));
   it.push({ g: "Pagine", t: "Partner ufficiali", s: PARTNERS.map((p) => `${p.name} ${p.level}`).join(" · "), r: "chi-siamo", i: "check-circle", scroll: "partner",
     k: "partner ufficiali certificati produttori licenze originali " + plain(PARTNERS.map((p) => [p.name, p.level, p.area, p.line, ...p.gives].join(" ")).join(" ")) });

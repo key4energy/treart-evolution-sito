@@ -323,5 +323,26 @@
    "black-and-gray-ip-phone-WQqViZ_Zd8M",
    "person-using-smartphone-in-workspace-h0xEUQXzU38"
   ]
+ },
+ "lavoro-fippa": {
+  "codice": "fp10",
+  "fuoco": [
+   0.5,
+   0.5
+  ],
+  "alt": "Mani che impastano il pane su un tavolo infarinato",
+  "fotografo": "Nadya Spetnitskaya",
+  "pagina": "person-making-dough-beside-brown-wooden-rolling-pin-tOYiQxF9-Ys"
+ },
+ "lavoro-legambiente": {
+  "codice": "le2",
+  "fuoco": [
+   0.5,
+   0.5
+  ],
+  "alt": "Prato di papaveri con pini e montagne sullo sfondo",
+  "fotografo": "Daniele Levis Pelusi",
+  "pagina": "a-flower-is-standing-on-a-lush-green-field-oA7dOjK4Tek",
+  "colore": 0.88
  }
 }

@@ -1,14 +1,21 @@
 /* ================= PAGINE ================= */
 
+/* Lavori realizzati e clienti seguiti. In home compaiono i primi HOME_CASES, nella pagina Progetti tutti.
+   «labels» sostituisce le voci Problema, Soluzione e Risultato (per i clienti seguiti in modo continuativo). */
+const CLIENT_LABELS = ["Il cliente", "Cosa curiamo", "Risultato"];
 const CASES = [
+  { foto: "lavoro-fippa", who: "FIPPA, Roma", area: "Web e informatica", title: "Sito, settimanale e informatica della sede", labels: CLIENT_LABELS,
+    problem: "La Federazione Italiana Panificatori, Panificatori-Pasticceri ed Affini, con sede a Roma.",
+    solution: "Il sito <a href=\"https://www.fippa.it\" target=\"_blank\" rel=\"noopener\">fippa.it</a>, il settimanale <i>L’Arte Bianca</i> e tutta l’infrastruttura informatica della sede di Roma.",
+    result: "Sito, giornale e uffici della federazione seguiti da un solo partner." },
+  { foto: "lavoro-legambiente", who: "Legambiente, Grosseto", area: "Informatica e web", title: "Informatica della sede e siti di Festambiente", labels: CLIENT_LABELS,
+    problem: "Legambiente nella sede dell’Enaoli di Rispescia, a Grosseto, uno dei centri nazionali dell’associazione.",
+    solution: "Tutta l’infrastruttura hardware e software della sede e tutti i siti web del gruppo Festambiente.",
+    result: "Un solo partner per l’informatica e per i siti, a pochi chilometri dai nostri uffici." },
   { foto: "lavoro-hotel-cavour", who: "Hotel Cavour, Firenze", area: "Wi-Fi", title: "Wi-Fi in tutte le 100 camere",
     problem: "La copertura Wi-Fi non arrivava in modo capillare in tutte le 100 camere.",
     solution: "Una rete di access point gestiti, che copre ogni camera.",
     result: "L’albergo non riceve più reclami né lamentele sul funzionamento del Wi-Fi." },
-  { foto: "lavoro-guadalupe", who: "Guadalupe Resort, Grosseto", area: "Wi-Fi", title: "Wi-Fi in tutta la struttura",
-    problem: "La copertura Wi-Fi non arrivava in modo capillare in tutta la struttura.",
-    solution: "Una rete di access point gestiti.",
-    result: "Nessun reclamo né lamentela degli ospiti sul funzionamento del Wi-Fi." },
   { foto: "lavoro-amped", who: "Amped, Trieste", area: "Sicurezza dei dati", title: "Firewall WatchGuard contro gli attacchi esterni",
     problem: "Un’azienda presente in tanti paesi del mondo, e per questo esposta ad attacchi dall’esterno.",
     solution: "Firewall WatchGuard, con sicurezza attiva e isolamento sicuro dalla rete esterna.",
@@ -17,7 +24,12 @@ const CASES = [
     problem: "Sedi diverse da collegare in un unico sistema telefonico, con conversazioni da tenere riservate.",
     solution: "Centralini telefonici VoIP integrati con gli smartphone.",
     result: "Tutte le sedi su un unico centralino e comunicazioni riservate su canali proprietari, smartphone inclusi." },
+  { foto: "lavoro-guadalupe", who: "Guadalupe Resort, Grosseto", area: "Wi-Fi", title: "Wi-Fi in tutta la struttura",
+    problem: "La copertura Wi-Fi non arrivava in modo capillare in tutta la struttura.",
+    solution: "Una rete di access point gestiti.",
+    result: "Nessun reclamo né lamentela degli ospiti sul funzionamento del Wi-Fi." },
 ];
+const HOME_CASES = 4;
 const WA_GENERIC = "Ciao, vorrei informazioni sui vostri servizi.";
 
 /* ---------- fotografie (img/<nome>-800.webp e -1600.webp, rapporto 3:2) ---------- */
@@ -117,10 +129,11 @@ function sectorCards() {
     ? `<span class="sector__art sector__art--photo">${foto("settore-" + s.id, "(max-width: 600px) 92vw, 260px")}<span class="sector__ic">${ic(s.icon)}</span></span>`
     : `<span class="sector__art">${ic(s.icon)}</span>`}<span class="sector__body"><b>${s.name}</b><span>${s.line}</span></span></a>`).join("")}</div>`;
 }
-function casesHtml() {
-  return `<div class="cases cases--lavori">${CASES.map((c) => `<article class="case case--real"><div class="case__img">${foto(c.foto, "(max-width: 760px) 92vw, 580px")}<span class="case__tag">Immagine di repertorio</span></div>
+function casesHtml(limit = CASES.length) {
+  return `<div class="cases cases--lavori">${CASES.slice(0, limit).map((c) => { const [l1, l2, l3] = c.labels || ["Problema", "Soluzione", "Risultato"];
+    return `<article class="case case--real"><div class="case__img">${foto(c.foto, "(max-width: 760px) 92vw, 580px")}<span class="case__tag">Immagine di repertorio</span></div>
     <div class="case__body"><span class="pill">${c.area} · ${c.who}</span><h3>${c.title}</h3>
-    <dl><dt>Problema</dt><dd>${c.problem}</dd><dt>Soluzione</dt><dd>${c.solution}</dd><dt>Risultato</dt><dd>${c.result}</dd></dl></div></article>`).join("")}</div>`;
+    <dl><dt>${l1}</dt><dd>${c.problem}</dd><dt>${l2}</dt><dd>${c.solution}</dd><dt>${l3}</dt><dd>${c.result}</dd></dl></div></article>`; }).join("")}</div>`;
 }
 const partnersHtml = () => `<div class="partners" aria-label="Tecnologie e partner">${PARTNERS.map((p) => `<span class="is-ok">${ic("check")}<span>${esc(p.name)} ${p.levelNote ? soft(p.level, p.levelNote) : esc(p.level)}</span></span>`).join("")}${["Fastweb", "Eolo", "Starlink", "VoipVoice", "Messagenet"].map((p) => `<span>${esc(p)}</span>`).join("")}</div>`;
 
@@ -253,7 +266,7 @@ route("home", {
 
   <section class="sec sec--paper"><div class="wrap">
     ${secHead("Progetti", "Alcuni lavori realizzati.", "", `<a class="more" href="#progetti">Vedi tutti i progetti ${ic("arrow-right")}</a>`)}
-    ${casesHtml()}</div></section>
+    ${casesHtml(HOME_CASES)}</div></section>
 
   <section class="sec"><div class="wrap trust-grid">
     <div class="review-photo">
@@ -449,9 +462,9 @@ route("chi-siamo", {
 });
 route("progetti", {
   title: () => "Progetti realizzati | Treart Evolution",
-  desc: () => "Wi-Fi per hotel, firewall e sicurezza dei dati, centralini VoIP per più sedi: alcuni lavori realizzati da Treart Evolution in tutta Italia.",
+  desc: () => "Sito, giornale e informatica per la Federazione Italiana Panificatori, informatica e siti per Legambiente, Wi-Fi per hotel, firewall e centralini VoIP: alcuni lavori di Treart Evolution in tutta Italia.",
   nav: () => "chi-siamo",
-  render: () => ph({ cr: [["Progetti"]], eyebrow: "Progetti", title: "Alcuni lavori realizzati.", lead: "Ogni progetto parte da un problema concreto e finisce con un risultato misurabile. Qui raccontiamo come.", light: true, e: true })
+  render: () => ph({ cr: [["Progetti"]], eyebrow: "Progetti", title: "Alcuni lavori realizzati.", lead: "Clienti che seguiamo ogni giorno e progetti nati da un problema concreto: qui raccontiamo cosa abbiamo fatto e cosa è cambiato.", light: true, e: true })
     + `<section class="sec"><div class="wrap">${casesHtml()}</div></section>`
     + defaultBand() + contactSection({ title: "Il prossimo progetto può essere il tuo.", p: "pj" }),
 });
