@@ -37,6 +37,12 @@ function onClick(e) {
   const ck = el0.closest("[data-cookie]");
   if (ck) { setConsent(ck.dataset.cookie); return; }
   if (el0.closest("[data-cookie-prefs]")) { cookieBanner(true); return; }
+  if (el0.closest("[data-interno-off]")) {
+    store.set("dispositivo-interno", false);
+    // con Analytics già caricato si ricarica la pagina, così nessun evento successivo resta marcato come interno
+    if (gaLoaded) { store.set("interno-avviso", true); location.reload(); return; }
+    S.internoOff = true; render(); return;
+  }
   const mega = $("#mega");
   if (mega && !mega.hidden && !el0.closest("#hdr")) { mega.hidden = true; $("#nav-servizi").setAttribute("aria-expanded", "false"); }
   const fp = $("#fab-panel");
@@ -52,6 +58,7 @@ function onClick(e) {
   if (el0.closest("[data-tbc-toggle]")) { document.documentElement.classList.toggle("show-tbc"); updateTbc(); return; }
   const el = el0.closest("a, button");
   if (!el) return;
+  trackContact(el);
   if (el.dataset.planReq) { const p = PLANS.find((x) => x.id === el.dataset.planReq); S.notes = `Formula di interesse: ${p.name}.`; S.prefill = ["assistenza-informatica"]; }
   if (el.dataset.prefill !== undefined) S.prefill = el.dataset.prefill.split(",").filter(Boolean);
   if (el.dataset.checkup) S.checkup = el.dataset.checkup;

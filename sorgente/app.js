@@ -108,22 +108,69 @@ const cookieConsent = {
   get() { return store.get("consenso-statistiche"); }, // "si", "no" oppure null (non ancora scelto)
   set(v) { store.set("consenso-statistiche", v); },
 };
-let gaLoaded = false;
+// i dati partono solo dal sito pubblicato: l’anteprima e le prove in locale mostrano il banner
+// ma non caricano Google Analytics, così le statistiche restano pulite
+const gaHost = () => /^(www\.)?treart-evolution\.com$/.test(location.hostname);
+// parametri delle campagne con cui si arriva al sito (per esempio dal pulsante della pagina LinkedIn,
+// ?utm_source=linkedin&utm_medium=social&utm_campaign=pagina-aziendale): vanno con la prima pagina vista,
+// perché le pagine del sito sono indirizzi con # e Google Analytics le riceve come percorsi (/contatti, /formule...)
+const LANDING_QS = (() => {
+  try {
+    const keep = new URLSearchParams(), rest = new URLSearchParams();
+    new URLSearchParams(location.search).forEach((v, k) => { (/^(utm_[a-z_]+|gclid|gbraid|wbraid|dclid|srsltid)$/.test(k) ? keep : rest).append(k, v); });
+    const q = keep.toString();
+    // l'indirizzo nella barra torna pulito (si può copiare e condividere senza i parametri della campagna)
+    if (q && history.replaceState) { const r = rest.toString(); history.replaceState(history.state, "", location.pathname + (r ? "?" + r : "") + location.hash); }
+    return q ? "?" + q : "";
+  } catch (e) { return ""; }
+})();
+// dispositivi di Treart (aperti una volta con treart-evolution.com/#interno): le visite partono con traffic_type «internal»
+// e il filtro «Internal Traffic» di Google Analytics le esclude dai rapporti
+const isInternal = () => store.get("dispositivo-interno") === true;
+let gaLoaded = false, gaFirst = true, gaPrev = "";
 function loadGA() {
-  if (!C.ga || gaLoaded) return;
+  if (!C.ga || gaLoaded || !gaHost()) return;
   gaLoaded = true;
   window.dataLayer = window.dataLayer || [];
   window.gtag = function () { window.dataLayer.push(arguments); };
+  // consenso dato solo alle statistiche: niente pubblicità, niente dati per gli annunci
+  window.gtag("consent", "default", { analytics_storage: "granted", ad_storage: "denied", ad_user_data: "denied", ad_personalization: "denied" });
   window.gtag("js", new Date());
-  window.gtag("config", C.ga, { send_page_view: false });
+  window.gtag("config", C.ga, { send_page_view: false, allow_google_signals: false, allow_ad_personalization_signals: false });
   const sc = document.createElement("script");
   sc.async = true;
   sc.src = "https://www.googletagmanager.com/gtag/js?id=" + encodeURIComponent(C.ga);
   document.head.appendChild(sc);
 }
+function gaEvent(name, params = {}) {
+  if (!gaLoaded || !window.gtag) return;
+  if (isInternal()) params.traffic_type = "internal";
+  window.gtag("event", name, params);
+}
+// ogni pagina del sito diventa un percorso leggibile nei rapporti: #contatti → /contatti, la home → /
 function trackPage(tok) {
   if (!gaLoaded || !window.gtag) return;
-  window.gtag("event", "page_view", { page_title: document.title, page_location: location.href, page_path: "/" + (tok === "home" ? "" : tok) });
+  const url = location.origin + "/" + (tok === "home" ? "" : encodeURI(tok));
+  const p = { page_title: document.title, page_location: url + (gaFirst ? LANDING_QS : "") };
+  if (gaPrev) p.page_referrer = gaPrev;
+  if (isInternal()) p.traffic_type = "internal";
+  // «set»: vale anche per gli eventi che Google Analytics registra da solo (scorrimento, clic verso altri siti)
+  window.gtag("set", p);
+  gaEvent("page_view", { ...p });
+  gaFirst = false;
+  gaPrev = url;
+}
+// contatti e richieste. «contact»: clic su telefono, WhatsApp o email. «generate_lead»: richiesta preparata con un modulo
+// e inviata con WhatsApp o email (o copiata). «richiesta_preparata»: modulo compilato, prima dell'invio.
+function trackContact(el) {
+  if (!gaLoaded) return;
+  const href = el.tagName === "A" ? el.getAttribute("href") || "" : "";
+  const ho = el.closest(".handoff");
+  const method = href.startsWith("tel:") ? "telefono" : /^https:\/\/(wa\.me|api\.whatsapp\.com)\//.test(href) ? "whatsapp"
+    : href.startsWith("mailto:") ? "email" : ho && el.dataset.copy !== undefined ? "copia" : "";
+  if (!method) return;
+  if (ho) gaEvent("generate_lead", { method, form_name: ho.dataset.kind || "" });
+  else gaEvent("contact", { method });
 }
 function clearGaCookies() {
   const host = location.hostname.split(".");
@@ -133,8 +180,13 @@ function clearGaCookies() {
     domains.forEach((d) => { document.cookie = `${n}=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/${d ? "; domain=" + d : ""}`; });
   });
 }
+function cookieH() {
+  const b = $("#cookie-bar");
+  if (b && !b.hidden) document.documentElement.style.setProperty("--cookie-h", b.offsetHeight + "px");
+}
 function cookieBanner(show) {
   let b = $("#cookie-bar");
+  document.body.classList.toggle("cookie-open", !!show);
   if (!show) { if (b) b.hidden = true; return; }
   if (!b) {
     b = document.createElement("div");
@@ -145,8 +197,10 @@ function cookieBanner(show) {
     b.innerHTML = `<div class="cookie-bar__in"><p><b>Statistiche del sito.</b> Con il tuo consenso usiamo Google Analytics per contare le visite in forma aggregata e capire quali pagine sono più utili. Niente pubblicità né profilazione. <a href="#cookie">Dettagli</a></p>
       <div class="cookie-bar__btns"><button class="btn btn--light btn--sm" type="button" data-cookie="no">Rifiuta</button><button class="btn btn--primary btn--sm" type="button" data-cookie="si">Accetta</button></div></div>`;
     document.body.appendChild(b);
+    window.addEventListener("resize", cookieH);
   }
   b.hidden = false;
+  cookieH();
 }
 function setConsent(v) {
   cookieConsent.set(v);
@@ -330,7 +384,7 @@ function renderFooter() {
     <div class="ftr__top">
       <div class="ftr__brand"><a class="brand" href="#home" aria-label="Treart Evolution, vai alla home">${logo("neg")}</a>
         <p>Il tuo business, gestito. Partner IT con sede a Grosseto, al fianco delle aziende in tutta Italia: assistenza informatica, sicurezza, reti, telefonia e web.</p>
-        <p class="small">Seguici su <a href="${C.facebook}" target="_blank" rel="noopener">Facebook</a> e <a href="${C.instagram}" target="_blank" rel="noopener">Instagram</a></p></div>
+        <p class="small">Seguici su <a href="${C.facebook}" target="_blank" rel="noopener">Facebook</a>, <a href="${C.instagram}" target="_blank" rel="noopener">Instagram</a> e <a href="${C.linkedin}" target="_blank" rel="noopener">LinkedIn</a></p></div>
       <div><h3>Servizi</h3><ul>${AREAS.map((a) => `<li><a href="#servizi" data-scroll="area-${a.id}">${a.name}</a></li>`).join("")}<li><a href="#formule">Formule a canone</a></li><li><a href="#settori">Settori</a></li></ul></div>
       <div><h3>Strumenti e guide</h3><ul>${TOOLS.map((x) => `<li><a href="#${x.id}"${x.anchor ? ` data-scroll="${x.anchor}"` : ""}>${x.name}</a></li>`).join("")}<li><a href="#risorse">Tutte le guide</a></li></ul></div>
       <div><h3>Azienda</h3><ul><li><a href="#chi-siamo">Chi siamo</a></li><li><a href="#progetti">Progetti</a></li><li><a href="#check-up">Check-up gratuito</a></li><li><a href="#preventivo">Richiedi preventivo</a></li><li><a href="#assistenza">Assistenza clienti</a></li><li><a href="#contatti">Contatti</a></li></ul></div>
@@ -548,6 +602,9 @@ function handoff(form, subject, lines) {
   $$(`#${id}`).forEach((n) => n.remove());
   const box = document.createElement("div");
   box.className = "handoff"; box.id = id; box.tabIndex = -1; box.setAttribute("role", "status");
+  // nome del modulo nelle statistiche
+  box.dataset.kind = { callback: "richiamata", contact: "contatto", quote: "preventivo", checkup: "check-up", support: "assistenza" }[form.dataset.kind] || form.dataset.kind || "";
+  gaEvent("richiesta_preparata", { form_name: box.dataset.kind });
   box.innerHTML = `<h3>${ic("check-circle")}Richiesta pronta</h3>
     <p>Scegli come inviarcela: ti rispondiamo entro ${t(C.reply)}.</p>
     <pre id="${id}-text">${esc(full)}</pre>

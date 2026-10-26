@@ -11,6 +11,7 @@ const C = {
   wa: "3905641768249",
   facebook: "https://www.facebook.com/treartevolution/",
   instagram: "https://www.instagram.com/treart_evolution/",
+  linkedin: "https://www.linkedin.com/company/treart-evolution/",
   email: "info@treart-evolution.com",
   pec: "pec@pec.treart-evolution.com",
   addr1: "Via Aurelia Nord 76/1", addr2: "58100 Grosseto (GR)",
@@ -22,8 +23,10 @@ const C = {
   piva: "01575220536", rea: "136469", cap: "€ 10.000,00",
   reply: "8 ore lavorative",
   site: "treart-evolution.com",
-  // ID di misurazione di Google Analytics 4 (per esempio "G-ABC123XYZ"): finché è vuoto non si carica nulla e non compare il banner dei cookie
-  ga: "",
+  // ID di misurazione di Google Analytics 4: proprietà «treart-evolution.com» (account «Treart Evolution», creata il 26 ottobre 2026).
+  // Con l'ID compare il banner dei cookie; i dati partono solo da treart-evolution.com e solo dopo «Accetta» (vedi app.js).
+  // Vuoto = niente statistiche e niente banner.
+  ga: "G-R041L31JHB",
   // recensioni Google (verificate su Google Maps il 26 ottobre 2026): voto, numero, una recensione con l'iniziale del cognome dell'autore,
   // indirizzi per leggerle e per scriverne una. Google ne mostra 6, ma la più recente (26/10/2026) è di Niccolò Maffei del team:
   // le recensioni di chi lavora in azienda non vanno contate (e per Google sono un conflitto di interessi), quindi qui restano 5

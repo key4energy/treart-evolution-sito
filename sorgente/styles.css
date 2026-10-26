@@ -843,4 +843,9 @@ dialog.search{margin-top:8vh; margin-bottom:auto}
 .cookie-bar__in p{flex:1 1 420px; min-width:0; font-size:15px; line-height:1.5}
 .cookie-bar__in a{color:var(--green)}
 .cookie-bar__btns{display:flex; gap:10px; flex-wrap:wrap}
+/* con il banner aperto il contatto flottante sale sopra il banner; sullo smartphone il banner sta sopra la barra in basso */
+.cookie-open .fab{bottom:calc(var(--cookie-h, 96px) + 8px + env(safe-area-inset-bottom,0px))}
+@media (max-width:720px){
+  .cookie-bar{bottom:calc(66px + env(safe-area-inset-bottom,0px)); padding-bottom:10px}
+}
 .ftr__link{background:none; border:0; padding:0; color:inherit; font:inherit; cursor:pointer; text-decoration:underline; text-underline-offset:3px}

@@ -8,6 +8,7 @@ Parte dalla build di anteprima e produce:
 """
 import base64
 import io
+import json
 import os
 import re
 import subprocess
@@ -42,6 +43,44 @@ cut = rest.index('</style>') + len('</style>')
 css_block, body = rest[:cut], rest[cut:].strip()
 
 DESC = re.search(r'name="description" content="([^"]+)"', head).group(1)
+
+# dati strutturati (schema.org) per i motori di ricerca: chi siamo, dove, orari e profili social
+# (stessi dati dell'oggetto C di content.js, letti da lì)
+_c = open(os.path.join(HERE, 'content.js'), encoding='utf-8').read()
+_c = _c[_c.index('const C = {'):]
+_c = _c[:_c.index('\n};')]
+
+
+def cval(key):
+    return re.search(r'\b' + key + r': "([^"]+)"', _c).group(1)
+
+
+_feriali = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday']
+LD = {
+    '@context': 'https://schema.org',
+    '@type': 'LocalBusiness',
+    '@id': 'https://treart-evolution.com/#azienda',
+    'name': 'Treart Evolution',
+    'legalName': 'Treart Evolution S.r.l.',
+    'slogan': 'Il tuo business, gestito.',
+    'description': DESC,
+    'url': 'https://treart-evolution.com/',
+    'logo': 'https://treart-evolution.com/apple-touch-icon.png',
+    'image': 'https://treart-evolution.com/og-image.png',
+    'telephone': cval('telIntl'),
+    'email': cval('email'),
+    'vatID': 'IT' + cval('piva'),
+    'foundingDate': '2015-07-15',
+    'address': {'@type': 'PostalAddress', 'streetAddress': cval('addr1'), 'postalCode': '58100',
+                'addressLocality': 'Grosseto', 'addressRegion': 'GR', 'addressCountry': 'IT'},
+    'areaServed': {'@type': 'Country', 'name': 'Italia'},
+    'openingHoursSpecification': [
+        {'@type': 'OpeningHoursSpecification', 'dayOfWeek': _feriali, 'opens': '08:30', 'closes': '13:00'},
+        {'@type': 'OpeningHoursSpecification', 'dayOfWeek': _feriali, 'opens': '14:00', 'closes': '17:30'},
+    ],
+    'sameAs': [cval('facebook'), cval('instagram'), cval('linkedin')],
+}
+LD_JSON = json.dumps(LD, ensure_ascii=False, separators=(',', ':')).replace('</', '<\\/')
 TITLE = 'Treart Evolution | Assistenza IT, sicurezza, reti e web, da Grosseto in tutta Italia'
 
 
@@ -87,6 +126,7 @@ page = f'''<!doctype html>
 <meta property="og:image:height" content="630">
 <meta property="og:image:alt" content="Treart Evolution, Grosseto">
 <meta name="twitter:card" content="summary_large_image">
+<script type="application/ld+json">{LD_JSON}</script>
 <style>
 @font-face{{font-family:"Open Sans";font-style:normal;font-weight:300 800;font-stretch:75% 100%;font-display:swap;src:url(data:font/woff2;base64,{font64}) format("woff2")}}
 :root{{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}}

@@ -492,7 +492,7 @@ route("contatti", {
         ${chCard("mail", "Email", C.email, "Per capitolati, documenti e richieste dettagliate.", `<a class="btn btn--primary btn--sm" href="mailto:${C.email}">Scrivi un’email</a><button class="btn btn--ghost btn--sm" type="button" data-copy="${C.email}"><span data-label>Copia l’indirizzo</span></button>`)}
         ${chCard("stamp", "PEC", C.pec, "Per le comunicazioni ufficiali.", `<button class="btn btn--ghost btn--sm" type="button" data-copy="${C.pec}"><span data-label>Copia l’indirizzo</span></button>`)}
         ${chCard("pin", "Sede", `${C.addr1}<br>${C.addr2}`, C.hours + ".", `<a class="btn btn--primary btn--sm" href="${C.directions}" target="_blank" rel="noopener">Indicazioni stradali</a><button class="btn btn--ghost btn--sm" type="button" data-copy="${C.addr1}, ${C.addr2}"><span data-label>Copia l’indirizzo</span></button>`)}
-      </div><p class="small muted mt-m">Seguici anche su <a href="${C.facebook}" target="_blank" rel="noopener">Facebook</a> e <a href="${C.instagram}" target="_blank" rel="noopener">Instagram</a>.</p></div></section>`
+      </div><p class="small muted mt-m">Seguici anche su <a href="${C.facebook}" target="_blank" rel="noopener">Facebook</a>, <a href="${C.instagram}" target="_blank" rel="noopener">Instagram</a> e <a href="${C.linkedin}" target="_blank" rel="noopener">LinkedIn</a>.</p></div></section>`
     + `<section class="sec sec--tight"><div class="wrap"><div class="note note--qr">${QR.vcard}<p><b>Salva il nostro contatto.</b> Inquadra il codice con la fotocamera del telefono: numero, email e indirizzo vanno in rubrica in un attimo.</p>
         <button class="btn btn--ghost btn--sm" type="button" data-copy="${esc(VCARD_TEXT)}">${ic("copy")}<span data-label>Copia tutti i contatti</span></button></div></div></section>`
     + contactSection({ title: "Scrivici qui.", p: "ct" })
@@ -671,7 +671,7 @@ route("privacy", {
       <h2>Quali dati trattiamo</h2>
       <p><b>Dati che ci lasci tu.</b> Quando chiedi un preventivo, un check-up, una richiamata o assistenza: nome, azienda, comune, telefono, email e il testo della richiesta. I moduli del sito non salvano nulla: preparano un messaggio che invii tu, con WhatsApp o con la tua email. Trattiamo allo stesso modo i dati che ci comunichi per telefono, su WhatsApp, per email o di persona.</p>
       <p><b>Dati di navigazione.</b> Come ogni sito, il server registra per motivi tecnici e di sicurezza l’indirizzo IP e le pagine richieste.</p>
-      ${C.ga ? `<p><b>Statistiche.</b> Solo se lo accetti nel banner dei cookie, usiamo Google Analytics per contare in forma aggregata le visite e le pagine più lette.</p>` : ""}
+      ${C.ga ? `<p><b>Statistiche.</b> Solo se lo accetti nel banner dei cookie, usiamo Google Analytics per contare in forma aggregata le visite, le pagine più lette e quante richieste di contatto partono dal sito.</p>` : ""}
       <h2>Perché li usiamo e su quale base</h2>
       <p>Per rispondere alle tue richieste e preparare preventivi (misure precontrattuali, articolo 6.1.b del Regolamento UE 2016/679); per fornirti i servizi, se diventi cliente (contratto, articolo 6.1.b); per gli obblighi fiscali e contabili (obbligo di legge, articolo 6.1.c); per la sicurezza del sito (legittimo interesse, articolo 6.1.f)${C.ga ? "; per le statistiche delle visite, solo con il tuo consenso (articolo 6.1.a), che puoi revocare in ogni momento" : ""}.</p>
       <h2>Per quanto tempo</h2>
@@ -683,7 +683,7 @@ route("privacy", {
       <h2>Devi darci i tuoi dati?</h2><p>No, è facoltativo. Senza i dati necessari, però, non possiamo rispondere alla tua richiesta.</p>
       <h2>I tuoi diritti</h2><p>Puoi chiedere accesso, rettifica, cancellazione, limitazione e portabilità dei tuoi dati, e opporti al trattamento, scrivendo a <a href="mailto:${C.email}">${C.email}</a>. Puoi anche presentare reclamo al <a href="https://www.garanteprivacy.it/" target="_blank" rel="noopener">Garante per la protezione dei dati personali</a>.</p>
       <h2>Strumenti del sito</h2><p>Test, calcoli e liste di controllo funzionano nel tuo browser: le risposte non vengono inviate a nessuno.</p>
-      <p class="small muted">Ultimo aggiornamento: 25 ottobre 2026.</p>
+      <p class="small muted">Ultimo aggiornamento: 26 ottobre 2026.</p>
     </div></div></section>`,
 });
 route("cookie", {
@@ -691,16 +691,34 @@ route("cookie", {
   render: () => ph({ cr: [["Cookie"]], eyebrow: "Note legali", title: "Cookie e memoria del browser", lead: "Cosa salva il sito sul tuo dispositivo, e perché.", light: true })
     + `<section class="sec sec--tight"><div class="wrap"><div class="art__body">
       <h2>Cookie tecnici e memoria del browser</h2><p>Il sito ricorda le tue spunte nelle liste «Cosa fare subito»${C.ga ? " e la tua scelta sui cookie" : ""}, solo sul tuo dispositivo. Non usiamo cookie di profilazione né pubblicità.</p>
-      ${C.ga ? `<h2>Cookie di statistica (Google Analytics)</h2><p>Solo se li accetti, usiamo Google Analytics 4 di Google Ireland Limited per sapere in forma aggregata quante persone visitano il sito e quali pagine leggono. I cookie <code>_ga</code> e <code>_ga_*</code> durano fino a 2 anni. Senza il tuo consenso Google Analytics non viene caricato.</p>
+      ${C.ga ? `<h2>Cookie di statistica (Google Analytics)</h2><p>Solo se li accetti, usiamo Google Analytics 4 di Google Ireland Limited per sapere in forma aggregata quante persone visitano il sito, quali pagine leggono e quante richieste partono dai moduli, dal telefono, da WhatsApp e dall’email (contiamo il clic, non leggiamo i messaggi). Le funzioni pubblicitarie sono disattivate: niente Google Signals e nessun uso dei dati per gli annunci. I cookie <code>_ga</code> e <code>_ga_*</code> durano fino a 2 anni; i dati delle statistiche si cancellano dopo 14 mesi. Senza il tuo consenso Google Analytics non viene caricato.</p>
       <p><button class="btn btn--ghost btn--sm" type="button" data-cookie-prefs>Cambia le tue preferenze sui cookie</button></p>` : `<h2>Statistiche</h2><p>Il sito non usa strumenti di statistica né cookie di altre aziende.</p>`}
-      <h2>Servizi esterni</h2><p>Caratteri tipografici e fotografie sono ospitati insieme al sito: mentre navighi non contatti servizi di altre aziende${C.ga ? ", salvo Google Analytics se lo accetti" : ""}. I link a WhatsApp e a Google Maps aprono quei servizi solo se li scegli tu.</p>
-      <p class="small muted">Ultimo aggiornamento: 25 ottobre 2026.</p>
+      <h2>Servizi esterni</h2><p>Caratteri tipografici e fotografie sono ospitati insieme al sito: mentre navighi non contatti servizi di altre aziende${C.ga ? ", salvo Google Analytics se lo accetti" : ""}. I link a WhatsApp, a Google Maps e ai nostri profili su Facebook, Instagram e LinkedIn aprono quei servizi solo se li scegli tu.</p>
+      <p class="small muted">Ultimo aggiornamento: 26 ottobre 2026.</p>
     </div></div></section>`,
 });
 route("crediti", {
   title: () => "Crediti fotografici | Treart Evolution", desc: () => "Le fotografie usate nel sito e i loro autori.", nav: () => "",
   render: () => ph({ cr: [["Crediti fotografici"]], eyebrow: "Note legali", title: "Crediti fotografici", lead: "Le fotografie del sito vengono da Unsplash e sono usate secondo la licenza Unsplash. Grazie ai fotografi.", light: true })
     + `<section class="sec sec--tight"><div class="wrap"><ul class="credits">${Object.values(FOTO).map((f) => `<li><b>${esc(f.by)}</b><span>${esc(f.alt)}</span><span class="credits__links">${f.urls.map((u, i) => `<a href="${u}" target="_blank" rel="noopener">Vedi su Unsplash${f.urls.length > 1 ? ` (${i + 1})` : ""}</a>`).join("")}</span></li>`).join("")}</ul></div></section>`,
+});
+/* Pagina di servizio per chi lavora in Treart (non è collegata dal sito): aperta una volta su ogni computer e telefono,
+   esclude quel dispositivo dalle statistiche, così le visite interne non falsano i numeri. */
+route("interno", {
+  title: () => "Statistiche: dispositivo interno | Treart Evolution", desc: () => "Esclusione dalle statistiche dei dispositivi di Treart Evolution.", nav: () => "",
+  render: () => {
+    const off = S.internoOff || store.get("interno-avviso") === true;
+    S.internoOff = false;
+    store.set("interno-avviso", false);
+    if (!off) store.set("dispositivo-interno", true);
+    return ph({ cr: [["Statistiche"]], eyebrow: "Solo per Treart Evolution", light: true,
+      title: off ? "Le visite da questo dispositivo sono di nuovo contate." : "Questo dispositivo è escluso dalle statistiche.",
+      lead: off ? "Da ora le pagine che apri da qui entrano nelle statistiche del sito come quelle dei visitatori." : "Le pagine che apri da qui non entrano più nelle statistiche del sito: i numeri restano quelli dei clienti e dei visitatori veri." })
+      + `<section class="sec sec--tight"><div class="wrap"><div class="art__body">
+        <p>L’esclusione vale per questo browser su questo dispositivo. Ripeti l’operazione su ogni computer, telefono e browser che usate in azienda, aprendo <b>treart-evolution.com/#interno</b>. Se cancelli i dati di navigazione del browser, va ripetuta.</p>
+        ${off ? `<p><a class="btn btn--primary btn--sm" href="#interno">Escludi di nuovo questo dispositivo</a></p>` : `<p><button class="btn btn--ghost btn--sm" type="button" data-interno-off>Conta di nuovo le visite da questo dispositivo</button></p>`}
+      </div></div></section>`;
+  },
 });
 route("404", {
   title: () => "Pagina non trovata | Treart Evolution", desc: () => "La pagina cercata non esiste.", nav: () => "",
