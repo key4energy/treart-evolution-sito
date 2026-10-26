@@ -486,6 +486,21 @@ prova_instagram() {
   r=$(ig GET "me?fields=user_id,username,name,account_type,followers_count,follows_count,media_count")
   log "Account: @$IG_USER (id $IG_ID), nome «$(jq -r '.name // "-"' <<<"$r")», tipo $(jq -r '.account_type // "?"' <<<"$r")"
   log "  follower: $(jq -r '.followers_count // "-"' <<<"$r") · seguiti: $(jq -r '.follows_count // "-"' <<<"$r") · post: $(jq -r '.media_count // "-"' <<<"$r")"
+  local c u
+  for c in biography website; do
+    r=$(ig GET "me?fields=$c")
+    e=$(printf '%s' "$r" | errore)
+    if [ -z "$e" ]; then
+      log "  $c: $(jq -r --arg c "$c" '(.[$c] // "(vuoto)") | gsub("\n"; " ⏎ ")' <<<"$r")"
+    else
+      log "  $c: non leggibile ($e)"
+    fi
+  done
+  u=$(ig GET "me?fields=profile_picture_url" | jq -r '.profile_picture_url // empty' 2>/dev/null)
+  if [ -n "$u" ]; then
+    mkdir -p "${ESITO_DIR:-.}"
+    curl -sSL -m 60 -o "${ESITO_DIR:-.}/instagram-foto-profilo.jpg" "$u" && log "  foto profilo salvata in dettagli/instagram-foto-profilo.jpg"
+  fi
   r=$(ig GET "me/media?fields=id,caption,media_type,timestamp,permalink&limit=5")
   e=$(printf '%s' "$r" | errore)
   if [ -z "$e" ]; then
