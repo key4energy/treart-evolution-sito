@@ -90,7 +90,7 @@ Il workflow **Social** usa la chiave `META_TOKEN` (segreto del repository: token
 Instagram, con accesso diretto all'account (senza passare dalla Pagina), con la chiave `IG_TOKEN` (segreto del repository, generata in developers.facebook.com › app Treart Evolution Social › Casi d'uso › «Gestisci i messaggi e i contenuti su Instagram» › Configurazione dell'API con Instagram Login › Genera token; dura 60 giorni):
 
 - `{"azione": "prova-instagram"}`: lettura di verifica (account, ultimi post, limite di pubblicazione);
-- `{"azione": "pubblica-instagram", "approvata_da": "...", "file": "public/social/....jpg", "testo": "..."}`: pubblica una foto. L'immagine deve essere un JPEG raggiungibile online: un file in `public/` (pubblicato sull'anteprima) oppure `"immagine": "https://..."`.
+- `{"azione": "pubblica-instagram", "approvata_da": "...", "file": "public/social/....jpg", "testo": "..."}`: pubblica una foto. L'immagine deve essere un JPEG raggiungibile online: un file in `public/` (pubblicato sull'anteprima), `"immagine": "https://..."` oppure `"da_post_facebook": "ID del post"` per ripubblicare la foto di un post della Pagina, presa dal server di Meta (utile perché il controllo anti-bot di SiteGround può bloccare il download da parte dei server).
 
 L'esito si legge nel ramo `esito-social` (file `esito-social.txt`). Le chiavi non vengono mai stampate. Ogni pubblicazione avviene solo dopo l'ok esplicito di Fabio.
 

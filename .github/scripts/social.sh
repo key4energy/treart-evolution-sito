@@ -8,7 +8,8 @@
 # Instagram, con accesso diretto all'account (chiave IG_TOKEN, senza passare dalla Pagina):
 #   {"azione": "prova-instagram"}   lettura di verifica: account, ultimi post, limite di pubblicazione
 #   {"azione": "pubblica-instagram", "approvata_da": "...", "file": "public/social/....jpg", "testo": "..."}
-#                         pubblica una foto (JPEG raggiungibile online: "file" in public/ oppure "immagine": "https://...")
+#                         pubblica una foto (JPEG raggiungibile online: "file" in public/, "immagine": "https://..."
+#                         oppure "da_post_facebook": "ID del post" per ripubblicare la foto di un post della Pagina)
 # Le azioni che modificano la Pagina o pubblicano si usano solo dopo l'ok esplicito di Fabio, riportato in approvata_da.
 #
 # L'esito va nel ramo esito-social (file esito-social.txt). Le chiavi non vengono mai stampate:
@@ -534,6 +535,26 @@ pubblica_instagram() {
   serve_ig || return 1
   url=$(jq -r '.immagine // empty' "$f")
   file=$(jq -r '.file // empty' "$f")
+  local fbpost pid
+  fbpost=$(jq -r '.da_post_facebook // empty' "$f")
+  if [ -z "$url" ] && [ -n "$fbpost" ]; then
+    # stessa foto di un post della Pagina Facebook, presa dal server di Meta nella dimensione più grande
+    pagina "" || return 1
+    r=$(graph "$PAGE_TOKEN" GET "$fbpost?fields=attachments{type,target{id},media{image{src}}}")
+    e=$(printf '%s' "$r" | errore)
+    if [ -n "$e" ]; then
+      log "ERRORE: post Facebook $fbpost non leggibile: $e"
+      return 1
+    fi
+    pid=$(jq -r '.attachments.data[0].target.id // empty' <<<"$r")
+    if [ -n "$pid" ]; then
+      local foto
+      foto=$(graph "$PAGE_TOKEN" GET "$pid?fields=images")
+      url=$(jq -r '[.images[]?] | max_by(.width * .height) | .source // empty' <<<"$foto")
+      log "Foto presa dal post Facebook $fbpost: $(jq -r '[.images[]?] | max_by(.width * .height) | "\(.width)×\(.height) px"' <<<"$foto")"
+    fi
+    [ -n "$url" ] || url=$(jq -r '.attachments.data[0].media.image.src // empty' <<<"$r")
+  fi
   if [ -z "$url" ] && [ -n "$file" ]; then
     case "$file" in
       public/*) url="https://fabio.treart-evolution.com/${file#public/}" ;;
@@ -548,10 +569,11 @@ pubblica_instagram() {
   ct=$(curl -sSIL -m 30 "$url" 2>/dev/null | tr -d '\r' | grep -i '^content-type:' | tail -n 1 | cut -d' ' -f2)
   case "$ct" in
     image/jpeg*) ;;
-    *) log "ERRORE: l'immagine deve essere un JPEG raggiungibile online ($url: ${ct:-non raggiungibile})"; return 1 ;;
+    text/html*) log "ERRORE: al posto dell'immagine risponde una pagina web (${url%%\?*}): probabilmente il controllo anti-bot di SiteGround; usa \"da_post_facebook\" o un'immagine su un altro server"; return 1 ;;
+    *) log "ERRORE: l'immagine deve essere un JPEG raggiungibile online (${url%%\?*}: ${ct:-non raggiungibile})"; return 1 ;;
   esac
   account_ig || return 1
-  log "Account: @$IG_USER · immagine: $url"
+  log "Account: @$IG_USER · immagine: ${url%%\?*}"
   r=$(ig POST "$IG_ID/media" --data-urlencode "image_url=$url" --data-urlencode "caption=$testo")
   e=$(printf '%s' "$r" | errore)
   cid=$(jq -r '.id // empty' <<<"$r" 2>/dev/null)
