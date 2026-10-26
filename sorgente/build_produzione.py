@@ -13,6 +13,11 @@ Uso (dopo ogni modifica del sito, insieme a «python3 build_hosting.py ../public
   python3 build_produzione.py
 La pubblicazione su treart-evolution.com si fa solo con il workflow «Sito attuale»,
 azione «pubblica-produzione», e solo dopo il via di Fabio.
+
+Motori di ricerca: finché MOTORI_APERTI è False il sito è online ma chiuso ai motori di ricerca
+(noindex nella pagina e nell'intestazione X-Robots-Tag, robots.txt senza mappa del sito).
+Per aprirlo, solo quando lo dice Fabio: MOTORI_APERTI = True, rigenerare, pubblicare e inviare
+https://treart-evolution.com/sitemap.xml in Google Search Console.
 """
 import os
 import re
@@ -28,6 +33,10 @@ PUB = os.path.join(ROOT, 'public')
 OUT = os.path.join(ROOT, 'produzione')
 SITO = 'https://treart-evolution.com'
 KIT = os.path.join(HERE, 'kit')
+
+# Fabio, 26 ottobre 2026: online, ma senza segnalarlo e senza aprirlo ai motori di ricerca finché non dà il via
+MOTORI_APERTI = False
+NOINDEX = '<meta name="robots" content="noindex, nofollow">'
 
 # vecchi indirizzi del sito WordPress (elenco letto dal sito il 25 ottobre 2026) → pagina del nuovo sito
 REINDIRIZZI = {
@@ -87,6 +96,12 @@ def pagine_del_sito():
 
 
 def htaccess():
+    chiuso = '' if MOTORI_APERTI else '''
+# sito non ancora aperto ai motori di ricerca (si toglie quando Fabio dà il via)
+<IfModule mod_headers.c>
+  Header set X-Robots-Tag "noindex, nofollow"
+</IfModule>
+'''
     righe = []
     # prima gli indirizzi più lunghi, così le sottocategorie vengono prima delle categorie
     for vecchio, nuovo in sorted(REINDIRIZZI.items(), key=lambda kv: (-len(kv[0]), kv[0])):
@@ -101,7 +116,7 @@ def htaccess():
     Header set Cache-Control "no-cache"
   </FilesMatch>
 </IfModule>
-
+{chiuso}
 RewriteEngine On
 
 # vecchi indirizzi del sito WordPress → pagine del nuovo sito (le pagine sono indirizzi con #),
@@ -146,17 +161,33 @@ def main():
     shutil.copy2(os.path.join(KIT, '01-logo', 'png', 'favicon-180.png'), os.path.join(OUT, 'apple-touch-icon.png'))
     with open(os.path.join(OUT, '.htaccess'), 'w', encoding='utf-8') as f:
         f.write(htaccess())
+    if not MOTORI_APERTI:
+        # pagina online ma chiusa ai motori di ricerca; robots.txt senza mappa del sito
+        p = os.path.join(OUT, 'index.html')
+        with open(p, encoding='utf-8') as f:
+            html = f.read()
+        canon = f'<link rel="canonical" href="{SITO}/">'
+        assert html.count(canon) == 1
+        html = html.replace(canon, canon + '\n' + NOINDEX)
+        with open(p, 'w', encoding='utf-8') as f:
+            f.write(html)
+        with open(os.path.join(OUT, 'robots.txt'), 'w', encoding='utf-8') as f:
+            f.write('User-agent: *\nAllow: /\n')
 
     # controlli sulla pagina di produzione
     with open(os.path.join(OUT, 'index.html'), encoding='utf-8') as f:
         html = f.read()
     assert 'const PROD = true;' in html, 'manca const PROD = true'
     assert f'<link rel="canonical" href="{SITO}/">' in html, 'manca l\'indirizzo canonico'
-    assert 'noindex' not in html, 'la pagina di produzione non deve avere noindex'
+    if MOTORI_APERTI:
+        assert 'noindex' not in html, 'la pagina aperta ai motori di ricerca non deve avere noindex'
+    else:
+        assert html.count(NOINDEX) == 1, 'manca il noindex della pagina chiusa ai motori di ricerca'
     assert 'fabio.treart-evolution.com' not in html, 'la pagina di produzione cita ancora l\'anteprima'
 
     n = sum(len(fs) for _, _, fs in os.walk(OUT))
-    print(f'produzione pronta: {n} file in {OUT}, {len(REINDIRIZZI)} reindirizzamenti verso {len(set(REINDIRIZZI.values()))} pagine')
+    print(f'produzione pronta: {n} file in {OUT}, {len(REINDIRIZZI)} reindirizzamenti verso {len(set(REINDIRIZZI.values()))} pagine, '
+          + ('aperta ai motori di ricerca' if MOTORI_APERTI else 'chiusa ai motori di ricerca (noindex)'))
 
 
 if __name__ == '__main__':

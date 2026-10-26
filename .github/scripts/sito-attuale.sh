@@ -40,7 +40,11 @@ controlla_produzione() {  # controlli sulla cartella produzione/ del repository
   fi
   grep -q 'const PROD = true;' produzione/index.html || { log "ERRORE: produzione/index.html non è la versione di produzione"; ok=1; }
   grep -qF "<link rel=\"canonical\" href=\"https://$DOM/\">" produzione/index.html || { log "ERRORE: manca l'indirizzo canonico https://$DOM/"; ok=1; }
-  if grep -q 'noindex' produzione/index.html; then log "ERRORE: la versione di produzione contiene noindex"; ok=1; fi
+  if grep -q 'noindex' produzione/index.html; then
+    log "Motori di ricerca: sito CHIUSO (noindex), da aprire solo quando lo dice Fabio (MOTORI_APERTI in sorgente/build_produzione.py)"
+  else
+    log "Motori di ricerca: sito APERTO (visibile a Google e agli altri motori)"
+  fi
   if cmp -s <(normalizza public/index.html) <(normalizza produzione/index.html) \
      && diff -rq public/img produzione/img >/dev/null && diff -rq public/font produzione/font >/dev/null \
      && cmp -s public/og-image.png produzione/og-image.png \

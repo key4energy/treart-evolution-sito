@@ -119,4 +119,7 @@ Lo stato attuale è scritto sul server in `~/www/treart-evolution.com/STATO-SITO
 
 I reindirizzamenti permanenti (301) dai vecchi indirizzi di WordPress sono in `sorgente/build_produzione.py`: pagine e articoli vanno alla pagina del servizio corrispondente (per esempio `/backup-il-vero-salvavita-dei-tuoi-dati/` → `/#backup`), le vecchie mappe del sito a `/sitemap.xml`, tutto il resto che non esiste più alla home.
 
-Dopo il passaggio: inviare `https://treart-evolution.com/sitemap.xml` in Google Search Console.
+**Motori di ricerca.** Per scelta di Fabio (26 ottobre 2026) il sito va online chiuso ai motori di ricerca: `noindex` nella pagina e nell'intestazione `X-Robots-Tag`, `robots.txt` senza mappa del sito. Si apre solo quando lo dice Fabio:
+1. in `sorgente/build_produzione.py` si mette `MOTORI_APERTI = True`;
+2. si rigenera con `python3 build_produzione.py` e si pubblica con `pubblica-produzione`;
+3. si invia `https://treart-evolution.com/sitemap.xml` in Google Search Console.

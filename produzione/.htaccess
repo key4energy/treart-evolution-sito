@@ -8,6 +8,11 @@
   </FilesMatch>
 </IfModule>
 
+# sito non ancora aperto ai motori di ricerca (si toglie quando Fabio dà il via)
+<IfModule mod_headers.c>
+  Header set X-Robots-Tag "noindex, nofollow"
+</IfModule>
+
 RewriteEngine On
 
 # vecchi indirizzi del sito WordPress → pagine del nuovo sito (le pagine sono indirizzi con #),
