@@ -407,6 +407,9 @@ const TOOLS = [
   { id: "formule", icon: "calc", name: "Configura la tua formula", line: "Scegli l’assistenza a canone giusta per la tua azienda.", anchor: "configuratore" },
 ];
 
+/* Limiti delle formule a canone (Fabio, 26 ottobre 2026): prezzi validi fino a 20 postazioni,
+   da 21 a 30 canone su preventivo, oltre 30 progetto su misura */
+const PLAN_LIMITS = { prezzo: 20, max: 30 };
 const PLANS = [
   { id: "essenziale", name: "Essenziale", price: 200, for: "Per piccoli uffici", inc: ["Help desk da remoto in orario d’ufficio", "Monitoraggio di PC e server", "Aggiornamenti di sicurezza e antivirus gestiti", "Report mensile"] },
   { id: "business", name: "Business", price: 500, for: "Per PMI e studi professionali", badge: "Consigliata", inc: ["+Tutto l’Essenziale, più:", "Interventi in sede inclusi", "Backup gestito con prova di ripristino", "Firewall gestito", "Referente dedicato"] },
@@ -419,6 +422,7 @@ const MATRIX = [
 ];
 const PLAN_FAQ = [
   ["Cosa non è compreso nel canone?", "L’hardware nuovo, le licenze e i progetti, per esempio un nuovo impianto Wi-Fi, si quotano a parte e sempre prima di iniziare. Non sono compresi i danni all’hardware causati da un uso negligente né i ripristini dovuti a virus presi ripetutamente per negligenza."],
+  ["Fino a quante postazioni valgono le formule?", "I prezzi indicati valgono fino a 20 postazioni (PC e portatili). Da 21 a 30 postazioni il canone diventa un preventivo, che ricevi dopo il check-up gratuito. Oltre 30 postazioni le formule a canone non si applicano: prepariamo un progetto su misura."],
   ["I prezzi comprendono l’IVA?", "No: tutti i prezzi indicati sul sito sono IVA esclusa."],
   ["Posso cambiare formula?", "Sì: se l’azienda cresce, passi alla formula successiva."],
   ["E se non voglio un canone?", "Sì, facciamo anche interventi singoli: 50 € l’ora presso la tua sede e 36 € l’ora nella nostra sede, IVA esclusa."],

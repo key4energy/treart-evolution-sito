@@ -312,6 +312,10 @@ main > *{animation:enter .35s ease-out both}
 .plan__price{font-size:28px; font-weight:800; letter-spacing:-.02em; line-height:1.15}
 .plan__price small{font-size:15px; font-weight:600; color:var(--grey-2); letter-spacing:0}
 .plan--hi .plan__price small{color:var(--on-dark-2)}
+.plan__lim{margin-top:4px; font-size:14px; font-weight:600; color:var(--grey-2)}
+.plan--hi .plan__lim{color:var(--on-dark-2)}
+.plans__note{margin:20px auto 0; max-width:70ch; font-size:15px; line-height:1.5; color:var(--grey-2); text-align:center; text-wrap:balance}
+.plans__note b{font-weight:700}
 .plan ul{display:grid; gap:10px; font-size:15.5px}
 .plan li{display:flex; gap:10px; line-height:1.45}
 .plan li .ic{width:18px; height:18px; color:var(--green-ink); margin-top:3px}

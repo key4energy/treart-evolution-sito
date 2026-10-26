@@ -101,9 +101,10 @@ function compareSection() {
 function plansHtml() {
   return `<div class="plans">${PLANS.map((p) => `<article class="plan${p.id === "business" ? " plan--hi" : ""}" data-plan="${p.id}">
     <div class="plan__top"><h3>${p.name}</h3>${p.badge ? `<span class="plan__badge">${p.badge}</span>` : ""}</div>
-    <p class="plan__for">${p.for}</p><p class="plan__price">${p.price} € <small>al mese</small></p>
+    <p class="plan__for">${p.for}</p><div><p class="plan__price">${p.price} € <small>al mese</small></p><p class="plan__lim">fino a ${PLAN_LIMITS.prezzo} postazioni</p></div>
     <ul>${p.inc.map((x) => x.startsWith("+") ? `<li class="plus">${esc(x.slice(1))}</li>` : `<li>${ic("check")}<span>${esc(x)}</span></li>`).join("")}</ul>
-    <a class="btn ${p.id === "business" ? "btn--primary" : "btn--ghost"}" href="#preventivo" data-plan-req="${p.id}">Chiedi questa formula</a></article>`).join("")}</div>`;
+    <a class="btn ${p.id === "business" ? "btn--primary" : "btn--ghost"}" href="#preventivo" data-plan-req="${p.id}">Chiedi questa formula</a></article>`).join("")}</div>
+    <p class="plans__note">I prezzi valgono fino a ${PLAN_LIMITS.prezzo} postazioni (PC e portatili). <b>Da ${PLAN_LIMITS.prezzo + 1} a ${PLAN_LIMITS.max} postazioni il canone è su preventivo</b>; oltre ${PLAN_LIMITS.max} prepariamo un progetto su misura.</p>`;
 }
 function sectorCards() {
   return `<div class="sectors">${SECTORS.map((s) => `<a class="sector" href="#settori" data-scroll="settore-${s.id}">${FOTO["settore-" + s.id]

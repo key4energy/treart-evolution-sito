@@ -344,6 +344,10 @@ main > *{animation:enter .35s ease-out both}
 .plan__price{font-size:28px; font-weight:800; letter-spacing:-.02em; line-height:1.15}
 .plan__price small{font-size:15px; font-weight:600; color:var(--grey-2); letter-spacing:0}
 .plan--hi .plan__price small{color:var(--on-dark-2)}
+.plan__lim{margin-top:4px; font-size:14px; font-weight:600; color:var(--grey-2)}
+.plan--hi .plan__lim{color:var(--on-dark-2)}
+.plans__note{margin:20px auto 0; max-width:70ch; font-size:15px; line-height:1.5; color:var(--grey-2); text-align:center; text-wrap:balance}
+.plans__note b{font-weight:700}
 .plan ul{display:grid; gap:10px; font-size:15.5px}
 .plan li{display:flex; gap:10px; line-height:1.45}
 .plan li .ic{width:18px; height:18px; color:var(--green-ink); margin-top:3px}
@@ -1301,6 +1305,9 @@ const TOOLS = [
   { id: "formule", icon: "calc", name: "Configura la tua formula", line: "Scegli l’assistenza a canone giusta per la tua azienda.", anchor: "configuratore" },
 ];
 
+/* Limiti delle formule a canone (Fabio, 26 ottobre 2026): prezzi validi fino a 20 postazioni,
+   da 21 a 30 canone su preventivo, oltre 30 progetto su misura */
+const PLAN_LIMITS = { prezzo: 20, max: 30 };
 const PLANS = [
   { id: "essenziale", name: "Essenziale", price: 200, for: "Per piccoli uffici", inc: ["Help desk da remoto in orario d’ufficio", "Monitoraggio di PC e server", "Aggiornamenti di sicurezza e antivirus gestiti", "Report mensile"] },
   { id: "business", name: "Business", price: 500, for: "Per PMI e studi professionali", badge: "Consigliata", inc: ["+Tutto l’Essenziale, più:", "Interventi in sede inclusi", "Backup gestito con prova di ripristino", "Firewall gestito", "Referente dedicato"] },
@@ -1313,6 +1320,7 @@ const MATRIX = [
 ];
 const PLAN_FAQ = [
   ["Cosa non è compreso nel canone?", "L’hardware nuovo, le licenze e i progetti, per esempio un nuovo impianto Wi-Fi, si quotano a parte e sempre prima di iniziare. Non sono compresi i danni all’hardware causati da un uso negligente né i ripristini dovuti a virus presi ripetutamente per negligenza."],
+  ["Fino a quante postazioni valgono le formule?", "I prezzi indicati valgono fino a 20 postazioni (PC e portatili). Da 21 a 30 postazioni il canone diventa un preventivo, che ricevi dopo il check-up gratuito. Oltre 30 postazioni le formule a canone non si applicano: prepariamo un progetto su misura."],
   ["I prezzi comprendono l’IVA?", "No: tutti i prezzi indicati sul sito sono IVA esclusa."],
   ["Posso cambiare formula?", "Sì: se l’azienda cresce, passi alla formula successiva."],
   ["E se non voglio un canone?", "Sì, facciamo anche interventi singoli: 50 € l’ora presso la tua sede e 36 € l’ora nella nostra sede, IVA esclusa."],
@@ -2266,17 +2274,28 @@ function initConfig(root) {
     if (needs.includes("tel")) toFull.push("il centralino gestito");
     if (needs.includes("rete")) toFull.push("rete, Wi-Fi e telecamere");
     if (needs.includes("nis2")) toFull.push("clienti che chiedono la NIS2");
-    if (n > 30) toFull.push("più di 30 postazioni");
     const id = toFull.length ? "completa" : toBiz.length ? "business" : "essenziale";
     const why = toFull.length ? toFull : toBiz.length ? toBiz : ["un ufficio piccolo, senza server"];
     const plan = PLANS.find((p) => p.id === id);
-    summary = `Configuratore: formula ${plan.name} consigliata (${n} postazioni${server ? ", server o NAS" : ""}${sedi === "2" ? ", più sedi" : ""}${needs.length ? ", " + needs.map((x) => CFG_NEEDS.find((y) => y[0] === x)[1].toLowerCase()).join(", ") : ""}).`;
-    out.innerHTML = `<span class="eyebrow">La formula giusta per te</span>
-      <div><div class="big">${plan.name}</div><p>Perché hai ${why.join(", ")}.</p></div>
-      <ul class="prio prio--ok">${plan.inc.map((x) => `<li>${ic(x.startsWith("+") ? "plus" : "check")}<span>${esc(x.replace(/^\+/, ""))}</span></li>`).join("")}</ul>
-      <div class="kv"><span>Canone</span><b>${plan.price} € al mese</b></div>
-      <div class="row"><a class="btn btn--primary" href="#preventivo" data-go-notes>Richiedi la formula ${plan.name}</a></div>`;
-    $$(".plan").forEach((p) => p.classList.toggle("plan--rec", p.dataset.plan === id));
+    // prezzi fino a PLAN_LIMITS.prezzo postazioni; oltre, canone su preventivo; oltre PLAN_LIMITS.max, progetto su misura
+    const fuori = n > PLAN_LIMITS.max, suPreventivo = n > PLAN_LIMITS.prezzo;
+    const dettagli = `${n} postazioni${server ? ", server o NAS" : ""}${sedi === "2" ? ", più sedi" : ""}${needs.length ? ", " + needs.map((x) => CFG_NEEDS.find((y) => y[0] === x)[1].toLowerCase()).join(", ") : ""}`;
+    if (fuori) {
+      summary = `Configuratore: più di ${PLAN_LIMITS.max} postazioni, richiesta di un progetto su misura (${dettagli}).`;
+      out.innerHTML = `<span class="eyebrow">La soluzione giusta per te</span>
+        <div><div class="big">Progetto su misura</div><p>Con più di ${PLAN_LIMITS.max} postazioni le formule a canone non bastano: dopo il check-up gratuito prepariamo un progetto e un preventivo su misura.</p></div>
+        <div class="kv"><span>Canone</span><b>Su preventivo</b></div>
+        <div class="row"><a class="btn btn--primary" href="#preventivo" data-go-notes>Richiedi un preventivo</a></div>`;
+    } else {
+      summary = `Configuratore: formula ${plan.name} consigliata (${dettagli})${suPreventivo ? `; da ${PLAN_LIMITS.prezzo + 1} postazioni il canone è su preventivo` : ""}.`;
+      out.innerHTML = `<span class="eyebrow">La formula giusta per te</span>
+        <div><div class="big">${plan.name}</div><p>Perché hai ${why.join(", ")}.</p></div>
+        <ul class="prio prio--ok">${plan.inc.map((x) => `<li>${ic(x.startsWith("+") ? "plus" : "check")}<span>${esc(x.replace(/^\+/, ""))}</span></li>`).join("")}</ul>
+        <div class="kv"><span>Canone</span><b>${suPreventivo ? "Su preventivo" : `${plan.price} € al mese`}</b></div>
+        ${suPreventivo ? `<p>Da ${PLAN_LIMITS.prezzo + 1} a ${PLAN_LIMITS.max} postazioni il canone diventa un preventivo, che ricevi dopo il check-up gratuito.</p>` : ""}
+        <div class="row"><a class="btn btn--primary" href="#preventivo" data-go-notes>${suPreventivo ? "Richiedi il preventivo" : `Richiedi la formula ${plan.name}`}</a></div>`;
+    }
+    $$(".plan").forEach((p) => p.classList.toggle("plan--rec", !fuori && p.dataset.plan === id));
   };
   f.addEventListener("change", upd);
   bindRange(root, "cfg-n", upd);
@@ -2387,9 +2406,10 @@ function compareSection() {
 function plansHtml() {
   return `<div class="plans">${PLANS.map((p) => `<article class="plan${p.id === "business" ? " plan--hi" : ""}" data-plan="${p.id}">
     <div class="plan__top"><h3>${p.name}</h3>${p.badge ? `<span class="plan__badge">${p.badge}</span>` : ""}</div>
-    <p class="plan__for">${p.for}</p><p class="plan__price">${p.price} € <small>al mese</small></p>
+    <p class="plan__for">${p.for}</p><div><p class="plan__price">${p.price} € <small>al mese</small></p><p class="plan__lim">fino a ${PLAN_LIMITS.prezzo} postazioni</p></div>
     <ul>${p.inc.map((x) => x.startsWith("+") ? `<li class="plus">${esc(x.slice(1))}</li>` : `<li>${ic("check")}<span>${esc(x)}</span></li>`).join("")}</ul>
-    <a class="btn ${p.id === "business" ? "btn--primary" : "btn--ghost"}" href="#preventivo" data-plan-req="${p.id}">Chiedi questa formula</a></article>`).join("")}</div>`;
+    <a class="btn ${p.id === "business" ? "btn--primary" : "btn--ghost"}" href="#preventivo" data-plan-req="${p.id}">Chiedi questa formula</a></article>`).join("")}</div>
+    <p class="plans__note">I prezzi valgono fino a ${PLAN_LIMITS.prezzo} postazioni (PC e portatili). <b>Da ${PLAN_LIMITS.prezzo + 1} a ${PLAN_LIMITS.max} postazioni il canone è su preventivo</b>; oltre ${PLAN_LIMITS.max} prepariamo un progetto su misura.</p>`;
 }
 function sectorCards() {
   return `<div class="sectors">${SECTORS.map((s) => `<a class="sector" href="#settori" data-scroll="settore-${s.id}">${FOTO["settore-" + s.id]
