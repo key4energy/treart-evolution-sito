@@ -2,6 +2,10 @@
    Testi dal documento «Contenuti dei servizi e approfondimenti».
    [testo] = segnaposto da completare; {{testo|nota}} = dato da confermare. */
 
+// scheda Google Maps di Treart Evolution (verificata il 26 ottobre 2026: indirizzo, telefono e orari coincidono con quelli del sito)
+const GPLACE = "ChIJGQCWuPawKRMR8biuNijPz9s";
+const GQUERY = encodeURIComponent("Treart Evolution, Via Aurelia Nord 76/1, 58100 Grosseto");
+
 const C = {
   tel: "0564 176 8249", telIntl: "+39 0564 176 8249", telHref: "tel:+3905641768249",
   wa: "3905641768249",
@@ -11,15 +15,19 @@ const C = {
   pec: "pec@pec.treart-evolution.com",
   addr1: "Via Aurelia Nord 76/1", addr2: "58100 Grosseto (GR)",
   hours: "Lun–ven 8:30–13:00 e 14:00–17:30",
-  maps: "https://www.google.com/maps/search/?api=1&query=Via+Aurelia+Nord+76%2F1+58100+Grosseto",
+  // la scheda di Treart su Google Maps e le indicazioni stradali fino alla sede
+  maps: `https://www.google.com/maps/search/?api=1&query=${GQUERY}&query_place_id=${GPLACE}`,
+  directions: `https://www.google.com/maps/dir/?api=1&destination=${GQUERY}&destination_place_id=${GPLACE}`,
   founded: 2015,
   piva: "01575220536", rea: "136469", cap: "€ 10.000,00",
   reply: "8 ore lavorative",
   site: "treart-evolution.com",
   // ID di misurazione di Google Analytics 4 (per esempio "G-ABC123XYZ"): finché è vuoto non si carica nulla e non compare il banner dei cookie
   ga: "",
-  // scheda Google: voto e numero di recensioni (aggiornati al 25 ottobre 2026) e indirizzo per leggerle
-  google: { rating: "4,8", count: 5, quote: "", author: "", url: "https://www.google.com/maps/search/?api=1&query=Treart%20Evolution&query_place_id=ChIJGQCWuPawKRMR8biuNijPz9s" },
+  // recensioni Google (verificate su Google Maps il 26 ottobre 2026): voto, numero, una recensione con l'iniziale del cognome dell'autore,
+  // indirizzi per leggerle e per scriverne una. Google ne mostra 6, ma la più recente (26/10/2026) è di Niccolò Maffei del team:
+  // le recensioni di chi lavora in azienda non vanno contate (e per Google sono un conflitto di interessi), quindi qui restano 5
+  google: { rating: "4,8", count: 5, quote: "Cortesia e competenza", author: "Massimo L.", url: `https://www.google.com/maps/search/?api=1&query=${GQUERY}&query_place_id=${GPLACE}`, write: `https://search.google.com/local/writereview?placeid=${GPLACE}` },
 };
 
 const AREAS = [

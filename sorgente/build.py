@@ -52,7 +52,9 @@ logo_symbol = (
     f'<circle cx="{cx}" cy="{cy}" r="{cr}" style="fill:var(--lc,#B3D670)"/>'
     f'<path style="fill:var(--le,#FFFFFF)" d="{WHITE}"/>'
     f'<circle cx="{dx}" cy="{dy}" r="{dr}" style="fill:var(--le,#FFFFFF)"/>'
-    f'<path style="fill:var(--lf,#5A7722)" d="{FIRMA}"/>'
+    # corsivo «Treart»: un leggero contorno dello stesso colore (--lfs, in styles.css) ispessisce i filetti,
+    # così l'asta orizzontale della T resta visibile anche quando il logo è piccolo
+    f'<path style="fill:var(--lf,#5A7722);stroke:var(--lf,#5A7722);stroke-width:var(--lfs,0);stroke-linejoin:round" d="{FIRMA}"/>'
     '</symbol>'
 )
 sym_symbol = (
@@ -148,7 +150,11 @@ qr_js = 'const QR = {wa: %s, vcard: %s};\n' % (
 head = read('head.html')
 css = read('styles.css')
 shell = read('shell.html')
-asset_js = 'const ASSET = {logoVB: "%s", eVB: "0 0 %s %s"};\n' % (vb, x1 - x0, y1 - y0)
+# Il riquadro esterno del logo deve partire da 0 0: <use> colloca il simbolo (che ha il suo viewBox, con origine
+# 12.94 4.13) nel rettangolo 0 0 larghezza altezza. Con l'origine del kit il disegno scivolava in alto a sinistra
+# e il bordo tagliava l'asta orizzontale della T di «Treart».
+_vbw, _vbh = vb.split()[2:]
+asset_js = 'const ASSET = {logoVB: "0 0 %s %s", eVB: "0 0 %s %s"};\n' % (_vbw, _vbh, x1 - x0, y1 - y0)
 # fotografie (preparate con prepara_foto.py nella cartella img/ accanto alla pagina)
 foto = json.load(open(os.path.join(HERE, 'foto.json'), encoding='utf-8'))
 IMG_DIR = os.path.join(HERE, '..', 'public', 'img')

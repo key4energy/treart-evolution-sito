@@ -120,6 +120,9 @@ main > *{animation:enter .35s ease-out both}
 .hdr > .wrap{display:flex; align-items:center; gap:clamp(12px, 1.6vw, 24px); height:var(--hdr-h)}
 .brand{display:block; flex:none; line-height:0; border-radius:6px}
 .brand svg{display:block; width:188px; height:auto; aspect-ratio:341.43/103.11}
+/* logo piccolo: filetti del corsivo «Treart» appena ispessiti (in unità del disegno), meno sugli schermi ad alta densità */
+.logo{--lfs:.45}
+@media (min-resolution:2dppx){.logo{--lfs:.3}}
 .logo--pos{--lw:#58585A; --ls:#B3D670; --lc:#B3D670; --le:#FFFFFF; --lf:#5A7722}
 .logo--neg{--lw:#FFFFFF; --ls:#B3D670; --lc:#B3D670; --le:#FFFFFF; --lf:#FFFFFF}
 .nav{display:flex; align-items:center; gap:2px; margin-left:auto}

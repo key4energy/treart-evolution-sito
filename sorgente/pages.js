@@ -182,7 +182,7 @@ function ratingStars(r) {
 const reviewCard = () => `<figure class="review"><span class="eyebrow">Recensioni Google</span>
   <div class="rating"><b class="rating__num">${C.google.rating}</b><div class="rating__side">${ratingStars(C.google.rating)}<span class="small muted">su 5, media di ${C.google.count} recensioni</span></div></div>
   ${C.google.quote ? `<blockquote>«${esc(C.google.quote)}»</blockquote>` : ""}
-  <figcaption class="small">${C.google.quote && C.google.author ? `${esc(C.google.author)} · ` : ""}<a href="${C.google.url}" target="_blank" rel="noopener">Leggi le recensioni su Google</a></figcaption></figure>`;
+  <figcaption class="small">${C.google.quote && C.google.author ? `${esc(C.google.author)} · ` : ""}<a href="${C.google.url}" target="_blank" rel="noopener">Leggi le recensioni su Google</a>${C.google.write ? ` · <a href="${C.google.write}" target="_blank" rel="noopener">Scrivi una recensione</a>` : ""}</figcaption></figure>`;
 
 function stage() {
   const pos = [-90, -18, 54, 126, 198], R = 232;
@@ -491,7 +491,7 @@ route("contatti", {
         ${chCard("chat", "WhatsApp", C.tel, "Scrivici quando vuoi: rispondiamo in orario d’ufficio. Puoi mandarci foto e documenti.", `<a class="btn btn--primary btn--sm" href="${waHref(WA_GENERIC)}" target="_blank" rel="noopener">Apri WhatsApp</a>`, QR.wa)}
         ${chCard("mail", "Email", C.email, "Per capitolati, documenti e richieste dettagliate.", `<a class="btn btn--primary btn--sm" href="mailto:${C.email}">Scrivi un’email</a><button class="btn btn--ghost btn--sm" type="button" data-copy="${C.email}"><span data-label>Copia l’indirizzo</span></button>`)}
         ${chCard("stamp", "PEC", C.pec, "Per le comunicazioni ufficiali.", `<button class="btn btn--ghost btn--sm" type="button" data-copy="${C.pec}"><span data-label>Copia l’indirizzo</span></button>`)}
-        ${chCard("pin", "Sede", `${C.addr1}<br>${C.addr2}`, C.hours + ".", `<a class="btn btn--primary btn--sm" href="${C.maps}" target="_blank" rel="noopener">Indicazioni stradali</a><button class="btn btn--ghost btn--sm" type="button" data-copy="${C.addr1}, ${C.addr2}"><span data-label>Copia l’indirizzo</span></button>`)}
+        ${chCard("pin", "Sede", `${C.addr1}<br>${C.addr2}`, C.hours + ".", `<a class="btn btn--primary btn--sm" href="${C.directions}" target="_blank" rel="noopener">Indicazioni stradali</a><button class="btn btn--ghost btn--sm" type="button" data-copy="${C.addr1}, ${C.addr2}"><span data-label>Copia l’indirizzo</span></button>`)}
       </div><p class="small muted mt-m">Seguici anche su <a href="${C.facebook}" target="_blank" rel="noopener">Facebook</a> e <a href="${C.instagram}" target="_blank" rel="noopener">Instagram</a>.</p></div></section>`
     + `<section class="sec sec--tight"><div class="wrap"><div class="note note--qr">${QR.vcard}<p><b>Salva il nostro contatto.</b> Inquadra il codice con la fotocamera del telefono: numero, email e indirizzo vanno in rubrica in un attimo.</p>
         <button class="btn btn--ghost btn--sm" type="button" data-copy="${esc(VCARD_TEXT)}">${ic("copy")}<span data-label>Copia tutti i contatti</span></button></div></div></section>`
