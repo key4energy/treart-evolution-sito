@@ -61,7 +61,7 @@ LD = {
     '@type': 'LocalBusiness',
     '@id': 'https://treart-evolution.com/#azienda',
     'name': 'Treart Evolution',
-    'legalName': 'Treart Evolution S.r.l.',
+    'legalName': 'Treart Evolution S.r.l. con socio unico',
     'slogan': 'Il tuo business, gestito.',
     'description': DESC,
     'url': 'https://treart-evolution.com/',

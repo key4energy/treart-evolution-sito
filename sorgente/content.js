@@ -56,7 +56,7 @@ const PARTNERS = [
 
 /* Le persone di Treart Evolution (ottobre 2026). Quando ci saranno le foto, si aggiungono con «foto» (slug di foto.json). */
 const TEAM = [
-  { name: "Fabio Di Cesare", role: "Amministratore" },
+  { name: "Fabio Di Cesare", role: "Amministratore Unico" },
   { name: "Melissa Pericci", role: "Responsabile amministrativa" },
   { name: "Niccolò Maffei", role: "Responsabile reparto web" },
   { name: "Emanuele Crolli", role: "Responsabile assistenza tecnica e networking" },

@@ -455,8 +455,8 @@ route("chi-siamo", {
     + `<section class="sec sec--paper"><div class="wrap">${secHead("Le persone", "Chi trovi dall’altra parte del telefono.")}
         <div class="team">${TEAM.map((p) => `<article class="person"><span class="person__avatar" aria-hidden="true">${esc(p.name.split(" ").map((w) => w[0]).slice(0, 2).join(""))}</span><div><h3>${esc(p.name)}</h3><p class="muted">${esc(p.role)}</p></div></article>`).join("")}</div></div></section>`
     + `<section class="sec sec--tight"><div class="wrap"><div class="facts">
-        <div><span>Ragione sociale</span><b>Treart Evolution Srl</b></div><div><span>Sede</span><b>${C.addr1}, ${C.addr2}</b></div>
-        <div><span>Partita IVA</span><b>${C.piva}</b></div><div><span>REA</span><b>${C.rea}</b></div><div><span>Capitale sociale</span><b>${C.cap}</b></div>
+        <div><span>Ragione sociale</span><b>Treart Evolution S.r.l. con socio unico</b></div><div><span>Sede</span><b>${C.addr1}, ${C.addr2}</b></div>
+        <div><span>Partita IVA</span><b>${C.piva}</b></div><div><span>REA</span><b>GR-${C.rea}</b></div><div><span>Capitale sociale</span><b>${C.cap} i.v.</b></div>
         <div><span>PEC</span><b>${C.pec}</b></div></div></div></section>`
     + defaultBand() + contactSection({ p: "cs2" }),
 });
@@ -667,7 +667,7 @@ route("privacy", {
   title: () => "Informativa privacy | Treart Evolution", desc: () => "Come Treart Evolution tratta i dati raccolti con moduli, telefono, WhatsApp, email e, con il tuo consenso, con le statistiche del sito.", nav: () => "",
   render: () => ph({ cr: [["Privacy"]], eyebrow: "Note legali", title: "Informativa privacy", lead: "Come trattiamo i dati che ci lasci con i moduli, il telefono, WhatsApp e l’email, e quelli raccolti dal sito.", light: true })
     + `<section class="sec sec--tight"><div class="wrap"><div class="art__body">
-      <h2>Titolare del trattamento</h2><p>Treart Evolution Srl, ${C.addr1}, ${C.addr2}, partita IVA ${C.piva}. Email <a href="mailto:${C.email}">${C.email}</a>, PEC ${C.pec}.</p>
+      <h2>Titolare del trattamento</h2><p>Treart Evolution S.r.l. con socio unico, ${C.addr1}, ${C.addr2}, C.F. e partita IVA ${C.piva}. Email <a href="mailto:${C.email}">${C.email}</a>, PEC ${C.pec}.</p>
       <h2>Quali dati trattiamo</h2>
       <p><b>Dati che ci lasci tu.</b> Quando chiedi un preventivo, un check-up, una richiamata o assistenza: nome, azienda, comune, telefono, email e il testo della richiesta. I moduli del sito non salvano nulla: preparano un messaggio che invii tu, con WhatsApp o con la tua email. Trattiamo allo stesso modo i dati che ci comunichi per telefono, su WhatsApp, per email o di persona.</p>
       <p><b>Dati di navigazione.</b> Come ogni sito, il server registra per motivi tecnici e di sicurezza l’indirizzo IP e le pagine richieste.</p>
@@ -683,7 +683,7 @@ route("privacy", {
       <h2>Devi darci i tuoi dati?</h2><p>No, è facoltativo. Senza i dati necessari, però, non possiamo rispondere alla tua richiesta.</p>
       <h2>I tuoi diritti</h2><p>Puoi chiedere accesso, rettifica, cancellazione, limitazione e portabilità dei tuoi dati, e opporti al trattamento, scrivendo a <a href="mailto:${C.email}">${C.email}</a>. Puoi anche presentare reclamo al <a href="https://www.garanteprivacy.it/" target="_blank" rel="noopener">Garante per la protezione dei dati personali</a>.</p>
       <h2>Strumenti del sito</h2><p>Test, calcoli e liste di controllo funzionano nel tuo browser: le risposte non vengono inviate a nessuno.</p>
-      <p class="small muted">Ultimo aggiornamento: 26 ottobre 2026.</p>
+      <p class="small muted">Ultimo aggiornamento: 27 ottobre 2026.</p>
     </div></div></section>`,
 });
 route("cookie", {
