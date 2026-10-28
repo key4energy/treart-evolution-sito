@@ -185,6 +185,24 @@ case "$AZ" in
           exit 2
         fi
         echo "Nuovo sito aggiornato (la versione precedente resta in $P)"
+        # file pubblicati la volta prima e non più nel sito (pagine tolte, file vecchi): si tolgono anche online.
+        # Elenco in $BASE/file-pubblicati.txt, fuori da public_html; verifiche di Google/Bing e .well-known restano.
+        ELENCO="$BASE/file-pubblicati.txt"
+        NUOVO_ELENCO=$(cd "$ARRIVO" && find . -type f | sed 's|^\./||' | LC_ALL=C sort)
+        # immagini di prova finite online per errore il 28 ottobre 2026, prima che esistesse l'elenco
+        VECCHI=$( { [ -f "$ELENCO" ] && cat "$ELENCO"; printf '%s\n' d-cybersecurity.png d-formule.png m-cybersecurity.png m-formule.png; } | LC_ALL=C sort -u)
+        tolti=0
+        while IFS= read -r f; do
+          [ -n "$f" ] || continue
+          case "$f" in .well-known/*|google*.html|BingSiteAuth.xml|yandex_*.html) continue ;; esac
+          if ! grep -qxF -- "$f" <<<"$NUOVO_ELENCO" && [ -f "$D/$f" ]; then
+            rm -f -- "$D/$f" && tolti=$((tolti + 1))
+            d=$(dirname -- "$f")
+            [ "$d" != "." ] && ( cd "$D" && rmdir -p --ignore-fail-on-non-empty -- "$d" 2>/dev/null )
+          fi
+        done <<<"$VECCHI"
+        printf '%s\n' "$NUOVO_ELENCO" > "$ELENCO"
+        echo "File non più nel sito tolti dalla cartella pubblica: $tolti"
         CACHE_DA=$(ultimo_archivio)
         ;;
       *)
