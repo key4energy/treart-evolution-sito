@@ -84,6 +84,7 @@ Il workflow **Social** usa la chiave `META_TOKEN` (segreto del repository: token
 - `{"azione": "aggiorna-pagina", "approvata_da": "...", "campi": {"about": "..."}}`: aggiorna le informazioni della Pagina (`about`, `description`, `website`, `phone`, `hours`, `impressum`) e le rilegge per conferma.
 - `{"azione": "controlla-pagina"}`: controllo completo in sola lettura (informazioni, foto profilo, copertina, post, statistiche); i dettagli vanno nella cartella `dettagli/` del ramo `esito-social`.
 - `{"azione": "copertina", "approvata_da": "...", "file": "public/social/....png", "offset_y": 50}`: nuova copertina, senza post nel diario.
+- `{"azione": "pubblica-facebook", "approvata_da": "...", "file": "public/social/....png", "testo": "...", "quando": "2026-10-30T09:00:00+01:00"}`: post con foto sulla Pagina. Senza `quando` esce subito; con `quando` resta programmato e lo pubblica Meta all'ora indicata (tra 15 minuti e 70 giorni da adesso). La foto si carica dal repository.
 - `{"azione": "cerca-categorie", "parole": ["informatic"]}` e `{"azione": "categorie", "approvata_da": "...", "categorie": ["id", ...]}`: ricerca e scelta delle categorie (massimo 3).
 - `{"azione": "diagnosi-instagram"}`: sola lettura, perché il collegamento di Instagram alla Pagina non riesce (portfolio della Pagina, account Instagram già collegati).
 

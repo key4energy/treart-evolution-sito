@@ -5,6 +5,9 @@
 #   {"azione": "prova"}   lettura di verifica: non pubblica nulla
 #   {"azione": "aggiorna-pagina", "approvata_da": "...", "campi": {"about": "..."}}
 #                         aggiorna le informazioni della Pagina (about, description, website, phone, hours, impressum)
+#   {"azione": "pubblica-facebook", "approvata_da": "...", "file": "public/social/....png", "testo": "...",
+#    "quando": "2026-10-30T09:00:00+01:00"}
+#                         post con foto sulla Pagina: subito, oppure programmato se c'è «quando» (lo pubblica Meta)
 # Instagram, con accesso diretto all'account (chiave IG_TOKEN, senza passare dalla Pagina):
 #   {"azione": "prova-instagram"}   lettura di verifica: account, ultimi post, limite di pubblicazione
 #   {"azione": "pubblica-instagram", "approvata_da": "...", "file": "public/social/....jpg", "testo": "..."}
@@ -408,6 +411,75 @@ copertina() {
   fi
 }
 
+# post con foto sulla Pagina, subito o programmato:
+# {"azione": "pubblica-facebook", "approvata_da": "...", "file": "public/social/x.png", "testo": "...", "quando": "2026-10-30T09:00:00+01:00"}
+# La foto si carica dal repository (niente download dal sito, quindi niente controllo anti-bot di SiteGround).
+# Con «quando» il post resta programmato e lo pubblica Meta all'ora indicata, tra 15 minuti e 70 giorni da adesso.
+pubblica_facebook() {
+  local f=$1 appr file testo quando ts adesso r e pid post
+  log ""
+  log "== Post sulla Pagina Facebook =="
+  appr=$(jq -r '.approvata_da // empty' "$f")
+  if [ -z "$appr" ]; then
+    log "ERRORE: manca approvata_da: sulla Pagina si pubblica solo con l'ok esplicito di Fabio"
+    return 1
+  fi
+  log "Approvazione: $appr"
+  file=$(jq -r '.file // empty' "$f")
+  testo=$(jq -r '.testo // empty' "$f")
+  quando=$(jq -r '.quando // empty' "$f")
+  if [ -z "$file" ] || [ ! -f "$file" ]; then
+    log "ERRORE: immagine «$file» non trovata nel repository"
+    return 1
+  fi
+  if [ -z "$testo" ]; then
+    log "ERRORE: manca il testo del post"
+    return 1
+  fi
+  pagina "$(jq -r '.pagina // empty' "$f")" || return 1
+  # --form-string: il testo va com'è, anche se comincia con @ o <
+  local args=(-F "source=@$file" --form-string "message=$testo")
+  if [ -n "$quando" ]; then
+    if ! ts=$(date -d "$quando" +%s 2>/dev/null); then
+      log "ERRORE: data «$quando» non valida"
+      return 1
+    fi
+    adesso=$(date +%s)
+    if [ "$ts" -lt $((adesso + 900)) ] || [ "$ts" -gt $((adesso + 70 * 86400)) ]; then
+      log "ERRORE: «$quando» è fuori dall'intervallo consentito (tra 15 minuti e 70 giorni da adesso)"
+      return 1
+    fi
+    args+=(--form-string "published=false" --form-string "scheduled_publish_time=$ts")
+    log "Pagina «$PAGE_NAME» (id $PAGE_ID) · immagine $file · programmato per il $(TZ=Europe/Rome date -d "@$ts" '+%d/%m/%Y alle %H:%M') (ora italiana)"
+  else
+    log "Pagina «$PAGE_NAME» (id $PAGE_ID) · immagine $file · pubblicazione immediata"
+  fi
+  r=$(curl -sS -m 180 -X POST -H "Authorization: Bearer $PAGE_TOKEN" "${args[@]}" "$G/$PAGE_ID/photos")
+  e=$(printf '%s' "$r" | errore)
+  pid=$(jq -r '.id // empty' <<<"$r" 2>/dev/null)
+  if [ -n "$e" ] || [ -z "$pid" ]; then
+    log "ERRORE: post non riuscito: ${e:-risposta senza id}"
+    return 1
+  fi
+  post=$(jq -r '.post_id // empty' <<<"$r" 2>/dev/null)
+  if [ -n "$quando" ]; then
+    log "  foto caricata (id $pid), post programmato"
+    # controllo: i post programmati della Pagina, con data e inizio del testo
+    r=$(graph "$PAGE_TOKEN" GET "$PAGE_ID/scheduled_posts?fields=id,message,scheduled_publish_time")
+    e=$(printf '%s' "$r" | errore)
+    if [ -z "$e" ]; then
+      log "  post programmati sulla Pagina: $(jq '.data | length' <<<"$r")"
+      jq -r '.data[] | "   - \(.scheduled_publish_time | if type == "number" then strftime("%d/%m/%Y %H:%M UTC") else tostring end)  \((.message // "") | gsub("\n"; " ") | .[0:70])  (id \(.id))"' <<<"$r" | tee -a "$REPORT"
+    else
+      log "  post programmati: elenco non leggibile ($e)"
+    fi
+  else
+    [ -n "$post" ] || post="${PAGE_ID}_$pid"
+    r=$(graph "$PAGE_TOKEN" GET "$post?fields=permalink_url,created_time,is_published")
+    log "Pubblicato su Facebook: $(jq -r '.permalink_url // "(indirizzo non disponibile)"' <<<"$r") (id $post)"
+  fi
+}
+
 # elenco delle categorie di Meta che contengono certe parole (sola lettura):
 # {"azione": "cerca-categorie", "parole": ["informatic", "telecomunic"]}
 cerca_categorie() {
@@ -656,6 +728,7 @@ for f in "${RICHIESTE[@]}"; do
     prova) prova || stato=1 ;;
     aggiorna-pagina) aggiorna_pagina "$f" || stato=1 ;;
     controlla-pagina) controlla_pagina "$f" || stato=1 ;;
+    pubblica-facebook) pubblica_facebook "$f" || stato=1 ;;
     copertina) copertina "$f" || stato=1 ;;
     cerca-categorie) cerca_categorie "$f" || stato=1 ;;
     categorie) categorie "$f" || stato=1 ;;
