@@ -174,15 +174,87 @@ def og_image(path):
 
 
 og_image(os.path.join(OUT, 'og-image.png'))
+
+
+# ---------- una pagina HTML per ogni indirizzo del sito (/contatti/, /cybersecurity/...) ----------
+# Ogni pagina ha già nel file titolo, descrizione, indirizzo canonico e contenuto (letti dal sito stesso con
+# prerender.cjs), così i motori di ricerca e le anteprime dei link la vedono anche senza eseguire il JavaScript.
+# Aprendosi, il sito ridisegna tutto da sé e poi passa da una pagina all'altra senza ricaricare.
+import html as _html
+import shutil
+import tempfile
+
+PARTI = {
+    'util': '<div class="util" id="util"></div>',
+    'hdr': '<header class="hdr" id="hdr"></header>',
+    'drawer': '<div class="drawer" id="drawer" hidden></div>',
+    'main': '<main id="main" tabindex="-1"></main>',
+    'ftr': '<footer class="ftr" id="ftr"></footer>',
+    'fab': '<div class="fab" id="fab"></div>',
+}
+# pagine di servizio, raggiungibili ma fuori dalla ricerca e dalla mappa del sito
+FUORI_DALLA_RICERCA = {'interno'}
+# cartelle del sito che non sono pagine
+CARTELLE_FISSE = {'img', 'font', 'social'}
+
+with tempfile.TemporaryDirectory() as tmp:
+    js = os.path.join(tmp, 'pagine.json')
+    subprocess.run(['node', os.path.join(HERE, 'prerender.cjs'), os.path.abspath(OUT), js], check=True)
+    with open(js, encoding='utf-8') as f:
+        PAGINE = json.load(f)
+assert 'home' in PAGINE and len(PAGINE) > 20, 'pagine non generate'
+
+
+def indirizzo(tok):
+    return SITE if tok == 'home' else f'{SITE}{tok}/'
+
+
+def pagina_html(tok, d):
+    assert d['title'] and d['desc'] and d['h1'], f'pagina {tok} senza titolo, descrizione o h1'
+    url = indirizzo(tok)
+    sost = [
+        (f'<title>{TITLE}</title>', f'<title>{_html.escape(d["title"], quote=False)}</title>'),
+        (f'<meta name="description" content="{DESC}">', f'<meta name="description" content="{_html.escape(d["desc"])}">'),
+        (f'<meta property="og:title" content="{TITLE}">', f'<meta property="og:title" content="{_html.escape(d["title"])}">'),
+        (f'<meta property="og:description" content="{DESC}">', f'<meta property="og:description" content="{_html.escape(d["desc"])}">'),
+        (f'<meta property="og:url" content="{SITE}">', f'<meta property="og:url" content="{url}">'),
+    ]
+    if PROD:
+        sost.append((f'<link rel="canonical" href="{SITE}">', f'<link rel="canonical" href="{url}">'
+                     + ('\n<meta name="robots" content="noindex">' if tok in FUORI_DALLA_RICERCA else '')))
+    for k, vuoto in PARTI.items():
+        sost.append((vuoto, vuoto.replace('></', '>' + d['parti'][k] + '</', 1)))
+    h = page
+    for old, new in sost:
+        assert h.count(old) == 1, f'pagina {tok}: «{old[:50]}» trovato {h.count(old)} volte'
+        h = h.replace(old, new)
+    return h
+
+
+# toglie le pagine di indirizzi che il sito non ha più
+for nome in os.listdir(OUT):
+    p = os.path.join(OUT, nome)
+    if os.path.isdir(p) and nome not in CARTELLE_FISSE and nome not in PAGINE and os.path.exists(os.path.join(p, 'index.html')):
+        shutil.rmtree(p)
+for tok, d in PAGINE.items():
+    dest = os.path.join(OUT, 'index.html') if tok == 'home' else os.path.join(OUT, tok, 'index.html')
+    os.makedirs(os.path.dirname(dest), exist_ok=True)
+    with open(dest, 'w', encoding='utf-8') as f:
+        f.write(pagina_html(tok, d))
+
 files = ['index.html', 'og-image.png']
 if PROD:
     with open(os.path.join(OUT, 'robots.txt'), 'w', encoding='utf-8') as f:
         f.write(f'User-agent: *\nAllow: /\n\nSitemap: {SITE}sitemap.xml\n')
     import datetime
     oggi = datetime.date.today().isoformat()
+    # prima la home, poi le pagine nell'ordine del sito
+    voci = ''.join(f'  <url><loc>{indirizzo(tok)}</loc><lastmod>{oggi}</lastmod></url>\n'
+                   for tok in PAGINE if tok not in FUORI_DALLA_RICERCA)
     with open(os.path.join(OUT, 'sitemap.xml'), 'w', encoding='utf-8') as f:
         f.write('<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
-                f'  <url><loc>{SITE}</loc><lastmod>{oggi}</lastmod></url>\n</urlset>\n')
+                + voci + '</urlset>\n')
     files += ['robots.txt', 'sitemap.xml']
 for n in files:
     print(n, f'{os.path.getsize(os.path.join(OUT, n)) / 1024:.0f} KB')
+print(f'pagine con indirizzo proprio: {len(PAGINE)}')

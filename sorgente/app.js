@@ -113,7 +113,7 @@ const cookieConsent = {
 const gaHost = () => /^(www\.)?treart-evolution\.com$/.test(location.hostname);
 // parametri delle campagne con cui si arriva al sito (per esempio dal pulsante della pagina LinkedIn,
 // ?utm_source=linkedin&utm_medium=social&utm_campaign=pagina-aziendale): vanno con la prima pagina vista,
-// perché le pagine del sito sono indirizzi con # e Google Analytics le riceve come percorsi (/contatti, /formule...)
+// perché le pagine successive si aprono senza ricaricare e Google Analytics le riceve una per una
 const LANDING_QS = (() => {
   try {
     const keep = new URLSearchParams(), rest = new URLSearchParams();
@@ -147,10 +147,10 @@ function gaEvent(name, params = {}) {
   if (isInternal()) params.traffic_type = "internal";
   window.gtag("event", name, params);
 }
-// ogni pagina del sito diventa un percorso leggibile nei rapporti: #contatti → /contatti, la home → /
+// ogni pagina del sito arriva con il suo indirizzo vero: /contatti/, la home /
 function trackPage(tok) {
   if (!gaLoaded || !window.gtag) return;
-  const url = location.origin + "/" + (tok === "home" ? "" : encodeURI(tok));
+  const url = location.origin + encodeURI(pathOf(tok));
   const p = { page_title: document.title, page_location: url + (gaFirst ? LANDING_QS : "") };
   if (gaPrev) p.page_referrer = gaPrev;
   if (isInternal()) p.traffic_type = "internal";
@@ -248,13 +248,51 @@ function dlBadge(d) {
 const S = { prefill: null, scrollTo: null, checkup: null, notes: "", first: true };
 const ROUTES = {};
 const route = (tok, def) => { ROUTES[tok] = def; };
+// Sul sito pubblicato e sull'anteprima ogni pagina ha un indirizzo vero (treart-evolution.com/contatti/),
+// con il suo file HTML già pronto per i motori di ricerca (generato da build_hosting.py). Altrove (file
+// aperto in locale, artefatto) le pagine restano indirizzi con #. I vecchi link con # (#contatti)
+// continuano a funzionare: diventano l'indirizzo vero senza ricaricare la pagina.
+const PATHS = /^https?:$/.test(location.protocol) && /(^|\.)treart-evolution\.com$|^localhost$|^127\.0\.0\.1$/.test(location.hostname);
+const pathOf = (tok) => (tok === "home" ? "/" : "/" + tok + "/");
+function tokOf(s) {
+  let t = String(s || "").replace(/^#/, "").replace(/(^|\/)index\.html?$/, "").replace(/^\/+|\/+$/g, "");
+  try { t = decodeURIComponent(t); } catch (e) { /* indirizzo non valido */ }
+  return t || "home";
+}
 function current() {
-  let h = location.hash.replace(/^#/, "");
-  try { h = decodeURIComponent(h); } catch (e) { /* hash non valido */ }
-  return h || "home";
+  const h = tokOf(location.hash);
+  if (location.hash.length > 1 && (!PATHS || ROUTES[h])) return h;
+  return PATHS ? tokOf(location.pathname) : "home";
+}
+function navigate(tok) {
+  if (!PATHS) { location.hash = tok; return; }
+  history.pushState(null, "", pathOf(tok));
+  render();
 }
 function go(tok) {
-  if (current() === tok) render(); else location.hash = tok;
+  if (current() === tok) render(); else navigate(tok);
+}
+// vecchio indirizzo con # (treart-evolution.com/#contatti) → indirizzo vero (treart-evolution.com/contatti/)
+function fixHash() {
+  if (!PATHS || location.hash.length < 2) return;
+  const t = tokOf(location.hash);
+  if (ROUTES[t]) history.replaceState(history.state, "", pathOf(t) + location.search);
+}
+// link interni con indirizzi veri, che i motori di ricerca possono seguire: href="#contatti" → href="/contatti/"
+function linkify(root) {
+  if (!PATHS || !root) return;
+  root.querySelectorAll('a[href^="#"]').forEach((a) => {
+    const t = tokOf(a.getAttribute("href"));
+    if (ROUTES[t] && t !== "404") a.setAttribute("href", pathOf(t));
+  });
+}
+// pagina del sito indicata da un link (#contatti o /contatti/), oppure null per link esterni, file e nuove schede
+function linkTok(el, href) {
+  if (!href || el.target === "_blank" || el.hasAttribute("download")) return null;
+  if (href.startsWith("#")) return tokOf(href);
+  if (!PATHS || !href.startsWith("/") || href.startsWith("//")) return null;
+  const t = tokOf(href.split(/[?#]/)[0]);
+  return ROUTES[t] ? t : null;
 }
 
 /* ---------- struttura: barra scadenze ---------- */

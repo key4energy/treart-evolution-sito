@@ -37,7 +37,9 @@ function foto(slug, sizes) {
   const f = FOTO[slug];
   if (!f) return "";
   const q = f.v ? `?v=${f.v}` : "";
-  return `<img src="img/${slug}-800.webp${q}" srcset="img/${slug}-800.webp${q} 800w, img/${slug}-1600.webp${q} 1600w" sizes="${sizes}" width="1600" height="1067" alt="${esc(f.alt)}" loading="lazy" decoding="async">`;
+  // con gli indirizzi veri (/cybersecurity/) le foto si cercano sempre dalla radice del sito
+  const d = PATHS ? "/img/" : "img/";
+  return `<img src="${d}${slug}-800.webp${q}" srcset="${d}${slug}-800.webp${q} 800w, ${d}${slug}-1600.webp${q} 1600w" sizes="${sizes}" width="1600" height="1067" alt="${esc(f.alt)}" loading="lazy" decoding="async">`;
 }
 const fotoFig = (slug, sizes, cls = "") => FOTO[slug] ? `<figure class="photo${cls ? " " + cls : ""}">${foto(slug, sizes)}</figure>` : "";
 const firstSentence = (s) => { const m = String(s).match(/^(.+?[.!?])\s+(?=[A-ZÀÈÉÌÒÙ«])/); return m ? m[1] : s; };

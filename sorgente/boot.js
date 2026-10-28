@@ -15,6 +15,7 @@ function render() {
   setDesc(r.desc ? r.desc(tok) : "");
   markNav(r.nav ? r.nav(tok) : "");
   if (r.after) r.after(main, tok);
+  linkify(main);
   enhance(main);
   updateTbc();
   const root = document.documentElement;
@@ -66,8 +67,10 @@ function onClick(e) {
   if (el.dataset.open) { e.preventDefault(); openDialog(el.dataset.open); return; }
   if (el.matches("[data-skip]")) { const m = $("#main"); m.focus(); return; }
   const href = el.tagName === "A" ? el.getAttribute("href") || "" : "";
-  if (href.startsWith("#")) {
-    const tok = href.slice(1) || "home";
+  // con Ctrl, Cmd, Maiuscolo o il tasto centrale il link si apre in una nuova scheda, come in ogni sito
+  if (e.ctrlKey || e.metaKey || e.shiftKey || e.altKey || (e.button && e.button !== 0)) return;
+  const tok = linkTok(el, href);
+  if (tok !== null) {
     if (el.dataset.scroll) {
       if (tok === current()) {
         e.preventDefault(); closeOverlays();
@@ -77,7 +80,9 @@ function onClick(e) {
       }
       S.scrollTo = el.dataset.scroll;
     }
-    if (tok === current()) { e.preventDefault(); render(); }
+    if (tok === current()) { e.preventDefault(); render(); return; }
+    // indirizzi veri: la pagina si apre senza ricaricare il sito
+    if (PATHS) { e.preventDefault(); navigate(tok); }
   }
 }
 function onSubmit(e) {
@@ -105,10 +110,17 @@ function onKey(e) {
   renderDrawer();
   renderFooter();
   renderFab();
+  linkify(document.body);
   document.addEventListener("click", onClick);
   document.addEventListener("submit", onSubmit);
   document.addEventListener("keydown", onKey);
-  window.addEventListener("hashchange", render);
+  if (PATHS) {
+    // indietro/avanti del browser e vecchi link con # aperti dentro il sito
+    window.addEventListener("popstate", () => { fixHash(); render(); });
+    fixHash();
+  } else {
+    window.addEventListener("hashchange", render);
+  }
   ["#dlg-callback", "#dlg-search"].forEach((s) => {
     const d = $(s);
     d.addEventListener("click", (e) => { if (e.target === d) d.close(); });

@@ -8,52 +8,45 @@
   </FilesMatch>
 </IfModule>
 
-# sito non ancora aperto ai motori di ricerca (si toglie quando Fabio dà il via)
-<IfModule mod_headers.c>
-  Header set X-Robots-Tag "noindex, nofollow"
-</IfModule>
-
 RewriteEngine On
 
-# vecchi indirizzi del sito WordPress → pagine del nuovo sito (le pagine sono indirizzi con #),
+# vecchi indirizzi del sito WordPress → pagine del nuovo sito,
 # subito in https e senza www, con un solo reindirizzamento
-RewriteRule ^starlink-e-alternative-internet-ovunque-anche-dove-gli-altri-non-arrivano/?$ https://treart-evolution.com/#connettivita [R=301,L,NE,QSD]
-RewriteRule ^category/assistenza-e-installazioni/configurazioni-personalizzate/?$ https://treart-evolution.com/#installazioni [R=301,L,NE,QSD]
-RewriteRule ^il-valore-di-avere-un-referente-unico-per-tutta-la-tua-tecnologia/?$ https://treart-evolution.com/#assistenza-informatica [R=301,L,NE,QSD]
-RewriteRule ^centralino-voip-perche-conviene-rispetto-alla-linea-tradizionale/?$ https://treart-evolution.com/#centralini-voip [R=301,L,NE,QSD]
-RewriteRule ^videosorveglianza-intelligente-protezione-h24-per-la-tua-azienda/?$ https://treart-evolution.com/#videosorveglianza [R=301,L,NE,QSD]
-RewriteRule ^assistenza-informatica-quanto-tempo-ti-fa-risparmiare-davvero/?$ https://treart-evolution.com/#assistenza-informatica [R=301,L,NE,QSD]
-RewriteRule ^connessione-lenta-ecco-quanto-costa-davvero-alla-tua-azienda/?$ https://treart-evolution.com/#connettivita [R=301,L,NE,QSD]
-RewriteRule ^domini-e-mail-professionali-credibilita-che-fa-la-differenza/?$ https://treart-evolution.com/#email-domini [R=301,L,NE,QSD]
-RewriteRule ^category/sicurezza-e-protezione/vpn-per-accesso-remoto/?$ https://treart-evolution.com/#vpn [R=301,L,NE,QSD]
-RewriteRule ^category/assistenza-e-installazioni/supporto-tecnico/?$ https://treart-evolution.com/#assistenza-informatica [R=301,L,NE,QSD]
-RewriteRule ^configurazioni-personalizzate-ogni-azienda-e-diversa/?$ https://treart-evolution.com/#installazioni [R=301,L,NE,QSD]
-RewriteRule ^vpn-aziendale-lavorare-da-remoto-in-totale-sicurezza/?$ https://treart-evolution.com/#vpn [R=301,L,NE,QSD]
-RewriteRule ^category/web-e-digital-solutions/creazione-siti-web/?$ https://treart-evolution.com/#siti-web [R=301,L,NE,QSD]
-RewriteRule ^category/reti-e-connettivita/centralini-telefonici/?$ https://treart-evolution.com/#centralini-voip [R=301,L,NE,QSD]
-RewriteRule ^category/assistenza-e-installazioni/installazioni/?$ https://treart-evolution.com/#installazioni [R=301,L,NE,QSD]
-RewriteRule ^category/sicurezza-e-protezione/videosorveglianza/?$ https://treart-evolution.com/#videosorveglianza [R=301,L,NE,QSD]
-RewriteRule ^category/web-e-digital-solutions/gestione-hosting/?$ https://treart-evolution.com/#hosting [R=301,L,NE,QSD]
-RewriteRule ^category/web-e-digital-solutions/gestione-domini/?$ https://treart-evolution.com/#email-domini [R=301,L,NE,QSD]
-RewriteRule ^category/assistenza-e-installazioni/consulenza/?$ https://treart-evolution.com/#assistenza-informatica [R=301,L,NE,QSD]
-RewriteRule ^category/sicurezza-e-protezione/cybersecurity/?$ https://treart-evolution.com/#cybersecurity [R=301,L,NE,QSD]
-RewriteRule ^category/web-e-digital-solutions/servizi-mail/?$ https://treart-evolution.com/#email-domini [R=301,L,NE,QSD]
-RewriteRule ^hosting-cosa-ce-dietro-la-velocita-di-un-sito/?$ https://treart-evolution.com/#hosting [R=301,L,NE,QSD]
-RewriteRule ^il-sito-web-e-la-nuova-sede-della-tua-azienda/?$ https://treart-evolution.com/#siti-web [R=301,L,NE,QSD]
-RewriteRule ^perche-la-tecnologia-non-va-lasciata-al-caso/?$ https://treart-evolution.com/#assistenza-informatica [R=301,L,NE,QSD]
-RewriteRule ^category/reti-e-connettivita/impianti-wi-fi/?$ https://treart-evolution.com/#rete-wifi [R=301,L,NE,QSD]
-RewriteRule ^wi-fi-aziendale-non-basta-il-router-di-casa/?$ https://treart-evolution.com/#rete-wifi [R=301,L,NE,QSD]
-RewriteRule ^category/reti-e-connettivita/reti-internet/?$ https://treart-evolution.com/#connettivita [R=301,L,NE,QSD]
-RewriteRule ^category/sicurezza-e-protezione/backup-nas/?$ https://treart-evolution.com/#backup [R=301,L,NE,QSD]
-RewriteRule ^come-un-sito-ben-fatto-porta-nuovi-clienti/?$ https://treart-evolution.com/#siti-web [R=301,L,NE,QSD]
-RewriteRule ^backup-il-vero-salvavita-dei-tuoi-dati/?$ https://treart-evolution.com/#backup [R=301,L,NE,QSD]
-RewriteRule ^category/assistenza-e-installazioni/?$ https://treart-evolution.com/#assistenza-informatica [R=301,L,NE,QSD]
-RewriteRule ^perche-un-antivirus-non-basta-piu/?$ https://treart-evolution.com/#cybersecurity [R=301,L,NE,QSD]
-RewriteRule ^category/web-e-digital-solutions/?$ https://treart-evolution.com/#siti-web [R=301,L,NE,QSD]
-RewriteRule ^category/sicurezza-e-protezione/?$ https://treart-evolution.com/#cybersecurity [R=301,L,NE,QSD]
-RewriteRule ^category/reti-e-connettivita/?$ https://treart-evolution.com/#connettivita [R=301,L,NE,QSD]
-RewriteRule ^contatti/?$ https://treart-evolution.com/#contatti [R=301,L,NE,QSD]
-RewriteRule ^servizi/?$ https://treart-evolution.com/#servizi [R=301,L,NE,QSD]
+RewriteRule ^starlink-e-alternative-internet-ovunque-anche-dove-gli-altri-non-arrivano/?$ https://treart-evolution.com/connettivita/ [R=301,L,QSD]
+RewriteRule ^category/assistenza-e-installazioni/configurazioni-personalizzate/?$ https://treart-evolution.com/installazioni/ [R=301,L,QSD]
+RewriteRule ^il-valore-di-avere-un-referente-unico-per-tutta-la-tua-tecnologia/?$ https://treart-evolution.com/assistenza-informatica/ [R=301,L,QSD]
+RewriteRule ^centralino-voip-perche-conviene-rispetto-alla-linea-tradizionale/?$ https://treart-evolution.com/centralini-voip/ [R=301,L,QSD]
+RewriteRule ^videosorveglianza-intelligente-protezione-h24-per-la-tua-azienda/?$ https://treart-evolution.com/videosorveglianza/ [R=301,L,QSD]
+RewriteRule ^assistenza-informatica-quanto-tempo-ti-fa-risparmiare-davvero/?$ https://treart-evolution.com/assistenza-informatica/ [R=301,L,QSD]
+RewriteRule ^connessione-lenta-ecco-quanto-costa-davvero-alla-tua-azienda/?$ https://treart-evolution.com/connettivita/ [R=301,L,QSD]
+RewriteRule ^domini-e-mail-professionali-credibilita-che-fa-la-differenza/?$ https://treart-evolution.com/email-domini/ [R=301,L,QSD]
+RewriteRule ^category/sicurezza-e-protezione/vpn-per-accesso-remoto/?$ https://treart-evolution.com/vpn/ [R=301,L,QSD]
+RewriteRule ^category/assistenza-e-installazioni/supporto-tecnico/?$ https://treart-evolution.com/assistenza-informatica/ [R=301,L,QSD]
+RewriteRule ^configurazioni-personalizzate-ogni-azienda-e-diversa/?$ https://treart-evolution.com/installazioni/ [R=301,L,QSD]
+RewriteRule ^vpn-aziendale-lavorare-da-remoto-in-totale-sicurezza/?$ https://treart-evolution.com/vpn/ [R=301,L,QSD]
+RewriteRule ^category/web-e-digital-solutions/creazione-siti-web/?$ https://treart-evolution.com/siti-web/ [R=301,L,QSD]
+RewriteRule ^category/reti-e-connettivita/centralini-telefonici/?$ https://treart-evolution.com/centralini-voip/ [R=301,L,QSD]
+RewriteRule ^category/assistenza-e-installazioni/installazioni/?$ https://treart-evolution.com/installazioni/ [R=301,L,QSD]
+RewriteRule ^category/sicurezza-e-protezione/videosorveglianza/?$ https://treart-evolution.com/videosorveglianza/ [R=301,L,QSD]
+RewriteRule ^category/web-e-digital-solutions/gestione-hosting/?$ https://treart-evolution.com/hosting/ [R=301,L,QSD]
+RewriteRule ^category/web-e-digital-solutions/gestione-domini/?$ https://treart-evolution.com/email-domini/ [R=301,L,QSD]
+RewriteRule ^category/assistenza-e-installazioni/consulenza/?$ https://treart-evolution.com/assistenza-informatica/ [R=301,L,QSD]
+RewriteRule ^category/sicurezza-e-protezione/cybersecurity/?$ https://treart-evolution.com/cybersecurity/ [R=301,L,QSD]
+RewriteRule ^category/web-e-digital-solutions/servizi-mail/?$ https://treart-evolution.com/email-domini/ [R=301,L,QSD]
+RewriteRule ^hosting-cosa-ce-dietro-la-velocita-di-un-sito/?$ https://treart-evolution.com/hosting/ [R=301,L,QSD]
+RewriteRule ^il-sito-web-e-la-nuova-sede-della-tua-azienda/?$ https://treart-evolution.com/siti-web/ [R=301,L,QSD]
+RewriteRule ^perche-la-tecnologia-non-va-lasciata-al-caso/?$ https://treart-evolution.com/assistenza-informatica/ [R=301,L,QSD]
+RewriteRule ^category/reti-e-connettivita/impianti-wi-fi/?$ https://treart-evolution.com/rete-wifi/ [R=301,L,QSD]
+RewriteRule ^wi-fi-aziendale-non-basta-il-router-di-casa/?$ https://treart-evolution.com/rete-wifi/ [R=301,L,QSD]
+RewriteRule ^category/reti-e-connettivita/reti-internet/?$ https://treart-evolution.com/connettivita/ [R=301,L,QSD]
+RewriteRule ^category/sicurezza-e-protezione/backup-nas/?$ https://treart-evolution.com/backup/ [R=301,L,QSD]
+RewriteRule ^come-un-sito-ben-fatto-porta-nuovi-clienti/?$ https://treart-evolution.com/siti-web/ [R=301,L,QSD]
+RewriteRule ^backup-il-vero-salvavita-dei-tuoi-dati/?$ https://treart-evolution.com/backup/ [R=301,L,QSD]
+RewriteRule ^category/assistenza-e-installazioni/?$ https://treart-evolution.com/assistenza-informatica/ [R=301,L,QSD]
+RewriteRule ^perche-un-antivirus-non-basta-piu/?$ https://treart-evolution.com/cybersecurity/ [R=301,L,QSD]
+RewriteRule ^category/web-e-digital-solutions/?$ https://treart-evolution.com/siti-web/ [R=301,L,QSD]
+RewriteRule ^category/sicurezza-e-protezione/?$ https://treart-evolution.com/cybersecurity/ [R=301,L,QSD]
+RewriteRule ^category/reti-e-connettivita/?$ https://treart-evolution.com/connettivita/ [R=301,L,QSD]
 
 # vecchie mappe del sito → nuova mappa
 RewriteRule ^(sitemap_index|page-sitemap|post-sitemap|category-sitemap|local-sitemap|wp-sitemap)\.xml$ https://treart-evolution.com/sitemap.xml [R=301,L,QSD]
@@ -65,6 +58,8 @@ RewriteRule ^ https://treart-evolution.com%{REQUEST_URI} [R=301,L]
 RewriteCond %{HTTP_HOST} ^www\. [NC]
 RewriteRule ^ https://treart-evolution.com%{REQUEST_URI} [R=301,L]
 
-# tutto il resto che non esiste più (pagine di WordPress, wp-admin, wp-login.php, feed, cartelle...) → home
+# tutto il resto che non esiste più (pagine di WordPress, wp-admin, wp-login.php, feed...) → home;
+# le pagine del nuovo sito sono cartelle con il loro index.html e restano dove sono
 RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
 RewriteRule ^.+$ https://treart-evolution.com/ [R=301,L,QSD]

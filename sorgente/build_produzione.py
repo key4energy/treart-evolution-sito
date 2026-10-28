@@ -14,10 +14,12 @@ Uso (dopo ogni modifica del sito, insieme a «python3 build_hosting.py ../public
 La pubblicazione su treart-evolution.com si fa solo con il workflow «Sito attuale»,
 azione «pubblica-produzione», e solo dopo il via di Fabio.
 
-Motori di ricerca: finché MOTORI_APERTI è False il sito è online ma chiuso ai motori di ricerca
-(noindex nella pagina e nell'intestazione X-Robots-Tag, robots.txt senza mappa del sito).
-Per aprirlo, solo quando lo dice Fabio: MOTORI_APERTI = True, rigenerare, pubblicare e inviare
-https://treart-evolution.com/sitemap.xml in Google Search Console.
+Motori di ricerca: con MOTORI_APERTI = True (via di Fabio del 28 ottobre 2026) il sito è aperto:
+ogni pagina ha il suo indirizzo (/contatti/, /cybersecurity/...), la mappa del sito le elenca tutte,
+c'è il file di verifica di Google Search Console e la chiave IndexNow per Bing e gli altri motori
+(la segnalazione parte dal workflow «Sito attuale» dopo ogni pubblicazione).
+Con MOTORI_APERTI = False il sito resta online ma chiuso (noindex nella pagina e nell'intestazione
+X-Robots-Tag, robots.txt senza mappa del sito).
 """
 import os
 import re
@@ -34,8 +36,12 @@ OUT = os.path.join(ROOT, 'produzione')
 SITO = 'https://treart-evolution.com'
 KIT = os.path.join(HERE, 'kit')
 
-# Fabio, 26 ottobre 2026: online, ma senza segnalarlo e senza aprirlo ai motori di ricerca finché non dà il via
-MOTORI_APERTI = False
+# Fabio, 28 ottobre 2026, 08:10: «apri per favore a tutti i motori di ricerca»
+MOTORI_APERTI = True
+# verifica della proprietà https://treart-evolution.com/ in Google Search Console (account Google di Fabio)
+GOOGLE_VERIFICA = 'google97d76b7433f6f720.html'
+# chiave IndexNow (Bing, Yandex, Seznam, Naver): il file /CHIAVE.txt dimostra che il sito è nostro
+INDEXNOW = '36c83ca42c8e51088362d112860c7c25'
 NOINDEX = '<meta name="robots" content="noindex, nofollow">'
 
 # vecchi indirizzi del sito WordPress (elenco letto dal sito il 25 ottobre 2026) → pagina del nuovo sito
@@ -106,7 +112,9 @@ def htaccess():
     # prima gli indirizzi più lunghi, così le sottocategorie vengono prima delle categorie
     for vecchio, nuovo in sorted(REINDIRIZZI.items(), key=lambda kv: (-len(kv[0]), kv[0])):
         assert re.fullmatch(r'[a-z0-9/-]+', vecchio) and re.fullmatch(r'[a-z0-9-]+', nuovo), vecchio
-        righe.append(f'RewriteRule ^{vecchio}/?$ {SITO}/#{nuovo} [R=301,L,NE,QSD]')
+        if vecchio == nuovo:
+            continue  # stesso indirizzo nel nuovo sito: la pagina esiste già
+        righe.append(f'RewriteRule ^{vecchio}/?$ {SITO}/{nuovo}/ [R=301,L,QSD]')
     return f'''# Treart Evolution: sito statico (il sito WordPress precedente è archiviato sul server, fuori da public_html)
 # File generato da sorgente/build_produzione.py: le modifiche vanno fatte lì.
 
@@ -119,7 +127,7 @@ def htaccess():
 {chiuso}
 RewriteEngine On
 
-# vecchi indirizzi del sito WordPress → pagine del nuovo sito (le pagine sono indirizzi con #),
+# vecchi indirizzi del sito WordPress → pagine del nuovo sito,
 # subito in https e senza www, con un solo reindirizzamento
 {chr(10).join(righe)}
 
@@ -133,8 +141,10 @@ RewriteRule ^ {SITO}%{{REQUEST_URI}} [R=301,L]
 RewriteCond %{{HTTP_HOST}} ^www\\. [NC]
 RewriteRule ^ {SITO}%{{REQUEST_URI}} [R=301,L]
 
-# tutto il resto che non esiste più (pagine di WordPress, wp-admin, wp-login.php, feed, cartelle...) → home
+# tutto il resto che non esiste più (pagine di WordPress, wp-admin, wp-login.php, feed...) → home;
+# le pagine del nuovo sito sono cartelle con il loro index.html e restano dove sono
 RewriteCond %{{REQUEST_FILENAME}} !-f
+RewriteCond %{{REQUEST_FILENAME}} !-d
 RewriteRule ^.+$ {SITO}/ [R=301,L,QSD]
 '''
 
@@ -161,6 +171,11 @@ def main():
     shutil.copy2(os.path.join(KIT, '01-logo', 'png', 'favicon-180.png'), os.path.join(OUT, 'apple-touch-icon.png'))
     with open(os.path.join(OUT, '.htaccess'), 'w', encoding='utf-8') as f:
         f.write(htaccess())
+    if MOTORI_APERTI:
+        with open(os.path.join(OUT, GOOGLE_VERIFICA), 'w', encoding='utf-8') as f:
+            f.write(f'google-site-verification: {GOOGLE_VERIFICA}')
+        with open(os.path.join(OUT, INDEXNOW + '.txt'), 'w', encoding='utf-8') as f:
+            f.write(INDEXNOW)
     if not MOTORI_APERTI:
         # pagina online ma chiusa ai motori di ricerca; robots.txt senza mappa del sito
         p = os.path.join(OUT, 'index.html')
@@ -181,6 +196,16 @@ def main():
     assert f'<link rel="canonical" href="{SITO}/">' in html, 'manca l\'indirizzo canonico'
     if MOTORI_APERTI:
         assert 'noindex' not in html, 'la pagina aperta ai motori di ricerca non deve avere noindex'
+        with open(os.path.join(OUT, 'sitemap.xml'), encoding='utf-8') as f:
+            mappa = re.findall(r'<loc>([^<]+)</loc>', f.read())
+        assert len(mappa) > 20 and mappa[0] == f'{SITO}/', 'mappa del sito incompleta'
+        for u in mappa[1:]:
+            tok = u[len(SITO) + 1:].strip('/')
+            with open(os.path.join(OUT, tok, 'index.html'), encoding='utf-8') as f:
+                h = f.read()
+            assert f'<link rel="canonical" href="{u}">' in h and 'noindex' not in h, f'pagina {u} non pronta'
+        for nuovo in set(REINDIRIZZI.values()):
+            assert os.path.exists(os.path.join(OUT, nuovo, 'index.html')), f'manca la pagina /{nuovo}/'
     else:
         assert html.count(NOINDEX) == 1, 'manca il noindex della pagina chiusa ai motori di ricerca'
     assert 'fabio.treart-evolution.com' not in html, 'la pagina di produzione cita ancora l\'anteprima'

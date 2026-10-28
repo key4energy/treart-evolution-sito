@@ -30,7 +30,31 @@ ARRIVO_REL="www/$DOM/nuovo-sito-in-arrivo"
 remoto_produzione() { ssh_sg "bash -s -- $*" < .github/scripts/sito-produzione-remoto.sh 2>&1 | grep -v '^Warning: Permanently added' | tee -a "$REPORT"; return "${PIPESTATUS[0]}"; }
 
 # righe che distinguono la pagina di produzione da quella di anteprima
-normalizza() { sed -e 's/const PROD = \(true\|false\);//' -e '/<link rel="canonical"/d' -e '/p:domain_verify/d' -e '/<meta name="robots"/d' -e '/<!-- Anteprima:/d' -e '/og:url/d' -e '/og:image" content/d' "$1"; }
+# (il pulsante «Anteprima: evidenzia i dati da confermare» c'è solo nell'anteprima)
+normalizza() { sed -e 's/const PROD = \(true\|false\);//' -e '/<link rel="canonical"/d' -e '/p:domain_verify/d' -e '/<meta name="robots"/d' -e '/<!-- Anteprima:/d' -e '/og:url/d' -e '/og:image" content/d' -e 's#<button class="tbc-toggle".*</button>##' "$1"; }
+# ogni pagina con indirizzo proprio (/contatti/index.html...) deve essere uguale a quella dell'anteprima
+pagine_allineate() {
+  local f
+  for f in produzione/*/index.html; do
+    [ -f "public/${f#produzione/}" ] && cmp -s <(normalizza "public/${f#produzione/}") <(normalizza "$f") || { log "  pagina diversa dall'anteprima: /${f#produzione/}"; return 1; }
+  done
+}
+
+# segnala le pagine del sito a Bing, Yandex, Seznam e Naver con IndexNow (solo con il sito aperto ai motori di ricerca)
+indexnow() {
+  grep -q 'noindex' produzione/index.html && return 0
+  local f key urls body code
+  f=$(cd produzione && ls | grep -E '^[0-9a-f]{32}\.txt$' | head -n 1)
+  key=${f%.txt}
+  if [ -z "$key" ] || [ ! -f produzione/sitemap.xml ]; then log "IndexNow: chiave o mappa del sito mancante, segnalazione saltata"; return 0; fi
+  urls=$(grep -o '<loc>[^<]*</loc>' produzione/sitemap.xml | sed -e 's/<loc>//' -e 's#</loc>##' | jq -R . | jq -sc .)
+  body=$(jq -nc --arg h "$DOM" --arg k "$key" --arg l "https://$DOM/$key.txt" --argjson u "$urls" '{host:$h,key:$k,keyLocation:$l,urlList:$u}')
+  code=$(curl -sS -m 60 -o /dev/null -w '%{http_code}' -H 'Content-Type: application/json; charset=utf-8' -d "$body" https://api.indexnow.org/indexnow 2>/dev/null || echo 000)
+  case "$code" in
+    200|202) log "IndexNow: $(jq length <<<"$urls") pagine segnalate a Bing, Yandex, Seznam e Naver (HTTP $code)";;
+    *) log "ATTENZIONE: IndexNow ha risposto HTTP $code (la chiave https://$DOM/$key.txt deve essere raggiungibile)";;
+  esac
+}
 
 controlla_produzione() {  # controlli sulla cartella produzione/ del repository
   local ok=0
@@ -45,7 +69,7 @@ controlla_produzione() {  # controlli sulla cartella produzione/ del repository
   else
     log "Motori di ricerca: sito APERTO (visibile a Google e agli altri motori)"
   fi
-  if cmp -s <(normalizza public/index.html) <(normalizza produzione/index.html) \
+  if cmp -s <(normalizza public/index.html) <(normalizza produzione/index.html) && pagine_allineate \
      && diff -rq public/img produzione/img >/dev/null && diff -rq public/font produzione/font >/dev/null \
      && cmp -s public/og-image.png produzione/og-image.png \
      && cmp -s public/privacy-app.html produzione/privacy-app.html && cmp -s public/condizioni-app.html produzione/condizioni-app.html; then
@@ -55,6 +79,7 @@ controlla_produzione() {  # controlli sulla cartella produzione/ del repository
     ok=1
   fi
   log "Versione di produzione: $(find produzione -type f | wc -l) file, $(du -sh produzione | cut -f1), $(grep -c '^RewriteRule \^[a-z]' produzione/.htaccess) reindirizzamenti dai vecchi indirizzi di WordPress"
+  log "Pagine con indirizzo proprio: $(ls -d produzione/*/index.html 2>/dev/null | wc -l); mappa del sito: $(grep -c '<loc>' produzione/sitemap.xml 2>/dev/null || echo 0) indirizzi"
   return $ok
 }
 
@@ -187,6 +212,7 @@ for f in "${RICHIESTE[@]}"; do
       carica_produzione || { stato=1; continue; }
       remoto_produzione pubblica "'$DOM'" || stato=1
       controlla_da_fuori
+      indexnow
       ;;
     ripristina-wordpress)
       log "== Ritorno al sito WordPress su $DOM =="
