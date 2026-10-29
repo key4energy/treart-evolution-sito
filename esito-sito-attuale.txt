@@ -1,0 +1,33 @@
+Sito attuale: esecuzione n. 19 del 29/10/2026 09:01 - commit 3de1eb9
+
+Richiesta: manutenzione/richieste/2026-10-29-0905-pubblica-produzione-instagram.json
+== Pubblicazione del nuovo sito su treart-evolution.com ==
+Approvazione: Fabio in chat, 29/10/2026 08:52: «Teniamo treart.evolution e metti a posto il profilo da zero.» (link Instagram del sito e dei dati strutturati da treartevolution a treart.evolution)
+Motori di ricerca: sito APERTO (visibile a Google e agli altri motori)
+Versione di produzione allineata all'anteprima (stessi testi, foto e pagine)
+Versione di produzione: 117 file, 27M, 35 reindirizzamenti dai vecchi indirizzi di WordPress
+Pagine con indirizzo proprio: 39; mappa del sito: 39 indirizzi
+Caricamento del nuovo sito in ~/www/treart-evolution.com/nuovo-sito-in-arrivo (fuori da public_html, quindi ancora non visibile)
+Caricati e verificati 117 file, identici a quelli del repository
+Contenuto attuale di public_html: nuovo-sito
+Nuovo sito aggiornato (la versione precedente resta in /home/u523-apqoesleyf7e/www/treart-evolution.com/sito-statico-precedente)
+File non più nel sito tolti dalla cartella pubblica: 0
+Cache di SiteGround: svuotamento automatico non disponibile (plugin Speed Optimizer non attivo); la verifica qui sotto dice se serve farlo da Site Tools
+
+== Verifica dal server ==
+Pagina iniziale: online il nuovo sito (HTTP 200)
+Indirizzo normale (con la cache di SiteGround): nuovo sito
+/robots.txt: HTTP 200
+/sitemap.xml: HTTP 200
+/og-image.png: HTTP 200
+/privacy-app.html: HTTP 200
+/contatti/ -> 200 
+/backup-il-vero-salvavita-dei-tuoi-dati/ -> 301 https://treart-evolution.com/backup/
+/category/reti-e-connettivita/ -> 301 https://treart-evolution.com/connettivita/
+/wp-login.php -> 301 https://treart-evolution.com/
+/sitemap_index.xml -> 301 https://treart-evolution.com/sitemap.xml
+http://treart-evolution.com/ -> 301 https://treart-evolution.com/
+https://www.treart-evolution.com/ -> 301 https://treart-evolution.com/
+Visto da fuori (GitHub): online il nuovo sito
+IndexNow: 39 pagine segnalate a Bing, Yandex, Seznam e Naver (HTTP 200)
+Esito complessivo: success
