@@ -1,0 +1,65 @@
+Pubblicazione n. 51 del 29/10/2026 09:01 - commit 3de1eb9
+Warning: Permanently added '[itm4.siteground.biz]:18765' (ED25519) to the list of known hosts.
+CARTELLA=www/fabio.treart-evolution.com/public_html
+Caricati 133 file in www/fabio.treart-evolution.com/public_html (pagine, immagine di anteprima, foto e caratteri)
+Regola anti-cache per le pagine già presente in .htaccess
+Verifica: i 133 file sul server sono identici a quelli del repository
+Contenuto della cartella:
+total 1044
+-rw-r--r-- 1    266 Oct 20 18:51 .htaccess
+drwxr-xr-x 3   4096 Oct 20 18:11 .well-known
+-rw-r--r-- 1  90305 Oct 20 17:26 Default.html
+drwxr-xr-x 2   4096 Oct 28 08:58 accessibilita
+drwxr-xr-x 2   4096 Oct 28 08:58 assistenza
+drwxr-xr-x 2   4096 Oct 28 08:59 assistenza-informatica
+drwxr-xr-x 2   4096 Oct 28 08:59 backup
+drwxr-xr-x 2   4096 Oct 28 08:59 centralini-voip
+drwxr-xr-x 2   4096 Oct 28 08:59 check-up
+drwxr-xr-x 2   4096 Oct 28 08:59 chi-siamo
+-rw-r--r-- 1  43793 Oct 29 08:01 condizioni-app.html
+drwxr-xr-x 2   4096 Oct 28 08:59 connettivita
+drwxr-xr-x 2   4096 Oct 28 08:59 contatti
+drwxr-xr-x 2   4096 Oct 28 08:59 cookie
+drwxr-xr-x 2   4096 Oct 28 08:59 costo-fermo
+drwxr-xr-x 2   4096 Oct 28 08:59 crediti
+drwxr-xr-x 2   4096 Oct 28 09:00 cybersecurity
+drwxr-xr-x 2   4096 Oct 28 09:00 email-domini
+drwxr-xr-x 2   4096 Oct 28 09:00 email-truffa
+drwxr-xr-x 2   4096 Oct 22 09:03 font
+drwxr-xr-x 2   4096 Oct 28 09:00 formule
+drwxr-xr-x 2   4096 Oct 28 09:00 hosting
+drwxr-xr-x 2   4096 Oct 26 10:21 img
+drwxr-xr-x 2   4096 Oct 28 09:01 incentivi
+-rw-r--r-- 1 617225 Oct 29 08:01 index.html
+drwxr-xr-x 2   4096 Oct 28 09:01 installazioni
+drwxr-xr-x 2   4096 Oct 28 09:01 interno
+drwxr-xr-x 2   4096 Oct 28 09:01 nis2
+-rw-r--r-- 1  76062 Oct 29 08:01 og-image.png
+drwxr-xr-x 2   4096 Oct 28 09:01 preventivo
+drwxr-xr-x 2   4096 Oct 28 09:01 privacy
+-rw-r--r-- 1  45219 Oct 29 08:01 privacy-app.html
+drwxr-xr-x 2   4096 Oct 28 09:01 progetti
+drwxr-xr-x 2   4096 Oct 28 09:02 ransomware
+drwxr-xr-x 2   4096 Oct 28 09:02 rete-wifi
+drwxr-xr-x 2   4096 Oct 28 09:02 risorse
+drwxr-xr-x 2   4096 Oct 28 09:02 servizi
+drwxr-xr-x 2   4096 Oct 28 09:02 settori
+drwxr-xr-x 2   4096 Oct 28 09:02 siti-web
+drwxr-xr-x 2   4096 Oct 28 10:12 social
+drwxr-xr-x 2   4096 Oct 28 09:02 spegnimento-rame
+drwxr-xr-x 2   4096 Oct 28 09:02 strumenti
+drwxr-xr-x 2   4096 Oct 28 09:02 telecamere-regole
+drwxr-xr-x 2   4096 Oct 28 09:02 test-sicurezza
+drwxr-xr-x 2   4096 Oct 28 09:02 trova-incentivo
+drwxr-xr-x 2   4096 Oct 28 09:03 verifica-rame
+drwxr-xr-x 2   4096 Oct 28 09:03 videosorveglianza
+drwxr-xr-x 2   4096 Oct 28 09:03 vpn
+drwxr-xr-x 2   4096 Oct 28 09:03 wifi-hotel
+
+Foto in img/: 66
+Indirizzo IP di fabio.treart-evolution.com: 35.214.246.228
+https: risponde la pagina appena pubblicata (HTTP 200, cache SiteGround MISS)
+http: risponde la pagina appena pubblicata (HTTP 200, cache SiteGround MISS)
+https://fabio.treart-evolution.com/condizioni-app.html: online, aggiornata
+https://fabio.treart-evolution.com/privacy-app.html: online, aggiornata
+Esito complessivo: success
