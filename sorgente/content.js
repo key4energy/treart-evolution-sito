@@ -10,7 +10,7 @@ const C = {
   tel: "0564 176 8249", telIntl: "+39 0564 176 8249", telHref: "tel:+3905641768249",
   wa: "3905641768249",
   facebook: "https://www.facebook.com/treartevolution/",
-  instagram: "https://www.instagram.com/treartevolution/",
+  instagram: "https://www.instagram.com/treart.evolution/",
   linkedin: "https://www.linkedin.com/company/treart-evolution/",
   email: "info@treart-evolution.com",
   pec: "pec@pec.treart-evolution.com",
