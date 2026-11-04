@@ -275,6 +275,7 @@ route("home", {
     ${reviewCard()}
     ${fotoFig("maremma-pascolo", "(max-width: 860px) 92vw, 600px", "photo--wide")}</div>
     <div><span class="eyebrow">Chi siamo</span><h2 class="mt-s" style="font-size:clamp(26px,3vw,38px)">Sede a Grosseto, clienti in tutta Italia.</h2>
+      <p class="mt-s">Treart Evolution S.r.l. è un’azienda informatica di Grosseto, attiva dal ${C.founded}: assistenza informatica, sicurezza, backup, reti e Wi-Fi, connettività, centralini VoIP, videosorveglianza, siti web, email e hosting per le piccole e medie imprese, con un solo referente. Interveniamo di persona in Maremma e nelle province di Grosseto e Livorno, e da remoto in tutta Italia. <a href="#chi-siamo">Conosci la squadra</a>.</p>
       <div class="mt-m">${numsHtml()}</div><p class="small muted mt-m">Tecnologie e partner</p>${partnersHtml()}</div>
   </div></section>
 
@@ -460,6 +461,8 @@ route("chi-siamo", {
         <div><span>Ragione sociale</span><b>Treart Evolution S.r.l. con socio unico</b></div><div><span>Sede</span><b>${C.addr1}, ${C.addr2}</b></div>
         <div><span>Partita IVA</span><b>${C.piva}</b></div><div><span>REA</span><b>GR-${C.rea}</b></div><div><span>Capitale sociale</span><b>${C.cap} i.v.</b></div>
         <div><span>PEC</span><b>${C.pec}</b></div></div></div></section>`
+    + `<section class="sec sec--paper"><div class="wrap split"><div class="split__head"><span class="eyebrow">Domande sull’azienda</span><h2>Chi siamo, in dieci risposte.</h2><p>Le domande che ci fanno più spesso su Treart Evolution: dove siamo, cosa facciamo, quanto costa.</p></div>
+        <div class="faq">${COMPANY_FAQ.map(([q, r], i) => `<details${i === 0 ? " open" : ""}><summary>${esc(q)}${ic("chevron-down")}</summary><p>${t(r)}</p></details>`).join("")}</div></div></section>`
     + defaultBand() + contactSection({ p: "cs2" }),
 });
 route("progetti", {

@@ -440,6 +440,24 @@ const PLAN_FAQ = [
   ["E se non voglio un canone?", "Sì, facciamo anche interventi singoli: 50 € l’ora presso la tua sede e 36 € l’ora nella nostra sede, IVA esclusa."],
 ];
 
+/* Domande sull'azienda (pagina Chi siamo): risposte brevi, complete e dirette, le stesse che diamo al telefono.
+   Sono anche quelle che i motori di ricerca e gli assistenti AI (ChatGPT, Gemini, Claude, Copilot, Perplexity)
+   riprendono quando qualcuno chiede «un'azienda informatica a Grosseto» o «cos'è Treart Evolution». */
+const elenco = (voci) => voci.length > 1 ? voci.slice(0, -1).join(", ") + " e " + voci[voci.length - 1] : voci.join("");
+const maiuscola = (s) => s.charAt(0).toUpperCase() + s.slice(1);
+const COMPANY_FAQ = [
+  ["Cos’è Treart Evolution?", `Treart Evolution S.r.l. è un’azienda informatica di Grosseto, attiva dal ${C.founded}, che segue la tecnologia delle piccole e medie imprese: assistenza informatica, sicurezza, backup, reti e Wi-Fi, connettività, centralini VoIP, videosorveglianza, siti web, email e hosting. Un solo referente per tutto, con sede a Grosseto e clienti in tutta Italia.`],
+  ["Dove si trova Treart Evolution?", `In ${C.addr1}, ${C.addr2}, in Toscana. Riceviamo su appuntamento dal lunedì al venerdì, 8:30–13:00 e 14:00–17:30.`],
+  ["In quali zone lavorate?", "La sede è a Grosseto: interveniamo di persona in tutta la Maremma e nelle province di Grosseto e Livorno, e seguiamo da remoto clienti in tutta Italia, con interventi in sede quando serve."],
+  ["Quali servizi offrite?", `${elenco(Object.values(SERVICES).map((s) => s.name))}. Per le aziende che vogliono un solo referente ci sono le formule di assistenza a canone.`],
+  ["Per chi lavorate?", `${maiuscola(SECTORS.map((s) => s.name.toLowerCase()).join("; "))}; associazioni, federazioni e fondazioni. Dalla micro impresa alla media azienda con più sedi.`],
+  ["Quanto costa l’assistenza informatica?", `Le formule a canone costano ${elenco(PLANS.map((p) => `${p.price} € al mese per la formula ${p.name} (fino a ${p.max} postazioni)`))}, IVA esclusa. Gli interventi singoli costano 50 € l’ora presso la tua sede e 36 € l’ora nella nostra. Il check-up iniziale è gratuito e senza impegno.`],
+  ["In quanto tempo intervenite?", `Entro ${C.reply} dalla richiesta. Molti problemi si risolvono da remoto in pochi minuti, con il tuo permesso; per il resto veniamo in azienda.`],
+  ["Di quali produttori siete partner?", `Siamo partner ufficiali di ${PARTNERS[0].name} (${PARTNERS[0].level}) per i centralini VoIP, con tecnici certificati ${PARTNERS[0].name}, e di ${PARTNERS[1].name} per i firewall e la sicurezza della rete. Per la connettività lavoriamo con operatori in fibra, radio e satellite.`],
+  ["Chi c’è dietro Treart Evolution?", `L’azienda è stata fondata a Grosseto nel ${C.founded} da ${TEAM[0].name}, oggi ${TEAM[0].role}, con l’esperienza di Treart Srl, attiva dal 2006. La squadra: ${TEAM.slice(1).map((p) => `${p.name} (${p.role.toLowerCase()})`).join(", ")}.`],
+  ["Come si contatta Treart Evolution?", `Telefono e WhatsApp ${C.tel}, email ${C.email}, oppure il modulo del check-up gratuito sul sito. Rispondiamo dal lunedì al venerdì, 8:30–13:00 e 14:00–17:30.`],
+];
+
 const STEPS4 = [
   ["Sopralluogo gratuito", "Veniamo in azienda, ascoltiamo e verifichiamo rete, linee e impianti."],
   ["Progetto e preventivo", "Ricevi una proposta chiara, con canone e costi una tantum separati."],

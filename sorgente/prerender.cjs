@@ -34,13 +34,31 @@ async function pagina(browser, tok) {
   page.on('pageerror', (e) => errori.push(String(e)));
   await page.goto(ORIGIN + (tok === 'home' ? '/' : `/${tok}/`), { waitUntil: 'load' });
   await page.waitForTimeout(150);
-  const dati = await page.evaluate((parti) => ({
-    tok: current(),
-    title: document.title,
-    desc: (document.querySelector('meta[name="description"]') || {}).content || '',
-    h1: (document.querySelector('#main h1') || {}).textContent || '',
-    parti: Object.fromEntries(parti.map((id) => [id, document.getElementById(id).innerHTML])),
-  }), PARTI);
+  const dati = await page.evaluate((parti) => {
+    const testo = (el) => (el ? el.textContent.replace(/\s+/g, ' ').trim() : '');
+    // percorso (briciole di pane) e domande frequenti, letti dalla pagina: servono ai dati strutturati
+    // (BreadcrumbList e FAQPage) che build_hosting.py scrive in ogni pagina
+    const crumbs = Array.from(document.querySelectorAll('#main nav.crumbs > a, #main nav.crumbs > span'))
+      .map((el) => ({ name: testo(el), tok: el.tagName === 'A' ? ((el.getAttribute('href') || '').replace(/^#/, '').replace(/^\/|\/$/g, '') || 'home') : null }));
+    const faq = Array.from(document.querySelectorAll('#main .faq details'))
+      .map((d) => [testo(d.querySelector('summary')), testo(d.querySelector('p'))]).filter(([q, r]) => q && r);
+    const tok = current();
+    const svc = typeof SERVICES !== 'undefined' && SERVICES[tok]
+      ? { name: SERVICES[tok].name, short: SERVICES[tok].short, sub: SERVICES[tok].sub, menu: SERVICES[tok].menu, does: SERVICES[tok].does || [] } : null;
+    const guide = typeof GUIDES !== 'undefined' && GUIDES[tok]
+      ? { title: GUIDES[tok].title, lead: GUIDES[tok].lead, cat: GUIDES[tok].cat, min: GUIDES[tok].min } : null;
+    // formule a canone e partner ufficiali (per l'azienda nei dati strutturati e per llms.txt)
+    const plans = typeof PLANS !== 'undefined' ? PLANS.map((p) => ({ id: p.id, name: p.name, price: p.price, max: p.max, for: p.for, inc: p.inc })) : [];
+    const partners = typeof PARTNERS !== 'undefined' ? PARTNERS.map((p) => ({ name: p.name, level: p.level, area: p.area, service: p.service })) : [];
+    return {
+      tok,
+      title: document.title,
+      desc: (document.querySelector('meta[name="description"]') || {}).content || '',
+      h1: testo(document.querySelector('#main h1')),
+      crumbs, faq, svc, guide, plans, partners,
+      parti: Object.fromEntries(parti.map((id) => [id, document.getElementById(id).innerHTML])),
+    };
+  }, PARTI);
   await ctx.close();
   if (errori.length) throw new Error(`errori nella pagina ${tok}: ${errori.join(' | ')}`);
   if (dati.tok !== tok) throw new Error(`la pagina /${tok}/ si apre come «${dati.tok}»`);

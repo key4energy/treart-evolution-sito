@@ -124,6 +124,8 @@ def htaccess():
     Header set Cache-Control "no-cache"
   </FilesMatch>
 </IfModule>
+# robots.txt, llms.txt e llms-full.txt (sintesi del sito per gli assistenti AI) sono testo UTF-8
+AddCharset UTF-8 .txt
 {chiuso}
 RewriteEngine On
 

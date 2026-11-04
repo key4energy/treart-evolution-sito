@@ -1,4 +1,79 @@
+# treart-evolution.com: il sito può essere letto, indicizzato e citato dai motori di ricerca
+# e dagli assistenti AI. Una sintesi per gli assistenti AI è in /llms.txt (e /llms-full.txt per i testi completi).
+
 User-agent: *
+Allow: /
+# Content Signals (Cloudflare): ricerca, risposte AI e addestramento consentiti
+Content-Signal: search=yes, ai-input=yes, ai-train=yes
+
+# OpenAI (ChatGPT)
+User-agent: GPTBot
+User-agent: OAI-SearchBot
+User-agent: ChatGPT-User
+Allow: /
+
+# Anthropic (Claude)
+User-agent: ClaudeBot
+User-agent: Claude-SearchBot
+User-agent: Claude-User
+User-agent: anthropic-ai
+Allow: /
+
+# Google (Gemini, AI Overview)
+User-agent: Googlebot
+User-agent: Google-Extended
+Allow: /
+
+# Microsoft (Bing, Copilot)
+User-agent: Bingbot
+User-agent: msnbot
+Allow: /
+
+# Perplexity
+User-agent: PerplexityBot
+User-agent: Perplexity-User
+Allow: /
+
+# Apple (Siri, Spotlight)
+User-agent: Applebot
+User-agent: Applebot-Extended
+Allow: /
+
+# Meta AI
+User-agent: meta-externalagent
+User-agent: Meta-ExternalFetcher
+User-agent: FacebookBot
+Allow: /
+
+# Amazon (Alexa)
+User-agent: Amazonbot
+Allow: /
+
+# Mistral
+User-agent: MistralAI-User
+Allow: /
+
+# DuckDuckGo (DuckAssist)
+User-agent: DuckAssistBot
+User-agent: DuckDuckBot
+Allow: /
+
+# You.com
+User-agent: YouBot
+Allow: /
+
+# Cohere
+User-agent: cohere-ai
+Allow: /
+
+# Common Crawl (archivio usato da molti modelli)
+User-agent: CCBot
+Allow: /
+
+# Yandex, Seznam, Qwant
+User-agent: YandexBot
+User-agent: SeznamBot
+User-agent: Qwantify
 Allow: /
 
 Sitemap: https://treart-evolution.com/sitemap.xml

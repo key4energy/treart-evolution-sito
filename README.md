@@ -28,7 +28,7 @@ Facoltativi: il segreto `SITEGROUND_PORT`, se la porta non è 18765, e la variab
 ## Struttura
 
 - `public/`: i file pubblicati. `index.html` è una pagina unica e autonoma, con caratteri e icone incorporati; `og-image.png` è l'immagine delle anteprime dei link.
-- `produzione/`: la stessa pagina nella versione per treart-evolution.com (visibile ai motori di ricerca, senza gli strumenti dell'anteprima), con `robots.txt`, `sitemap.xml`, icone e `.htaccess` con i reindirizzamenti dai vecchi indirizzi di WordPress.
+- `produzione/`: la stessa pagina nella versione per treart-evolution.com (visibile ai motori di ricerca, senza gli strumenti dell'anteprima), con `robots.txt`, `sitemap.xml`, `llms.txt`, `llms-full.txt`, icone e `.htaccess` con i reindirizzamenti dai vecchi indirizzi di WordPress.
 - `sorgente/`: testi, stili e script del sito, più gli script che generano `public/`.
 - `sorgente/kit/`: logo e caratteri della corporate identity usati dagli script. Open Sans e Gelasio sono distribuiti con licenza SIL Open Font License.
 
@@ -60,6 +60,16 @@ python3 build_produzione.py
 ```
 
 `build.py` genera anche la versione di anteprima, `sito-treart-evolution.html`. `build_produzione.py` va eseguito dopo ogni modifica, così `produzione/` resta allineata all'anteprima: la pubblicazione su treart-evolution.com controlla che lo sia e altrimenti si ferma.
+
+## Motori di ricerca e assistenti AI
+
+Perché il sito venga trovato e citato anche da ChatGPT, Gemini, Claude, Copilot e Perplexity (4 novembre 2026):
+
+- **Dati strutturati (schema.org, JSON-LD)** in ogni pagina, generati da `sorgente/build_hosting.py` con i dati letti dal sito (`prerender.cjs`): l'azienda (`LocalBusiness`, con sede, coordinate, orari, zona servita, i 12 servizi, le formule con i prezzi, i partner e la squadra), il sito, la pagina con il suo percorso e, dove ci sono, il servizio (`Service`), le domande frequenti (`FAQPage`) e la guida (`Article`). Gli indirizzi nei dati strutturati sono sempre quelli di treart-evolution.com, anche nell'anteprima, così le due versioni restano uguali.
+- **`robots.txt`** con il permesso esplicito per i crawler dei motori e degli assistenti AI (elenco `CRAWLER_AI` in `build_hosting.py`) e i Content Signals.
+- **`llms.txt`** (sintesi dell'azienda e indice delle pagine) e **`llms-full.txt`** (i testi di tutte le pagine in Markdown), nel formato llmstxt.org, generati con la versione di produzione.
+- **Domande sull'azienda** nella pagina Chi siamo (`COMPANY_FAQ` in `content.js`): risposte brevi e complete su cosa fa Treart, dove, per chi, a che prezzo.
+- La descrizione dell'azienda (`DESC_AZIENDA` in `build_hosting.py`) è la stessa della scheda Google e della Pagina Facebook: va tenuta uguale ovunque.
 
 ## Partner e badge ufficiali
 
