@@ -1,0 +1,63 @@
+Social: esecuzione n. 27 del 09/11/2026 03:52 - commit 7ec2a19
+
+Richiesta: social/richieste/2026-11-09-0400-controlla-pagina-verifica-pubblicazioni.json
+== Controllo delle informazioni della Pagina «Treart Evolution» (id 1759514820948971), sola lettura ==
+  name: Treart Evolution
+  username: treartevolution
+  link: https://www.facebook.com/1759514820948971
+  category: Azienda di informatica
+  category_list: [{"id":"1130035050388269","name":"Azienda di informatica"},{"id":"2253","name":"Società di telecomunicazioni"},{"id":"187393124625179","name":"Web designer"}]
+  about: Partner IT per le aziende: assistenza, sicurezza informatica, reti Wi-Fi, centralini VoIP e siti web.
+  description: Treart Evolution è il partner IT delle aziende: un solo referente per computer, rete, sicurezza, telefonia e sito web. Abbiamo sede a Grosseto e seguiamo imprese, studi professionali, hotel e negozi in tutta Italia, da remoto e in sede. ⏎  ⏎ Ci occupiamo di assistenza informatica, installazione di P
+  company_overview: (vuoto)
+  mission: (vuoto)
+  products: (vuoto)
+  general_info: (vuoto)
+  founded: (vuoto)
+  impressum: Treart Evolution Srl – Via Aurelia Nord 76/1, 58100 Grosseto (GR) – P. IVA 01575220536 – REA 136469 – Capitale sociale € 10.000,00
+  website: https://treart-evolution.com/?utm_source=facebook&utm_medium=social&utm_campaign=pagina
+  phone: +3905641768249
+  emails: ["info@treart-evolution.com"]
+  single_line_address: via Aurelia Nord 76/1, 58100 Grosseto, Toscana
+  location: {"city":"Grosseto","country":"Italy","latitude":42.772833517587,"longitude":11.105353832245,"street":"via Aurelia Nord 76/1","zip":"58100"}
+  hours: {"mon_1_open":"08:30","mon_1_close":"13:00","mon_2_open":"14:00","mon_2_close":"17:30","tue_1_open":"08:30","tue_1_close":"13:00","tue_2_open":"14:00","tue_2_close":"17:30","wed_1_open":"08:30","wed_1_close":"13:00","wed_2_open":"14:00","wed_2_close":"17:30","thu_1_open":"08:30","thu_1_close":"13:00
+  price_range: (vuoto)
+  is_published: true
+  verification_status: not_verified
+  fan_count: 132
+  followers_count: 132
+  rating_count: 0
+  overall_star_rating: 5
+  checkins: 0
+  whatsapp_number: (vuoto)
+  has_whatsapp_number: (vuoto)
+  has_whatsapp_business_number: (vuoto)
+  service_area: non disponibile ((#100) Tried accessing nonexisting field (service_area) (codice 100))
+  temporary_status: operating_as_usual
+  instagram_business_account: (vuoto)
+  connected_instagram_account: (vuoto)
+  picture: {"data":{"url":"https://scontent-sjc6-1.xx.fbcdn.net/v/t39.30808-1/304119821_581423273623451_2140169167986242664_n.jpg?_nc_cat=107&ccb=1-7&_nc_sid=08baa4&_nc_ohc=W-qT4B88GVwQ7kNvwFRCsSX&_nc_oc=AdqHXIGIgELyiJY4JxBdqy1kXJvMWv8zz7mewBJ-UVcKwWa1zMy8EafVOq1EBfL_o_Y&_nc_zt=24&_nc_ht=scontent-sjc6-1.xx&edm
+  cover: {"source":"https://scontent-sjc6-1.xx.fbcdn.net/v/t39.30808-6/861313144_1623976112701490_6361213592675191398_n.jpg?_nc_cat=111&ccb=1-7&_nc_sid=dc4938&_nc_ohc=p9PbwWWVlbsQ7kNvwGY3hlX&_nc_oc=Adq7MsfEBC2PhEgo-iH3jQsNFEsVeN8b6ps621hOlS-UsVikqzM-C-zNqRIp4PUQwsQ&_nc_zt=23&_nc_ht=scontent-sjc6-1.xx&edm=AJd
+  pulsante d'azione: non leggibile ((#10) This endpoint requires the 'pages_read_engagement' permission or the 'Page Public Content Access' feature. Refer to https://developers.facebook.com/docs/apps/review/login-permissions#manage-pages and https://developers.facebook.com/docs/apps/review/feature#reference-PAGES_ACCESS for details. (codice 10))
+  foto profilo salvata (5739 byte)
+  copertina salvata (62981 byte)
+  post letti: 35 (ultimi 100 al massimo)
+  post per anno: 2017: 25, 2018: 6, 2019: 1, 2026: 3
+   - 2026-10-30  Bando Doppia Transizione 2026 della Camera di commercio della Maremma e del Tirreno: copre
+   - 2026-10-28  Il nostro nuovo sito è online.  L'abbiamo rifatto da capo per rispondere subito alle doman
+   - 2026-10-21  Il tuo business, gestito.  Rete, sicurezza informatica, telefonia, Wi-Fi, siti web e assis
+   - 2019-06-16  (senza testo)
+   - 2018-07-09  realizzazione #treartevolution  Promozione Tre Store Aurelia Antica - Tre Store Business  
+   - 2018-07-04  👨‍🎨 Nuovo restyling sito web #treartevolution. Festambiente si rinnova per il trentennale!
+   - 2018-06-01  (senza testo)
+   - 2018-05-09  (senza testo)
+   - 2018-05-03  Online un nuovo e-commerce per acquistare facilmente tutta l'attrezzatura professionale ne
+   - 2018-03-13  L’esoscheletro Rewalk oggi è un ausilio che davvero può cambiare la vita di molte persone.
+  statistica page_impressions_unique: non disponibile
+  statistica page_post_engagements (28 giorni): 448
+  statistica page_views_total (28 giorni): 78
+  statistica page_follows (28 giorni): 132
+  statistica page_daily_follows_unique (28 giorni): 1
+
+Controllo completato: nessuna modifica effettuata.
+Esito complessivo: success
