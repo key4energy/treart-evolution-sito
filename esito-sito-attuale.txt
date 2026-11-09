@@ -1,0 +1,178 @@
+Sito attuale: esecuzione n. 21 del 09/11/2026 03:52 - commit 72d72f5
+
+Richiesta: manutenzione/richieste/2026-11-09-0405-prova-pubblicazione-verifica.json
+== Prova del passaggio di treart-evolution.com al nuovo sito (sola lettura, nessuna modifica) ==
+Motori di ricerca: sito APERTO (visibile a Google e agli altri motori)
+Versione di produzione allineata all'anteprima (stessi testi, foto e pagine)
+Versione di produzione: 119 file, 28M, 35 reindirizzamenti dai vecchi indirizzi di WordPress
+Pagine con indirizzo proprio: 39; mappa del sito: 39 indirizzi
+
+Cartella del sito: /home/u523-apqoesleyf7e/www/treart-evolution.com/public_html
+Contenuto attuale: nuovo-sito (28M, 151 file)
+
+== File e cartelle in public_html ==
+total 1132
+-rw-r--r-- 1   5781 Nov  4 20:20 .htaccess
+drwxr-xr-x 4   4096 Apr 23  2026 .well-known
+-rw-r--r-- 1     32 Nov  4 20:20 36c83ca42c8e51088362d112860c7c25.txt
+drwxr-xr-x 2   4096 Nov  4 20:20 accessibilita
+-rw-r--r-- 1  15617 Nov  4 20:20 apple-touch-icon.png
+drwxr-xr-x 2   4096 Nov  4 20:20 assistenza
+drwxr-xr-x 2   4096 Nov  4 20:20 assistenza-informatica
+drwxr-xr-x 2   4096 Nov  4 20:20 backup
+drwxr-xr-x 2   4096 Nov  4 20:20 centralini-voip
+drwxr-xr-x 2   4096 Nov  4 20:20 check-up
+drwxr-xr-x 2   4096 Nov  4 20:20 chi-siamo
+-rw-r--r-- 1  43793 Nov  4 20:20 condizioni-app.html
+drwxr-xr-x 2   4096 Nov  4 20:20 connettivita
+drwxr-xr-x 2   4096 Nov  4 20:20 contatti
+drwxr-xr-x 2   4096 Nov  4 20:20 cookie
+drwxr-xr-x 2   4096 Nov  4 20:20 costo-fermo
+drwxr-xr-x 2   4096 Nov  4 20:20 crediti
+drwxr-xr-x 2   4096 Nov  4 20:20 cybersecurity
+drwxr-xr-x 2   4096 Nov  4 20:20 email-domini
+drwxr-xr-x 2   4096 Nov  4 20:20 email-truffa
+-rw-r--r-- 1   7541 Nov  4 20:20 favicon.ico
+drwxr-xr-x 2   4096 Nov  4 20:20 font
+drwxr-xr-x 2   4096 Nov  4 20:20 formule
+-rw-r--r-- 1     53 Nov  4 20:20 google97d76b7433f6f720.html
+drwxr-xr-x 2   4096 Nov  4 20:20 hosting
+drwxr-xr-x 2   4096 Nov  4 20:20 img
+drwxr-xr-x 2   4096 Nov  4 20:20 incentivi
+-rw-r--r-- 1 630806 Nov  4 20:20 index.html
+drwxr-xr-x 2   4096 Nov  4 20:20 installazioni
+drwxr-xr-x 2   4096 Nov  4 20:20 interno
+-rw-r--r-- 1 114608 Nov  4 20:20 llms-full.txt
+-rw-r--r-- 1  10863 Nov  4 20:20 llms.txt
+drwxr-xr-x 2   4096 Nov  4 20:20 nis2
+-rw-r--r-- 1  76062 Nov  4 20:20 og-image.png
+drwxr-xr-x 2   4096 Nov  4 20:20 preventivo
+drwxr-xr-x 2   4096 Nov  4 20:20 privacy
+-rw-r--r-- 1  45219 Nov  4 20:20 privacy-app.html
+drwxr-xr-x 2   4096 Nov  4 20:20 progetti
+drwxr-xr-x 2   4096 Nov  4 20:20 ransomware
+drwxr-xr-x 2   4096 Nov  4 20:20 rete-wifi
+drwxr-xr-x 2   4096 Nov  4 20:20 risorse
+-rw-r--r-- 1   1528 Nov  4 20:20 robots.txt
+drwxr-xr-x 2   4096 Nov  4 20:20 servizi
+drwxr-xr-x 2   4096 Nov  4 20:20 settori
+-rw-r--r-- 1   3776 Nov  4 20:20 sitemap.xml
+drwxr-xr-x 2   4096 Nov  4 20:20 siti-web
+drwxr-xr-x 2   4096 Nov  4 20:20 spegnimento-rame
+drwxr-xr-x 2   4096 Nov  4 20:20 strumenti
+drwxr-xr-x 2   4096 Nov  4 20:20 telecamere-regole
+drwxr-xr-x 2   4096 Nov  4 20:20 test-sicurezza
+drwxr-xr-x 2   4096 Nov  4 20:20 trova-incentivo
+drwxr-xr-x 2   4096 Nov  4 20:20 verifica-rame
+drwxr-xr-x 2   4096 Nov  4 20:20 videosorveglianza
+drwxr-xr-x 2   4096 Nov  4 20:20 vpn
+drwxr-xr-x 2   4096 Nov  4 20:20 wifi-hotel
+
+== .htaccess attuale, 67 righe (resterà nell'archivio di WordPress) ==
+# Treart Evolution: sito statico (il sito WordPress precedente è archiviato sul server, fuori da public_html)
+# File generato da sorgente/build_produzione.py: le modifiche vanno fatte lì.
+
+# pagine sempre aggiornate: la cache di SiteGround e dei browser non conserva le pagine HTML
+<IfModule mod_headers.c>
+  <FilesMatch "\.(html|xml|txt)$">
+    Header set Cache-Control "no-cache"
+  </FilesMatch>
+</IfModule>
+# robots.txt, llms.txt e llms-full.txt (sintesi del sito per gli assistenti AI) sono testo UTF-8
+AddCharset UTF-8 .txt
+
+RewriteEngine On
+
+# vecchi indirizzi del sito WordPress → pagine del nuovo sito,
+# subito in https e senza www, con un solo reindirizzamento
+RewriteRule ^starlink-e-alternative-internet-ovunque-anche-dove-gli-altri-non-arrivano/?$ https://treart-evolution.com/connettivita/ [R=301,L,QSD]
+RewriteRule ^category/assistenza-e-installazioni/configurazioni-personalizzate/?$ https://treart-evolution.com/installazioni/ [R=301,L,QSD]
+RewriteRule ^il-valore-di-avere-un-referente-unico-per-tutta-la-tua-tecnologia/?$ https://treart-evolution.com/assistenza-informatica/ [R=301,L,QSD]
+RewriteRule ^centralino-voip-perche-conviene-rispetto-alla-linea-tradizionale/?$ https://treart-evolution.com/centralini-voip/ [R=301,L,QSD]
+RewriteRule ^videosorveglianza-intelligente-protezione-h24-per-la-tua-azienda/?$ https://treart-evolution.com/videosorveglianza/ [R=301,L,QSD]
+RewriteRule ^assistenza-informatica-quanto-tempo-ti-fa-risparmiare-davvero/?$ https://treart-evolution.com/assistenza-informatica/ [R=301,L,QSD]
+RewriteRule ^connessione-lenta-ecco-quanto-costa-davvero-alla-tua-azienda/?$ https://treart-evolution.com/connettivita/ [R=301,L,QSD]
+RewriteRule ^domini-e-mail-professionali-credibilita-che-fa-la-differenza/?$ https://treart-evolution.com/email-domini/ [R=301,L,QSD]
+RewriteRule ^category/sicurezza-e-protezione/vpn-per-accesso-remoto/?$ https://treart-evolution.com/vpn/ [R=301,L,QSD]
+RewriteRule ^category/assistenza-e-installazioni/supporto-tecnico/?$ https://treart-evolution.com/assistenza-informatica/ [R=301,L,QSD]
+RewriteRule ^configurazioni-personalizzate-ogni-azienda-e-diversa/?$ https://treart-evolution.com/installazioni/ [R=301,L,QSD]
+RewriteRule ^vpn-aziendale-lavorare-da-remoto-in-totale-sicurezza/?$ https://treart-evolution.com/vpn/ [R=301,L,QSD]
+RewriteRule ^category/web-e-digital-solutions/creazione-siti-web/?$ https://treart-evolution.com/siti-web/ [R=301,L,QSD]
+RewriteRule ^category/reti-e-connettivita/centralini-telefonici/?$ https://treart-evolution.com/centralini-voip/ [R=301,L,QSD]
+RewriteRule ^category/assistenza-e-installazioni/installazioni/?$ https://treart-evolution.com/installazioni/ [R=301,L,QSD]
+RewriteRule ^category/sicurezza-e-protezione/videosorveglianza/?$ https://treart-evolution.com/videosorveglianza/ [R=301,L,QSD]
+RewriteRule ^category/web-e-digital-solutions/gestione-hosting/?$ https://treart-evolution.com/hosting/ [R=301,L,QSD]
+RewriteRule ^category/web-e-digital-solutions/gestione-domini/?$ https://treart-evolution.com/email-domini/ [R=301,L,QSD]
+RewriteRule ^category/assistenza-e-installazioni/consulenza/?$ https://treart-evolution.com/assistenza-informatica/ [R=301,L,QSD]
+RewriteRule ^category/sicurezza-e-protezione/cybersecurity/?$ https://treart-evolution.com/cybersecurity/ [R=301,L,QSD]
+RewriteRule ^category/web-e-digital-solutions/servizi-mail/?$ https://treart-evolution.com/email-domini/ [R=301,L,QSD]
+RewriteRule ^hosting-cosa-ce-dietro-la-velocita-di-un-sito/?$ https://treart-evolution.com/hosting/ [R=301,L,QSD]
+RewriteRule ^il-sito-web-e-la-nuova-sede-della-tua-azienda/?$ https://treart-evolution.com/siti-web/ [R=301,L,QSD]
+RewriteRule ^perche-la-tecnologia-non-va-lasciata-al-caso/?$ https://treart-evolution.com/assistenza-informatica/ [R=301,L,QSD]
+RewriteRule ^category/reti-e-connettivita/impianti-wi-fi/?$ https://treart-evolution.com/rete-wifi/ [R=301,L,QSD]
+RewriteRule ^wi-fi-aziendale-non-basta-il-router-di-casa/?$ https://treart-evolution.com/rete-wifi/ [R=301,L,QSD]
+RewriteRule ^category/reti-e-connettivita/reti-internet/?$ https://treart-evolution.com/connettivita/ [R=301,L,QSD]
+RewriteRule ^category/sicurezza-e-protezione/backup-nas/?$ https://treart-evolution.com/backup/ [R=301,L,QSD]
+RewriteRule ^come-un-sito-ben-fatto-porta-nuovi-clienti/?$ https://treart-evolution.com/siti-web/ [R=301,L,QSD]
+RewriteRule ^backup-il-vero-salvavita-dei-tuoi-dati/?$ https://treart-evolution.com/backup/ [R=301,L,QSD]
+RewriteRule ^category/assistenza-e-installazioni/?$ https://treart-evolution.com/assistenza-informatica/ [R=301,L,QSD]
+RewriteRule ^perche-un-antivirus-non-basta-piu/?$ https://treart-evolution.com/cybersecurity/ [R=301,L,QSD]
+RewriteRule ^category/web-e-digital-solutions/?$ https://treart-evolution.com/siti-web/ [R=301,L,QSD]
+RewriteRule ^category/sicurezza-e-protezione/?$ https://treart-evolution.com/cybersecurity/ [R=301,L,QSD]
+RewriteRule ^category/reti-e-connettivita/?$ https://treart-evolution.com/connettivita/ [R=301,L,QSD]
+
+# vecchie mappe del sito → nuova mappa
+RewriteRule ^(sitemap_index|page-sitemap|post-sitemap|category-sitemap|local-sitemap|wp-sitemap)\.xml$ https://treart-evolution.com/sitemap.xml [R=301,L,QSD]
+
+# sempre https e indirizzo senza www
+RewriteCond %{HTTPS} off
+RewriteCond %{HTTP:X-Forwarded-Proto} !https
+RewriteRule ^ https://treart-evolution.com%{REQUEST_URI} [R=301,L]
+RewriteCond %{HTTP_HOST} ^www\. [NC]
+RewriteRule ^ https://treart-evolution.com%{REQUEST_URI} [R=301,L]
+
+# tutto il resto che non esiste più (pagine di WordPress, wp-admin, wp-login.php, feed...) → home;
+# le pagine del nuovo sito sono cartelle con il loro index.html e restano dove sono
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^.+$ https://treart-evolution.com/ [R=301,L,QSD]
+
+== Da conservare nella cartella pubblica anche con il nuovo sito ==
+- .well-known
+- google97d76b7433f6f720.html
+
+Archivi di WordPress già presenti: 1 (wordpress-archiviato-20261026-103903 )
+Altre cartelle in /home/u523-apqoesleyf7e/www/treart-evolution.com: STATO-SITO.txt backup-sito-attuale file-pubblicati.txt logs public_html sito-statico-precedente webstats wordpress-archiviato-20261026-103903 
+
+== Stato registrato ==
+Aggiornato il 26/10/2026 alle 10:39
+Online: nuovo sito (pubblicato il 26/10/2026 alle 10:39)
+File di WordPress archiviati in: /home/u523-apqoesleyf7e/www/treart-evolution.com/wordpress-archiviato-20261026-103903
+Copia del database di WordPress: /home/u523-apqoesleyf7e/backup-sito-attuale/db-prima-del-nuovo-sito-20261026-103903.sql (il database è rimasto com'era)
+Per tornare a WordPress: workflow «Sito attuale», azione ripristina-wordpress
+
+== Come risponde oggi il sito (visto dal server, senza seguire i reindirizzamenti) ==
+https://treart-evolution.com/ -> HTTP/2 200  x-proxy-cache: MISS 
+http://treart-evolution.com/ -> HTTP/1.1 301 Moved Permanently Location: https://treart-evolution.com/ 
+https://www.treart-evolution.com/ -> HTTP/2 301  location: https://treart-evolution.com/ x-proxy-cache: MISS 
+http://www.treart-evolution.com/ -> HTTP/1.1 301 Moved Permanently Location: https://www.treart-evolution.com/ 
+https://treart-evolution.com/contatti/ -> HTTP/2 200  x-proxy-cache: MISS 
+https://treart-evolution.com/wp-includes/js/jquery/jquery.min.js -> HTTP/2 301  location: https://treart-evolution.com/ x-proxy-cache: MISS 
+http://treart-evolution.com/wp-includes/js/jquery/jquery.min.js -> HTTP/1.1 301 Moved Permanently Location: https://treart-evolution.com/wp-includes/js/jquery/jquery.min.js 
+
+== Codici di verifica e statistiche nella pagina iniziale attuale (da portare nel nuovo sito se servono) ==
+<meta name="p:domain_verify" content="6cf26ab217996b7dae280488dadd4746">
+G-R041L31JHB
+g-bottom
+g-callback
+g-linear
+g-search
+g-server
+g-smartphone
+(fine elenco)
+
+== Per confronto: una pagina statica sullo stesso server (anteprima) ==
+https://fabio.treart-evolution.com/ -> HTTP/2 200  cache-control: no-cache x-proxy-cache: MISS 
+https://fabio.treart-evolution.com/robots.txt -> HTTP/2 200  x-proxy-cache: MISS 
+https://fabio.treart-evolution.com/inesistente/ -> HTTP/2 404  x-proxy-cache: MISS 
+Esito complessivo: success
